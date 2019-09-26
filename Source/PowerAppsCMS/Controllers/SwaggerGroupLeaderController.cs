@@ -29,7 +29,7 @@ namespace PowerAppsCMS.Controllers
                Type = typeof(Exception))]
         [SwaggerOperation("GetGroupLeaderProductionPlanning")]
 
-        public IHttpActionResult GetGroupLeaderProductionPlanning(int processGroupID)
+        public IHttpActionResult GetGroupLeaderProductionPlanning(int processGroupID, int ProductGroupID)
         {
             using (PowerAppsCMSEntities db = new PowerAppsCMSEntities())
             {
@@ -38,7 +38,7 @@ namespace PowerAppsCMS.Controllers
                 DateTime now = DateTime.Now;
                 try
                 {
-                    var itemProcess = db.Processes.Where(x => x.MasterProcess.ProcessGroupID == processGroupID && x.Unit.IsHold == false && x.Unit.SFSDueDate <= x.Unit.MPSDueDate).Select(x => x.Unit).Distinct();
+                    var itemProcess = db.Processes.Where(x => x.MasterProcess.ProcessGroupID == processGroupID && x.Unit.IsHold == false && x.Unit.SFSDueDate <= x.Unit.MPSDueDate && x.Unit.Product.ProductSubGroups.ProductGroup.ID == ProductGroupID).Select(x => x.Unit).Distinct();
 
                     foreach (Unit itemUnit in itemProcess)
                     {
@@ -51,6 +51,8 @@ namespace PowerAppsCMS.Controllers
                         productionPlanning.Product = itemUnit.Product.Name;
                         productionPlanning.Customer = itemUnit.PRO.CustomerListInSODisplayText;// Customer;
                         productionPlanning.ProductID = itemUnit.ProductID;
+                        productionPlanning.PGID = itemUnit.Product.ProductSubGroups.ProductGroup.ID;
+                        productionPlanning.PGName = itemUnit.Product.ProductSubGroups.ProductGroup.Name;
 
                         selectedProcesslist = db.Processes.Where(x => x.MasterProcess.ProductID == productionPlanning.ProductID && x.UnitID == productionPlanning.UnitID && x.MasterProcess.ProcessGroupID == processGroupID).ToList();
                         int countSelectedProcessList = selectedProcesslist.Count();

@@ -1,0 +1,177 @@
+﻿@model PowerAppsCMS.ViewModel.MemoViewModel
+@using PowerAppsCMS.Models
+
+@{
+    ViewBag.Title = "Memo Details";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<nav aria-label="breadcrumb mt-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Memo")">Memo</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Details
+        </li>
+    </ol>
+</nav>
+
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <h1 class="page-title mt-0">
+            Memo Details
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            <div class="custom-form-container pt-0">
+                <br />
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">Product</label>
+                        <p class="view-data__content">@Model.Memo.Products.Name</p>
+                    </div>
+                    <div class="col-md-6 col-12 ">
+                        <label class="view-data__label form-custom-label">Type</label>
+                        <p class="view-data__content">@Model.Memo.MemoType.Description</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12 ">
+                        <label class="view-data__label form-custom-label">Description</label>
+                        <p class="view-data__content">@Model.Memo.Description</p>
+                    </div>
+                </div>
+
+                <br />
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th>PRO</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int quantity = Model.ListofMemoPRO.Sum(x => x.Quantity);
+                                int listOfPROIndex = 0;
+                                var listOfPROListCount = Model.ListofMemoPRO.Count();
+                                var number = 1;
+                            }
+                            @foreach (var item in Model.ListofMemoPRO)
+                            {
+                                <tr class="memo-pro">
+                                    <td>@number</td>
+                                    <td>@item.PRO.Number</td>
+                                    <td class="quantity-label" align="right">
+                                        <label for="quantityLabel">@item.Quantity</label>
+                                    </td>
+
+                                    @if (listOfPROIndex == 0)
+                                    {
+                                        <td rowspan=@listOfPROListCount align="right">
+                                            <label for="totalQuantityLabel">@quantity</label>
+                                            <input type="text" class="hide" value="@quantity" name="totalQuantity" />
+                                        </td>
+
+                                    }
+                                </tr>
+                                listOfPROIndex++;
+                                number++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <br />
+                <br />
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>
+                                    No
+                                </th>
+                                <th>
+                                    Part Number
+                                </th>
+                                <th>
+                                    Part Name
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th>
+                                    Unit Quantity
+                                </th>
+                                <th>
+                                    Total Quantity
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+                                var indexNumber = 1;
+                                var listOfMemoComponents = Model.ListofMemoComponents.OrderByDescending(x => x.Component.IsInHouse);
+                            }
+                            @foreach (var item in listOfMemoComponents)
+                            {
+                                var memoData = db.Memos.Find(item.MemoID);
+                                var productCompositionData = db.ProductCompositions.Where(x => x.ProductID == memoData.ProductID && x.ComponentID == item.ComponentID).FirstOrDefault();
+                                int totalQuantity;
+
+                                totalQuantity = quantity * productCompositionData.Quantity;
+
+                                <tr class="memo-pro-component">
+                                    <td>@indexNumber</td>
+                                    <td>
+                                        @item.Component.PartNumber
+                                    </td>
+                                    <td>@item.Component.PartName</td>
+                                    <td>
+                                        @if (item.Component.IsInHouse == true)
+                                        {
+                                            <p class="text-success">IN HOUSE</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-danger">OUT HOUSE</p>
+                                        }
+                                    </td>
+                                    <td align="right">
+                                        @productCompositionData.Quantity
+                                        <input type="text" class="hide" value="@productCompositionData.Quantity" name="unitQuantity" />
+                                    </td>
+                                    <td align="right">
+                                        <label for="totalUnitQuantity">@totalQuantity</label>
+                                    </td>
+                                </tr>
+                                indexNumber++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row justify-content-between mt-5">
+                    <div class="col-auto">
+                        <a href="@Url.Action("Index", "Memo", new { page = ViewBag.Page})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Memo</a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="@Url.Action("Edit", "Memo", new { id = Model.Memo.ID})" class="btn btn-primary mb-3"><i data-feather="arrow-right"></i> &nbsp; Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <img src="~/Content/images/preloader.gif" />
+</div>
+

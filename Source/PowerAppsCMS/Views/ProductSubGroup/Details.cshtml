@@ -1,0 +1,144 @@
+﻿@model PowerAppsCMS.ViewModel.ProductSubGroupViewModel
+
+@{
+    ViewBag.Title = "Product Sub Group Details";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Product Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "GroupProduct")">Product Sub Groups</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Product Sub Group Details</li>
+    </ol>
+</nav>
+<h1 class="page-title">Product Sub Group Details</h1>
+
+<div class="card shadow">
+    <div class="card-header">
+        Product Sub Group Details
+    </div>
+    <div class="view-data-container">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.ProductSubGroup.Name)</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductSubGroup.Name)</p>
+            </div>
+            <div class="col-md-4 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.ProductSubGroup.ProductGroup.Name)</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductSubGroup.ProductGroup.Name)</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.ProductSubGroup.SAPCode)</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductSubGroup.SAPCode)</p>
+            </div>
+        </div>
+        <div class="row justify-content-between mt-0">
+            <div class="col-auto">
+                <a href="@Url.Action("Edit", "ProductSubGroup", new { id = Model.ProductSubGroup.ID, currentPage = ViewBag.CurrentPage})" class="btn btn-primary mb-3 detail-btn-edit"><i data-feather="edit-2"></i> &nbsp; Edit</a>
+            </div>
+        </div>
+        <nav class="mt-5">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-product-tab" data-toggle="tab" href="#nav-product" role="tab" aria-controls="nav-product" aria-selected="true">Product</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-product" role="tabpanel" aria-labelledby="nav-product-tab">
+                <div class="form-row align-items-center justify-content-between mt-3 mb-3">
+                    <div class="col-auto">
+                        <h3 class="sub-title mb-0">List of Products</h3>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table card-table bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Product</th>
+                                <th>Part Number</th>
+                                <th>Total Day</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ 
+                                //var indexNumber = 1;
+                                var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+                                var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+                                var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+                            }
+                            @foreach (var item in Model.ListOfProducts)
+                            {
+                                <tr class="product">
+                                    <td>@currentNumber</td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PN)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalDay)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Details", "Product", new { id = item.ID})" class="btn btn-primary btn-sm"  data-toggle="tooltip" data-placement="top" title="Detail"><i data-feather="zoom-in"></i></a>
+                                    </td>
+                                </tr>
+                                currentNumber++;
+                            }
+                        </tbody>
+                    </table>
+                    @if (Model.Pager.EndPage > 1)
+                    {
+                        <div class="p-3">
+                            <div class="row justify-content-md-center custom-pagination align-items-center">
+                                <div class="col-auto">
+                                    <div class="pagination-container">
+                                        <ul class="pagination pagination-sm">
+                                            @if (Model.Pager.CurrentPage > 1)
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("Details", "ProductSubGroup", new { id = Model.ProductSubGroup.ID})">First</a>
+                                                </li>
+                                                <li>
+                                                    <a href="@Url.Action("Details", "ProductSubGroup", new { id = Model.ProductSubGroup.ID, page = Model.Pager.CurrentPage - 1})">Previous</a>
+                                                </li>
+                                            }
+
+                                            @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                                            {
+                                                <li class="@(page == Model.Pager.CurrentPage ? "active" : "")">
+                                                    <a href="@Url.Action("Details", "ProductSubGroup", new { id = Model.ProductSubGroup.ID, page= page})">@page</a>
+                                                </li>
+                                            }
+
+                                            @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                            {
+                                                <li>
+                                                    <a href="@Url.Action("Details", "ProductSubGroup", new { id = Model.ProductSubGroup.ID, page = Model.Pager.CurrentPage + 1})">Next</a>
+                                                </li>
+                                                <li>
+                                                    <a href="@Url.Action("Details", "ProductSubGroup", new { id = Model.ProductSubGroup.ID, page = Model.Pager.TotalPages})">Last</a>
+                                                </li>
+                                            }
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-between mt-3">
+            <div class="col-auto">
+                <a href="@Url.Action("Index", "ProductSubGroup", new { page = ViewBag.CurrentPage})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Product Sub Group</a>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,219 @@
+﻿@model PowerAppsCMS.ViewModel.MemoViewModel
+
+@{
+    ViewBag.Title = "Create Memo";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+<nav aria-label="breadcrumb mt-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Memo")">Memo</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Create
+        </li>
+    </ol>
+</nav>
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <h1 class="page-title mt-0">
+            Create Memo
+        </h1>
+    </div>
+</div>
+@using (Html.BeginForm("SaveMemo", "Memo", FormMethod.Post))
+{
+    @*@Html.AntiForgeryToken()*@
+    <div class="row">
+        <div class="col-xl-9 col-12">
+            <div class="card shadow">
+                <ul class="list-unstyled text-center stage-gate-list">
+                    <li class="stage-gate-item">
+                        <a href="@Url.Action("Create", "Memo")" class="stage-gate-link passed">
+                            <span class="stage-gate-number">1</span>
+                            <span class="stage-gate-title">Select Product</span>
+                        </a>
+                    </li>
+                    <li class="stage-gate-item">
+                        <a href="@Url.Action("CreateMemoPRO", "Memo")" class="stage-gate-link passed">
+                            <span class="stage-gate-number">2</span>
+                            <span class="stage-gate-title">Select PRO</span>
+                        </a>
+                    </li>
+                    <li class="stage-gate-item">
+                        <a href="#" class="stage-gate-link active">
+                            <span class="stage-gate-number">3</span>
+                            <span class="stage-gate-title">Select Component</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="custom-form-container pt-0">
+                    <h2 class="stage-title">Select Component</h2>
+                    <div class="row">
+                        <div class="col-md-6 col-12 ">
+                            <label class="view-data__label form-custom-label">Product</label>
+                            <p class="view-data__content">@Model.Product.Name</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-12 ">
+                            <label class="view-data__label form-custom-label">Type</label>
+                            <p class="view-data__content">@Model.MemoType.Description</p>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <label class="view-data__label form-custom-label">Description</label>
+                            <p class="view-data__content">@Model.Memo.Description</p>
+                        </div>
+                    </div>
+                    <p class="mt-3 mb-2"><strong>List of PRO</strong></p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>PRO</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int quantity = Model.ListofMemoPRO.Sum(x => x.Quantity);
+                                    int listOfPROIndex = 0;
+                                    var listOfPROListCount = Model.ListofMemoPRO.Count();
+                                }
+                                @foreach (var item in Model.ListofMemoPRO)
+                                {
+                                    <tr>
+                                        <td>@item.Number</td>
+                                        <td>@item.Quantity</td>
+
+                                        @if (listOfPROIndex == 0)
+                                        {
+                                            <td rowspan=@listOfPROListCount>@quantity</td>
+                                        }
+                                    </tr>
+                                    listOfPROIndex++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr />
+                    <p class="mt-3 mb-2"><strong>List of Component</strong></p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>
+                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                            <input type="checkbox" class="custom-control-input" id="select-all-checkbox">
+                                            <label class="custom-control-label without-text" for="select-all-checkbox"></label>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        No
+                                    </th>
+                                    <th>
+                                        Part Number
+                                    </th>
+                                    <th>
+                                        Part Name
+                                    </th>
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        Unit Quantity
+                                    </th>
+                                    <th>
+                                        Total Quantity
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var indexNumber = 1;
+                                    var listOfProductCompositon = Model.ProductCompositions.OrderByDescending(x => x.Component.IsInHouse);
+                                }
+                                @foreach (var item in listOfProductCompositon)
+                                {
+                                    int totalQuantity;
+
+                                    totalQuantity = quantity * item.Quantity;
+                                    <tr>
+                                        <td>
+                                            <div class="custom-control custom-checkbox mr-sm-2">
+                                                <input type="checkbox" class="custom-control-input" value="@item.ComponentID" id="@item.ComponentID" name="SelectedComponent" @(item.IsDefaultComponent ? "checked" : "")>
+                                                <label class="custom-control-label without-text" for="@item.ComponentID"></label>
+                                            </div>
+                                        </td>
+                                        <td>@indexNumber</td>
+                                        <td>@item.Component.PartNumber</td>
+                                        <td>@item.Component.PartName</td>
+                                        <td>
+                                            @if (item.Component.IsInHouse == true)
+                                            {
+                                                <p class="text-success">IN HOUSE</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="text-danger">OUT HOUSE</p>
+                                            }
+                                        </td>
+                                        <td>@item.Quantity</td>
+                                        <td>@totalQuantity</td>
+                                    </tr>
+                                    indexNumber++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row justify-content-between mt-5">
+                        <div class="col-auto">
+                            <a href="@Url.Action("CreateMemoPRO", "Memo")" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Select PRO</a>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-success submit mr-0 mb-3"><i data-feather="save"></i> &nbsp; Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+<div>
+    <p class="text-danger">@ViewBag.Exception</p>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $('.submit').click(function () {
+                $(this).prop("disabled", true);
+                $('.loading').removeClass('hide');
+                if (!$('form').valid()) {
+                    $(this).prop("disabled", false);
+                    $('.loading').addClass('hide');
+                    return false;
+                }
+                $('form').submit();
+            });
+
+            $("#select-all-checkbox").change(function () {
+                $(".custom-control-input:enabled").prop('checked', $(this).prop('checked'));
+            });
+
+            $(".custom-control-input").change(function () {
+                if ($(this).prop('checked') == false) {
+                    $("#select-all-checkbox").prop('checked', false);
+                }
+            });
+        });
+    </script>
+}

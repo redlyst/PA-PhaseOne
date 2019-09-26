@@ -1,0 +1,9 @@
+﻿
+@{
+    ViewBag.Title = "Error";
+    Layout = null;
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">@ViewBag.ErrorMessage</h2>
+@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })

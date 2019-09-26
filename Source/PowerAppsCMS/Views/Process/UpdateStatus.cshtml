@@ -1,0 +1,77 @@
+﻿@model PowerAppsCMS.Models.Process
+
+@{
+    ViewBag.Title = "Change QC Status";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Product Management</li>
+        <li class="breadcrumb-item active" aria-current="page">Change QC Status</li>
+    </ol>
+</nav>
+<h1 class="page-title">Change QC Status</h1>
+<div class="card shadow">
+    <div class="card-header">
+        Change QC Status
+    </div>
+    <div class="form-row align-items-center justify-content-between filter-table-row">
+        <div class="col-auto">
+            Status Change is Success
+        </div>
+    </div>
+    <div class="view-data-container">
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayName("Process Name")</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.MasterProcess.Name)</p>
+            </div>
+            <div class="col-md-6 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayName("Product Name")</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.Unit.Products.Name)</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayName("Process Group Name")</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.MasterProcess.ProcessGroup.Name)</p>
+            </div>
+            <div class="col-md-6 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayName("PRO Number")</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.Unit.PRO.Number)</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayName("MANHOUR")</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.MasterProcess.ManHour)</p>
+            </div>
+            <div class="col-md-6 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayName("Serial Number")</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.Unit.SerialNumber)</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayName("MAN POWER")</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.MasterProcess.ManPower)</p>
+            </div>
+            <div class="col-md-6 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayName("Customer Name")</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.Unit.PRO.CustomerListInSODisplayText)</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <label class="view-data__label form-custom-label">@Html.DisplayName("Current Status")</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.StatusDisplayText)</p>
+            </div>
+        </div>
+        <div class="row justify-content-between mt-3">
+            <div class="col-auto">
+                <a href="@Url.Action("ChangeQCStatus", "Process", new { page = ViewBag.Page})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+

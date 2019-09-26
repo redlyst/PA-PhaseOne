@@ -1,0 +1,62 @@
+﻿@model PowerAppsCMS.Models.User
+@using PowerAppsCMS.Models
+@using PowerAppsCMS.Constants
+
+@{
+    ViewBag.Title = "Home Page";
+    Layout = String.Empty;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/home.css" rel="stylesheet" />
+    <title>Patria Content Management Service</title>
+</head>
+<body>
+    <section class="landing-page-background">
+        <img src="~/Content/images/patria-logo-white.png" alt="logo-patria" class="landing-page-logo" />
+        <h1>Where do you want to go?</h1>
+    </section>
+    <ul class="list-unstyled app-link-list">
+        <li class="app-link-list-item">
+            <img src="~/Content/images/icon-mps.png" alt="icon" class="app-link-list__icon" />
+            <h2 class="app-link-list_title">MPS</h2>
+            <a class="overlay-link" href="@Url.Action("Index", "MPS")" target="_blank"></a>
+        </li>
+        <li class="app-link-list-item">
+            <img src="~/Content/images/icon-sfs.png" alt="icon" class="app-link-list__icon" />
+            <h2 class="app-link-list_title">SFS</h2>
+            <a class="overlay-link" href="@Url.Action("Index", "SFS")" target="_blank"></a>
+        </li>
+        <li class="app-link-list-item">
+            <img src="~/Content/images/icon-master-data.png" alt="icon" class="app-link-list__icon" />
+            <h2 class="app-link-list_title">Master Data</h2>
+            @{
+
+                if (Model != null)
+                {
+                    if (Model.Role.Name == RoleNames.Administrator || Model.Role.Name == RoleNames.SuperAdmin)
+                    {
+                        <a class="overlay-link" href="@Url.Action("Index", "User")" target="_blank"></a>
+                    }
+                    else if (Model.Role.Name == RoleNames.PE)
+                    {
+                        <a class="overlay-link" href="@Url.Action("Index", "ProcessGroup")" target="_blank"></a>
+                    }
+                }
+                else
+                {
+                    <a class="overlay-link" href="@Url.Action("Index", "User")" target="_blank"></a>
+                }
+            }
+        </li>
+    </ul>
+    <p class="footer-text">PATRIA © 2018 . All rights reserved</p>
+</body>
+</html>
+

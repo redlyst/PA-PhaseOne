@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<div class="body-content">
+    <h1 class="title text-danger">Error</h1>
+    <p class="text-danger hide">@ViewBag.Exception</p>
+    <p class="text-danger">@ViewBag.ErrorMessage</p>
+</div>
+
+<div class="btn-back">
+    <a href="@Url.Action("Index", "MPSMapping")" class="btn btn-primary">Back to Mapping Sales Order</a>
+</div>
+
+<input type="hidden" class="exception" value="@ViewBag.Exception" />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            var exception = $('.exception').val();
+            console.log("Exception : " + exception);
+        });
+    </script>
+}
+

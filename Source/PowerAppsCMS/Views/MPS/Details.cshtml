@@ -1,0 +1,1127 @@
+﻿@model PowerAppsCMS.ViewModel.MPSViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+@section additionalcss{
+    <link href="~/Content/datepicker.min.css" rel="stylesheet" />
+}
+
+
+<nav aria-label="breadcrumb mt-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "MPS")">MPS Planning Category</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+            @ViewBag.GroupProductName
+        </li>
+    </ol>
+</nav>
+<div class="row justify-content-between relative">
+    <div class="col-auto">
+        <h1 class="page-title mt-0">
+            MPS @ViewBag.GroupProductName
+        </h1>
+
+        @ViewBag.TestPesan
+    </div>
+    <div class="col-auto">
+        <div class="btn-group mt-1" role="group" aria-label="Basic example">
+            <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#legendaModal" onclick="return false;">
+                <span><i data-feather="info"></i></span>
+                <span class="absolute-tooltip" data-toggle="tooltip" data-placement="top" title="Legenda Info"></span>
+            </button>
+            <button type="button" class="btn btn-dark btn-sm" id="fullScreenMode" alt="test">
+                <span class="zoom-in-icon"><i data-feather="zoom-in"></i></span>
+                <span class="zoom-out-icon hide"><i data-feather="zoom-out"></i></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="mps-table-layout mb-4">
+    <div class="mps-product">
+        <input id="TotalWeeks" value="@(Model.MonthRangeList.Sum(x => x.WeekNumberList.Count()))" class="hide" hidden />
+        <table class="table table-sm table-bordered white-space-nowrap mps-table table-custom-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>#</th>
+                    <th>SO</th>
+                    <th>PRO</th>
+                    <th>PN</th>
+                    <th>Product</th>
+                    <th>Q'ty</th>
+                    <th>Due Date Delivery</th>
+                    <th>Customer</th>
+                    <th>SN</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int indexCount = 1;
+
+                    foreach (var itemPRO in Model.PROList)
+                    {
+                        <tr class="@itemPRO.PROCategoryCSSClass" id="tr-@itemPRO.ID">
+                            <td>@(indexCount++)</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemPRO.SONumberListDisplayText)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemPRO.Number)
+                                @*<button class="btn btn-sm btn-primary deactivate-button" data-toggle="modal" data-target="#deactivateModal_@item.ID" onclick="return false;">Deactivate</button>*@
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemPRO.Products.PN)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemPRO.Products.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemPRO.Quantity)
+                                <input id="pro-@itemPRO.ID-unitcount" value="@itemPRO.MaximumPlanQuantity" class="hide" hidden />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemPRO.DueDateDisplayText)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => itemPRO.CustomerListInSODisplayText)
+                            </td>
+                            <td>
+                                @foreach (var itemSN in itemPRO.Units)
+                                {
+                                    <span id="spandataunit-@itemSN.ID" data-snmpsid="@(itemSN.MPSID!=null?itemSN.MPSID:0)" ondblclick="reActiveUnit($(this))" data-snid="@itemSN.ID" data-snnumber="@itemSN.SerialNumber" class="@(itemSN.MPSCategoryCSSClass)">@Html.DisplayFor(modelItem => itemSN.SerialNumber),</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td colspan="7"><span style="color:blueviolet"></span></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered white-space-nowrap mps-table table-custom-striped mps-dummy-header"></table>
+    </div>
+    <div class="mps-legend">
+        <table class="table table-sm table-bordered white-space-nowrap mps-table table-custom-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>Cap Plan</th>
+                </tr>
+                <tr>
+                    <th>Plan</th>
+                </tr>
+                <tr>
+                    <th>Actual</th>
+                </tr>
+                <tr>
+                    <th>Achv</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var itemPRO in Model.PROList)
+                {
+                    <tr class="@itemPRO.PROCategoryCSSClass" id="tr-@itemPRO.ID">
+                        <td>
+                            <span data-toggle="tooltip" data-placement="top" title="MPS Due date smaller than SFS due date, please check and modify your SFS data" @(itemPRO.HaveWarningMPSDuedate == false ? "hidden" : "")>
+                                <span class="f-modal-icon f-modal-warning scaleWarning inline-block-vertical">
+                                    <span class="f-modal-body pulseWarningIns"></span>
+                                    <span class="f-modal-dot pulseWarningIns"></span>
+                                </span>
+                            </span>
+                            <span class="inline-block-vertical">Plan</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Actual</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered white-space-nowrap mps-table table-custom-striped mps-dummy-header"></table>
+    </div>
+    <div class="mps-schedule">
+        <table class="table table-sm table-bordered white-space-nowrap mps-table table-custom-striped">
+            <thead class="thead-dark">
+                <tr>
+                    @{
+                        foreach (var itemMonthRange in Model.MonthRangeList)
+                        {
+                            <th rowspan="4" class="vertical-title-column"><span class="vertical-title">Carry Over</span></th>
+                            <th class="month-cell" colspan="@itemMonthRange.WeekNumberList.Count" data-month="@itemMonthRange.Month" data-year="@itemMonthRange.Year">
+                                @itemMonthRange.MonthDisplayText
+                            </th>
+                        }
+                    }
+                </tr>
+                <tr>
+                    @{
+                        foreach (var itemMonthRange in Model.MonthRangeList)
+                        {
+                            <th style=@(itemMonthRange.Capacity != null ? "" : "color:red")>@(itemMonthRange.Capacity != null ? itemMonthRange.Capacity.ToString() : "NaN")<input id="Capacity-@itemMonthRange.Month@itemMonthRange.Year" value="@itemMonthRange.Capacity" class="hide" hidden /></th>
+                            <th colspan="@(itemMonthRange.WeekNumberList.Count-2)" class="month-status-capacity on-capacity"><span id="month-status-capacity-@itemMonthRange.Month@itemMonthRange.Year" class="month-status-capacity-@itemMonthRange.Month@itemMonthRange.Year">On Capacity</span></th>
+                            <th><span id="TotalActual-@itemMonthRange.Month@itemMonthRange.Year" class="TotalActual-@itemMonthRange.Month@itemMonthRange.Year">0</span></th>
+                        }
+                    }
+                </tr>
+                <tr>
+                    @{
+                        foreach (var itemMonthRange in Model.MonthRangeList)
+                        {
+                            foreach (var itemWeekNumbers in itemMonthRange.WeekNumberList)
+                            {
+                                <th><span id="Plan-@itemWeekNumbers.Number@itemMonthRange.Month@itemMonthRange.Year" data-week="@itemWeekNumbers.Number" data-month="@itemMonthRange.Month" data-year="@itemMonthRange.Year" class="data-week-plan plan-data-@itemWeekNumbers.Number@itemMonthRange.Month@itemMonthRange.Year">0</span></th>
+                            }
+                        }
+                    }
+                </tr>
+                <tr>
+                    @{
+                        foreach (var itemMonthRange in Model.MonthRangeList)
+                        {
+                            foreach (var itemWeekNumbers in itemMonthRange.WeekNumberList)
+                            {
+                                <th><span id="Actual-@itemWeekNumbers.Number@itemMonthRange.Month@itemMonthRange.Year" data-week="@itemWeekNumbers.Number" data-month="@itemMonthRange.Month" data-year="@itemMonthRange.Year" class="data-week-actual actual-data-@itemWeekNumbers.Number@itemMonthRange.Month@itemMonthRange.Year">0</span></th>
+                            }
+                        }
+                    }
+                </tr>
+                <tr>
+                    @{
+                        int indexData = 0;
+                        int defaultValue = 0;
+                        foreach (var itemMonthRange in Model.MonthRangeList)
+                        {
+                            indexData++;
+                            <th>
+                                <span id="CarryOver-@itemMonthRange.Month-@itemMonthRange.Year" class="CarryOver-@itemMonthRange.Month-@itemMonthRange.Year">
+                                    @if (indexData == 1)
+                                    {
+                                        @ViewBag.TotalCarryOver;
+                                    }
+                                    else
+                                    {
+                                        @defaultValue;
+                                    }
+                                </span>
+                            </th>
+                            <th colspan="@(itemMonthRange.WeekNumberList.Count)"><span id="ActualPercentation-@itemMonthRange.Month-@itemMonthRange.Year" class="ActualPercentation-@itemMonthRange.Month-@itemMonthRange.Year">0%</span></th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var itemPRO in Model.PROList)
+                    {
+                        <tr data-index-row="@itemPRO.ID" class="@itemPRO.PROCategoryCSSClass" id="tr-@itemPRO.ID">
+                            @{
+                                int indexMonth = 0;
+                                foreach (var itemMonthRange in Model.MonthRangeList)
+                                {
+                                    indexMonth++;
+                                    <td class="@((itemPRO.LastMonthCarryOver > 0 && indexMonth == 1) ||(@itemPRO.CurrentMonthCarryOver > 0 && indexMonth == 2)?"number filled":"number")">
+                                        <span id="spanCarryOver-@itemPRO.ID" data-month="@itemMonthRange.Month" class="carry-over-quantity">
+                                            @if (itemPRO.LastMonthCarryOver > 0 && indexMonth == 1)
+                                            {
+                                                @itemPRO.LastMonthCarryOver
+                                            }
+                                            else if (itemPRO.CurrentMonthCarryOver > 0 && indexMonth == 2)
+                                            {
+                                                @itemPRO.CurrentMonthCarryOver
+                                            }
+                                            else
+                                            {
+                                                @:&nbsp;
+                                            }
+                                        </span>
+                                    </td>
+                                    foreach (var itemWeekNumber in itemMonthRange.WeekNumberList)
+                                    {
+                                        var mpsData = itemPRO.MasterPlanSchedules.Where(x => x.Month == itemMonthRange.Month && x.Year == itemMonthRange.Year && x.Week == itemWeekNumber.Number).SingleOrDefault();
+                                        var planQuantity = mpsData != null ? mpsData.CurrentPlannedQuantity : 0;
+                                        var mpsid = mpsData != null ? mpsData.ID : 0;
+                                        var assignedPlan = mpsData != null ? mpsData.AssignedPlanCount : 0;
+                                        //var totalplanQuantityinAWeek = 0;
+                                        <td class="@(planQuantity != 0?"number filled":"number")">
+                                            <span id="span-@itemPRO.ID@itemWeekNumber.Number@itemMonthRange.Month@itemMonthRange.Year" data-mpsid="@mpsid" class="planning-quantity">
+                                                @if (planQuantity != 0)
+                                                {
+                                                    @planQuantity
+                                                }
+                                                else
+                                                {
+                                                    @:&nbsp;
+                                                }
+                                            </span>
+                                            @*id="@itemPRO.ID-@itemWeekNumber.Number-@itemMonthRange.Month-@itemMonthRange.Year"*@
+
+                                            @if (itemWeekNumber.EndsWorkingDate.Date >= itemPRO.MinimumDueDate.Date && (itemWeekNumber.EndsWorkingDate.Date <= itemPRO.DueDate.Date || itemWeekNumber.StartsWorkingDate <= itemPRO.DueDate))
+                                            {
+                                                <input type="text" value="@planQuantity" data-mpsid="@mpsid" data-duedate="@itemWeekNumber.EndsWorkingDate.ToShortDateString()" data-proid="@itemPRO.ID" data-week="@itemWeekNumber.Number" data-month="@itemMonthRange.Month" data-year="@itemMonthRange.Year" data-assignedplan="@assignedPlan" class="form-control input-actual hide">
+                                            }
+                                            else
+                                            {
+                                                <input type="text" value="@planQuantity" data-mpsid="@mpsid" data-duedate="@itemWeekNumber.EndsWorkingDate.ToShortDateString()" data-proid="@itemPRO.ID" data-week="@itemWeekNumber.Number" data-month="@itemMonthRange.Month" data-year="@itemMonthRange.Year" data-assignedplan="@assignedPlan" class="form-control input-actual hide" disabled>
+                                            }
+                                        </td>
+                                    }
+                                }
+                            }
+                        </tr>
+
+                        <tr>
+                            @{
+                                foreach (var itemMonthRange in Model.MonthRangeList)
+                                {
+                                    <td>&nbsp;</td>
+                                    foreach (var itemWeekNumber in itemMonthRange.WeekNumberList)
+                                    {
+                                        var actualQuantity = itemPRO.Units.Where(x => x.ActualDeliveryDate >= itemWeekNumber.StartsDateWeek.Date && x.ActualDeliveryDate <= itemWeekNumber.EndsDateWeek.Date).Count();//mpsData != null ? mpsData.PlannedQuantity : 0;
+                                        <td class="@(actualQuantity != 0?"number filled":"number")">
+                                            <span id="spanActual-@itemPRO.ID@itemWeekNumber.Number@itemMonthRange.Month@itemMonthRange.Year" title="@actualQuantity" class="actual-quantity" data-proid="@itemPRO.ID" data-week="@itemWeekNumber.Number" data-month="@itemMonthRange.Month" data-year="@itemMonthRange.Year">
+                                                @if (actualQuantity != 0)
+                                                {
+                                                    @actualQuantity
+                                                }
+                                                else
+                                                {
+                                                    @:&nbsp;
+                                                }
+                                            </span>
+                                        </td>
+                                    }
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered white-space-nowrap mps-table table-custom-striped mps-dummy-header"></table>
+    </div>
+    <div class="mps-action">
+        <table class="table table-sm table-bordered white-space-nowrap mps-table table-custom-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PROList)
+                {
+                    <tr data-index-row="@item.ID" class="@item.PROCategoryCSSClass" id="tr-@item.ID">
+                        <td>
+                            @if (ViewBag.canCRUD == true)
+                            {
+                                <button class="btn btn-sm btn-danger mps-action-button deactivate" data-toggle="modal" data-target="#deactivateModal_@item.ID" onclick="return false;"><i data-feather="power"></i><span class="absolute-tooltip" data-toggle="tooltip" data-placement="top" title="Deactivate"></span></button>
+                                <button data-toggle="tooltip" data-placement="top" title="Cancel" class="btn btn-sm btn-danger mps-action-button hide cancel-pro"><i data-feather="x-circle"></i></button>
+                                <button data-toggle="tooltip" data-placement="top" title="Save" id="save-pro-@item.ID" class="btn btn-sm btn-success mps-action-button hide save-pro"><i data-feather="save"></i></button>
+                                <button data-toggle="tooltip" data-placement="top" title="Edit" id="edit-pro-@item.ID" class="btn btn-sm btn-primary mps-action-button edit-pro" @(item.ItCanEdit == false ? "hidden" : "")><i data-feather="edit"></i></button>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered white-space-nowrap mps-table table-custom-striped mps-dummy-header"></table>
+    </div>
+    <div class="dummy-vertical-scroll"></div>
+</div>
+<h2 class="table-legend-title">Table Legend</h2>
+<ul class="list-unstyled legend-list small">
+    <li class="legend-list-item">
+        <span class="legend-color no-mps"></span>
+        <span class="legend-text">PRO is not have MPS</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="legend-color mps-not-complete"></span>
+        <span class="legend-text">PRO have MPS, but not complete</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="legend-color mps-complete-legend"></span>
+        <span class="legend-text">PRO have MPS, and complete</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="legend-color due-date-expired"></span>
+        <span class="legend-text">PRO Due Date is expired</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="legend-color no-active-serial-number"></span>
+        <span class="legend-text">PRO  is not have active Serial Number</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="badge badge-secondary">Txxxxx-xxxxxxx</span>
+        <span class="legend-text">Serial Number is deactivate</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="badge badge-warning">Txxxxx-xxxxxxx</span>
+        <span class="legend-text">Serial Number have mps</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="badge badge-primary">Txxxxx-xxxxxxx</span>
+        <span class="legend-text">Serial Number have process and assigned</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="badge badge-success">Txxxxx-xxxxxxx</span>
+        <span class="legend-text">Serial Number have complete</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="legend-quantity plan-quantity">x</span>
+        <span class="legend-text">MPS Plan Quantity</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="legend-quantity actual-quantity">x</span>
+        <span class="legend-text">MPS Actual Quantity</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="legend-quantity carry-over-quantity">x</span>
+        <span class="legend-text">MPS Carry Over Value</span>
+    </li>
+    <li class="legend-list-item">
+        <span class="f-modal-icon f-modal-warning scaleWarning inline-block-vertical">
+            <span class="f-modal-body pulseWarningIns"></span>
+            <span class="f-modal-dot pulseWarningIns"></span>
+        </span>
+        <span class="legend-text">MPS Due date smaller than SFS due date</span>
+    </li>
+</ul>
+
+<!-- Modal Legenda-->
+<div class="modal fade" id="legendaModal" tabindex="-1" role="dialog" aria-labelledby="legendaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="legendaModalLabel">Table Legend</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="list-unstyled legend-list">
+                            <li class="legend-list-item">
+                                <span class="legend-color no-mps"></span>
+                                <span class="legend-text">PRO is not have MPS</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="legend-color mps-not-complete"></span>
+                                <span class="legend-text">PRO have MPS, but not complete</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="legend-color mps-complete-legend"></span>
+                                <span class="legend-text">PRO have MPS, and complete</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="legend-color due-date-expired"></span>
+                                <span class="legend-text">PRO Due Date is expired</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="legend-color no-active-serial-number"></span>
+                                <span class="legend-text">PRO  is not have active Serial Number</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="badge badge-secondary">Txxxxx-xxxxxxx</span>
+                                <span class="legend-text">Serial Number is deactivate</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="badge badge-warning">Txxxxx-xxxxxxx</span>
+                                <span class="legend-text">Serial Number have mps</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="badge badge-primary">Txxxxx-xxxxxxx</span>
+                                <span class="legend-text">Serial Number have process and assigned</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="badge badge-success">Txxxxx-xxxxxxx</span>
+                                <span class="legend-text">Serial Number have complete</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="legend-quantity plan-quantity">x</span>
+                                <span class="legend-text">MPS Plan Quantity</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="legend-quantity actual-quantity">x</span>
+                                <span class="legend-text">MPS Actual Quantity</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="legend-quantity carry-over-quantity">x</span>
+                                <span class="legend-text">MPS Carry Over Value</span>
+                            </li>
+                            <li class="legend-list-item">
+                                <span class="f-modal-icon f-modal-warning scaleWarning inline-block-vertical">
+                                    <span class="f-modal-body pulseWarningIns"></span>
+                                    <span class="f-modal-dot pulseWarningIns"></span>
+                                </span>
+                                <span class="legend-text">MPS Due date smaller than SFS due date</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+@{
+    foreach (var item in Model.PROList)
+    {
+        <div class="modal fade" id="deactivateModal_@item.ID" tabindex="-1" role="dialog" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deactivateModalLabel">Deactivate PRO</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" data-proid="@item.ID">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>SO Numbers:</label>
+                                    <p>@Html.DisplayFor(modelItem => item.SONumberListDisplayText)</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>PRO Number:</label>
+                                    <p>@Html.DisplayFor(modelItem => item.Number)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Issue</label>s
+                            @Html.DropDownList("ReasonIssue_" + @item.ID, (IEnumerable<SelectListItem>)ViewBag.ReasonIssue, htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>Select SN</label>
+                            @foreach (var itemUnit in item.Units)
+                            {
+                                <div class="custom-control custom-checkbox" @(itemUnit.IsHold ? "hidden" : "")>
+                                    <input type="checkbox" class="custom-control-input checkbox-unit" value="@itemUnit.ID" id="@itemUnit.ID" data-mpsid="@(itemUnit.MPSID!=null?itemUnit.MPSID:0)">
+                                    <label class="custom-control-label" for="@itemUnit.ID">@itemUnit.SerialNumber</label>
+                                </div>
+
+                                @*<div class="custom-control custom-checkbox" @(itemUnit.IsHold ? "hidden" : "") >
+                                        <input type="checkbox" class="custom-control-input checkbox-unit" value="@itemUnit.ID" id="@itemUnit.ID" data-mpsid="@(itemUnit.MPSID!=null?itemUnit.MPSID:0)" @(itemUnit.IsHold ? "checked" : "")>
+                                        <input type="checkbox" class="custom-control-input" value="@itemUnit.ID" id="@itemUnit.ID" data-mpsid="@(itemUnit.MPSID!=null?itemUnit.MPSID:0)">
+                                        <label class="custom-control-label" for="@itemUnit.ID">@itemUnit.SerialNumber</label>
+                                    </div>*@
+
+                            }
+                            <small class="form-text text-muted">Select <strong>Serial Number</strong> to <strong>hold</strong> production process.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger deactivate-pro" data-proid="@item.ID">Deactivate</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
+<div class="loading hide">
+    <img src="~/Content/images/preloader.gif" />
+</div>
+
+@section scripts{
+    <script src="~/Scripts/datepicker.min.js"></script>
+    <script type="text/javascript">
+        $(window).on("load", function () {
+            $(".legend-list.inline-legend").addClass("animate");
+        })
+
+        $(document).ready(function () {
+            calculateTotalPlanningQuantityForEachWeek();
+        });
+
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $("#fullScreenMode").click(function (e) {
+                e.preventDefault();
+
+                $(".zoom-in-icon").toggleClass("hide");
+                $(".zoom-out-icon").toggleClass("hide");
+                $("header").toggleClass("hide");
+                $(".nav-scroller").toggleClass("hide");
+                $(".breadcrumb").toggleClass("hide");
+                $("footer").toggleClass("hide");
+                $(".main-cointainer").toggleClass("maximized");
+            })
+
+            $('.form-control.date').datepicker({
+                autoHide: true,
+                format: 'dd/mm/yyyy'
+            });
+
+            $(".edit-pro").click(function () {
+                $(this).toggleClass("hide");
+                $(this).siblings(".deactivate").toggleClass("hide");
+                $(this).siblings(".cancel-pro").toggleClass("hide");
+                $(this).siblings(".save-pro").toggleClass("hide");
+                $(".mps-schedule tr[data-index-row='" + $(this).closest("tr").attr("data-index-row") + "']").find(".form-control").toggleClass("hide");
+                $(".mps-schedule tr[data-index-row='" + $(this).closest("tr").attr("data-index-row") + "']").find(".planning-quantity").toggleClass("hide");
+            });
+
+            $(".cancel-pro").click(function () {
+                $(this).toggleClass("hide");
+                $(this).siblings(".deactivate").toggleClass("hide");
+                $(this).siblings(".edit-pro").toggleClass("hide");
+                $(this).siblings(".save-pro").toggleClass("hide");
+                $(".mps-schedule tr[data-index-row='" + $(this).closest("tr").attr("data-index-row") + "']").find(".form-control").toggleClass("hide");
+                $(".mps-schedule tr[data-index-row='" + $(this).closest("tr").attr("data-index-row") + "']").find(".planning-quantity").toggleClass("hide");
+
+                var mpsElementInOnePROData = $(".mps-schedule tr[data-index-row='" + $(this).closest("tr").attr("data-index-row") + "']").find(".form-control");
+
+                mpsElementInOnePROData.each(function (i) {
+                    if ((this).dataset.mpsid == 0 && (this).value != 0) {
+                        (this).value = 0;
+                    }
+                    else if ((this).dataset.mpsid != 0)
+                    {
+                        var spanValue = $("span.planning-quantity[data-mpsid = '" + (this).dataset.mpsid + "']").text();
+
+                        if (spanValue != (this).value) {
+                            (this).value = spanValue;
+                        }
+                    }
+                });
+            });
+
+            $(".deactivate-pro").click(function () {
+                var deactivatePROButton = $(this);
+                var proid = (this).dataset.proid;
+
+
+                var reassonID = $("#ReasonIssue_" + proid).val();
+                var checkedUnitList = $(".custom-control-input:checked");
+
+                var dataDeactivedUnitList = [];
+
+                checkedUnitList.each(function (i) {
+                    dataDeactivedUnitList.push({
+                        ID: (this).value,
+                        ReasonIssueID: reassonID
+                    });
+                });
+
+                if (dataDeactivedUnitList.length > 0) {
+                    if (confirm("Are You Sure to Deactived The Serial Number!")) {
+                        $.ajax({
+                            type: "POST",
+                            url: "@Url.Action("DeactivateUnit", "MPS")",
+                            data: JSON.stringify({ 'unitList': dataDeactivedUnitList }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                                $('.loading').addClass('hide');
+                                if (response.success) {
+                                    alert(response.responseText);
+
+                                    checkedUnitList.each(function (i) {
+                                        var mpsid = (this).dataset.mpsid;
+                                        $(this).parent().hide();
+                                        $("#spandataunit-" + (this).id).removeClass();
+                                        $("#spandataunit-" + (this).id).addClass("sn-hold badge badge-secondary");
+
+                                        var mpsquantity = $(".input-actual[data-mpsid='" + mpsid + "']").val();
+
+                                        if (mpsquantity > 0) {
+                                            mpsquantity = parseInt(mpsquantity) - 1;
+                                            $(".input-actual[data-mpsid='" + mpsid + "']").val(mpsquantity);
+                                            $("span[data-mpsid='" + mpsid + "']").text(mpsquantity);
+                                        }
+
+                                        if (mpsquantity == 0) {
+                                            $(".input-actual[data-mpsid='" + mpsid + "']").closest("td").removeClass("filled");
+                                            $("span[data-mpsid='" + mpsid + "']").text("");
+                                            $(".input-actual[data-mpsid='" + mpsid + "']").val(0);
+                                        }
+                                    });
+
+                                    $('#deactivateModal_' + proid + ' .close').click();
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    alert("pilih unit atau serial number yang ingin di deactivate");
+                }
+
+                //$(".mps-schedule tr[data-index-row='" + $(this).closest("tr").attr("data-index-row") + "']").find(".form-control").toggleClass("hide");
+                //$(".mps-schedule tr[data-index-row='" + $(this).closest("tr").attr("data-index-row") + "']").find(".planning-quantity").toggleClass("hide");
+            });
+
+
+            //reactived unit
+            //$(".sn-hold").dblclick(function () {
+              //  reActiveUnit(this);
+            //});
+
+
+            $(".save-pro").click(function () {
+                var savePROButton = $(this);
+
+                var mpsElementInOnePRO = $(".mps-schedule tr[data-index-row='" + savePROButton.closest("tr").attr("data-index-row") + "']").find(".form-control");
+
+                var dataMPSList = [];
+                var data1;
+                var porid;
+                var totalPlanQuantity = 0;
+                var validData = true;
+                var errorMessage = "";
+
+                mpsElementInOnePRO.each(function (i) {
+                    proid = (this).dataset.proid;
+                    totalPlanQuantity += parseInt((this).value);
+
+                    //if ((this).dataset.mpsid != 0 || (this).value != 0) {
+                    //}
+
+                    if (!$(this).is(':disabled')) {
+                        if ((this).dataset.assignedplan <= (this).value) {
+                            dataMPSList.push({
+                                ID: (this).dataset.mpsid,
+                                PROID: (this).dataset.proid,
+                                Week: (this).dataset.week,
+                                Month: (this).dataset.month,
+                                Year: (this).dataset.year,
+                                EndWorkingDate: (this).dataset.duedate,
+                                PlannedQuantity: (this).value
+                            });
+                        } else {
+                            errorMessage += "- value for week (" + (this).dataset.week + ") month (" + (this).dataset.month + ")  Year (" + (this).dataset.year + ") must greater than " + (this).dataset.assignedplan + ".\n";
+                            validData = false;
+                        }
+                    }
+                });
+
+                var proUnitCount = $("#pro-" + proid + "-unitcount").val();
+                if (validData && totalPlanQuantity > proUnitCount) {
+                    errorMessage += "- Total Planning Quantity (" + totalPlanQuantity + ") should less then or equal with Total Serial Number in PRO (" + proUnitCount + ") \n";
+                    validData = false;
+                }
+
+                if (validData) {
+                    $('.loading').removeClass('hide');
+                    savePROButton.toggleClass("hide");
+                    savePROButton.next().toggleClass("hide");
+                    $(".mps-schedule tr[data-index-row='" + savePROButton.closest("tr").attr("data-index-row") + "']").find(".form-control").toggleClass("hide");
+
+                    var trOldClass = savePROButton.closest("tr").attr("class");
+                    var trClass = trOldClass;
+                    if (totalPlanQuantity > 0) {
+                        trClass = "mps-working";
+                    }
+
+                    if (totalPlanQuantity == proUnitCount) {
+                        trClass = "";
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("UpdateMPSValue", "MPS")",
+                        data: JSON.stringify({ 'masterPlanScheduleList': dataMPSList }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            $('.loading').addClass('hide');
+                            if (response.success) {
+                                alert(response.responseText);
+
+                                dataMPSList.forEach(function (element) {
+                                    //console.log(element);
+                                    if (element.PlannedQuantity != 0) {
+                                        $("#span-" + element.PROID + element.Week + element.Month + element.Year).text(element.PlannedQuantity);
+                                        if (!$("#span-" + element.PROID + element.Week + element.Month + element.Year).closest("td").hasClass("filled")) {
+                                            $("#span-" + element.PROID + element.Week + element.Month + element.Year).closest("td").addClass("filled");
+                                        }
+                                    } else {
+                                        $("#span-" + element.PROID + element.Week + element.Month + element.Year).text("");
+                                        $("#span-" + element.PROID + element.Week + element.Month + element.Year).closest("td").removeClass("filled");
+                                    }
+
+                                    var sum = 0;
+                                    $("input[data-week = '"+element.Week+"'][data-month = '"+element.Month+"'][data-year = '" + element.Year+"']").each(function () {
+                                        sum += parseInt($(this).val());
+                                    });
+                                    $("#Plan-" + element.Week + element.Month + element.Year).text(sum);
+
+                                    $(".plan-data-" + element.Week + element.Month + element.Year).text(sum);
+                                });
+
+                                $(".mps-schedule tr[data-index-row='" + savePROButton.closest("tr").attr("data-index-row") + "']").find(".planning-quantity").toggleClass("hide");
+                                savePROButton.siblings(".cancel-pro").toggleClass("hide");
+                                savePROButton.siblings(".deactivate").toggleClass("hide");
+                                savePROButton.closest("tr").removeClass(trOldClass);
+                                savePROButton.closest("tr").addClass(trClass);
+                                $("tr#tr-" + proid).removeClass(trOldClass);
+                                $("tr#tr-" + proid).closest("tr").addClass(trClass);
+
+                                calculateTotalPlanningQuantityForEachMonth();
+                                //calculateLayout();
+                            }
+                        }
+                    });
+
+                } else {
+                    alert(errorMessage);
+                }
+            });
+        });
+
+        function reActiveUnit(element) {
+            var reactivateSN = element;
+            if (reactivateSN.hasClass("sn-hold")) {
+                var snid = element.data("snid");
+                var snnumber = element.data("snnumber");
+                var snmpsid = element.data("snmpsid");
+
+                if (confirm("Are You Sure to Re-actived The Serial Number " + snnumber + "!")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("ReactivateUnit", "MPS")",
+                        data: JSON.stringify({ 'unitID': snid }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            $('.loading').addClass('hide');
+                            if (response.success) {
+                                alert(response.responseText);
+
+                                reactivateSN.removeClass();
+                                reactivateSN.addClass(response.newCSSClass);
+                                $("input#" + snid + ".checkbox-unit").prop('checked', false);//.removeAttr("checked");
+                                $("input#" + snid + ".checkbox-unit").closest("div").removeAttr("hidden");
+                                $("input#" + snid + ".checkbox-unit").closest("div").show();
+
+                                if (snmpsid > 0) {
+                                    var mpsquantity = $(".input-actual[data-mpsid='" + snmpsid + "']").val();
+
+                                    mpsquantity = parseInt(mpsquantity) + 1;
+                                    $(".input-actual[data-mpsid='" + snmpsid + "']").val(mpsquantity);
+                                    $("span[data-mpsid='" + snmpsid + "']").text(mpsquantity);
+                                    if (mpsquantity == 1) {
+                                        $("span[data-mpsid='" + snmpsid + "']").closest("td").addClass("filled");
+                                    }
+
+                                    var inputElement = $(".input-actual[data-mpsid='" + snmpsid + "']");
+                                    var dataweek = inputElement.attr("data-week");
+                                    var datamonth = inputElement.attr("data-month");
+                                    var datayear = inputElement.attr("data-year");
+                                    var currentValue = $("#Plan-" + dataweek + datamonth + datayear).text();
+                                    currentValue = parseInt(currentValue) + 1;
+                                    $("#Plan-" + dataweek + datamonth + datayear).text(currentValue);
+
+                                    $(".plan-data-" + dataweek + datamonth + datayear).text(currentValue);
+
+                                    calculateTotalPlanningQuantityForEachMonth();
+                                }
+                            }
+                        }
+                    });
+                }
+            } else {
+                return false;
+            }
+        }
+        //function setMonthHeaderValue(month, year, totalPlanQuantity) {
+
+        //    var capacityPlan = $("#Capacity-" + month + "" + year).val();
+
+        //    $("#TotalActual-" + month + "" + year).text(totalPlanQuantity);
+
+        //    if (capacityPlan == "" || parseInt(capacityPlan) < totalPlanQuantity) {
+        //        $("#month-status-capacity-" + month + "" + year).text("Overload");
+        //        $("#month-status-capacity-" + month + "" + year).closest("th").addClass("overload");
+        //    }
+
+        //    var sumActual = 0;
+        //    $("span.data-week-actual[data-month = '" + month + "'][data-year = '" + year + "']").each(function () {
+        //        sumActual += parseInt($(this).text());
+        //    });
+        //    var percentationActual = 0;
+        //    if (totalPlanQuantity > 0) {
+        //        percentationActual = Math.round(sumActual * 100 / totalPlanQuantity)
+        //    }
+        //    $("#ActualPercentation-" + month + "-" + year).text(percentationActual+"%");
+        //}
+
+        function setMonthHeaderData(month, year) {
+
+            var capacityPlan = $("#Capacity-" + month + "" + year).val();
+            var carryOverCurrentMonth = Number($(".mps-schedule table:not(.mps-dummy-header) thead th span.CarryOver-" + month + "-" + year).text());
+
+            var totalPlanQuantity = 0;
+            $(".mps-schedule table:not(.mps-dummy-header) thead th span.data-week-plan[data-month = '" + month + "'][data-year = '" + year + "']").each(function () {
+                totalPlanQuantity += parseInt($(this).text());
+            });
+
+            //$("#TotalActual-" + month + "" + year).text(totalPlanQuantity);
+
+            //if (capacityPlan == "" || parseInt(capacityPlan) < totalPlanQuantity) {
+            //    $("#month-status-capacity-" + month + "" + year).text("Overload");
+            //    $("#month-status-capacity-" + month + "" + year).closest("th").addClass("overload");
+            //}
+
+            $(".TotalActual-" + month + "" + year).text((totalPlanQuantity + carryOverCurrentMonth));
+
+            if (capacityPlan == "" || parseInt(capacityPlan) < (totalPlanQuantity + carryOverCurrentMonth)) {
+                $(".month-status-capacity-" + month + "" + year).text("Overload");
+                $(".month-status-capacity-" + month + "" + year).closest("th").addClass("overload");
+            }
+
+            var sumActual = 0;
+            $(".mps-schedule table:not(.mps-dummy-header) thead th span.data-week-actual[data-month = '" + month + "'][data-year = '" + year + "']").each(function () {
+                sumActual += parseInt($(this).text());
+            });
+            var percentationActual = 0;
+            if (totalPlanQuantity > 0) {
+                percentationActual = Math.round(sumActual * 100 / totalPlanQuantity)
+            }
+
+            //$("#ActualPercentation-" + month + "-" + year).text(percentationActual + "%");
+            $(".ActualPercentation-" + month + "-" + year).text(percentationActual + "%");
+
+            var selisih = totalPlanQuantity - sumActual;
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
+
+            if (selisih > 0)
+            {
+                if (year <= yyyy)
+                {
+                    if (year < yyyy)
+                    {
+                        if (mm != month && month == 12) {
+                            $(".CarryOver-" + (1) + "-" + (Number(year) + 1)).text(selisih);
+                        } else if (mm != month && month < 12) {
+                            $(".CarryOver-" + (Number(month) + 1)+ "-" + year).text(selisih);
+                        }
+                    }
+                    else if (year == yyyy && month < mm)
+                    {
+                        $(".CarryOver-" + (Number(month) + 1) + "-" + year).text(selisih);
+                    }
+                }
+            }
+        }
+
+        function calculateTotalPlanningQuantityForEachMonth() {
+
+            var elementData = $(".mps-schedule table:not(.mps-dummy-header) thead th.month-cell");
+
+            elementData.each(function (index) {
+                setMonthHeaderData((this).dataset.month, (this).dataset.year);
+            });
+
+            //var currentData;
+            //var currentMonth = 0;
+            //var totalPlanQuantity = 0;
+            //elementData.each(function (index) {
+
+            //    if (index == 0) {
+            //        currenData = (this);
+            //    }
+
+            //    if (currenData.dataset.month != (this).dataset.month) {
+            //        if (index != 0) {
+            //            //$("#TotalActual-" + currenData.dataset.month + "" + currenData.dataset.year).text(totalPlanQuantity);
+            //            setMonthHeaderValue(currenData.dataset.month, currenData.dataset.year, totalPlanQuantity);
+            //        }
+            //        currenData = (this);
+            //        totalPlanQuantity = parseInt((this).innerText);
+            //    } else {
+            //        totalPlanQuantity += parseInt((this).innerText);
+            //    }
+
+            //    if (index == (elementData.length - 1)) {
+            //        //$("#TotalActual-" + (this).dataset.month + "" + (this).dataset.year).text(totalPlanQuantity);
+
+            //        //var capacityPlan = $("#Capacity-" + (this).dataset.month + "" + (this).dataset.year).val();
+            //        //if (parseInt(capacityPlan) < totalPlanQuantity) {
+            //        //    $("#month-status-capacity-" + (this).dataset.month + "" + (this).dataset.year).text("Overload");
+            //        //    $("#month-status-capacity-" + (this).dataset.month + "" + (this).dataset.year).parent.toggleClass("overload");
+            //        //}
+
+            //        setMonthHeaderValue((this).dataset.month, (this).dataset.year, totalPlanQuantity);
+            //    }
+            //});
+        }
+
+        function calculateTotalPlanningQuantityForEachWeek() {
+
+            var elementData = $(".data-week-plan");
+
+            elementData.each(function (index) {
+
+                var sumPlan = 0;
+                $("input[data-week = '" + (this).dataset.week + "'][data-month = '" + (this).dataset.month + "'][data-year = '" + (this).dataset.year + "']").each(function () {
+                    sumPlan += parseInt($(this).val());
+                });
+
+                $("#Plan-" + (this).dataset.week + (this).dataset.month + (this).dataset.year).text(sumPlan);
+
+                var sumActual = 0;
+                $("span.actual-quantity[data-week = '" + (this).dataset.week + "'][data-month = '" + (this).dataset.month + "'][data-year = '" + (this).dataset.year + "']").each(function () {
+                    sumActual += parseInt($(this).attr("title"));
+                });
+                $("#Actual-" + (this).dataset.week + (this).dataset.month + (this).dataset.year).text(sumActual);
+            });
+
+            calculateTotalPlanningQuantityForEachMonth();
+            calculateLayout();
+        }
+
+
+        function calculateLayout() {
+            $(".mps-table-layout table").css("table-layout", "unset");
+            $(".mps-table-layout table:not(.mps-dummy-header) thead th").each(function () {
+                $(this).css("width","auto");
+            });
+            $(".mps-product").removeClass("with-scroll");
+            $(".mps-legend").removeClass("with-scroll");
+            $(".mps-schedule").removeClass("with-scroll");
+            $(".mps-action").removeClass("with-scroll");
+
+            $(".mps-table-layout table:not(.mps-dummy-header) thead th").each(function () {
+                $(this).width($(this).width());
+            });
+
+            $(".dummy-vertical-scroll").css("height", "auto");
+            $(".dummy-vertical-scroll").height($(".mps-legend").height() + getScrollbarWidth());
+            $(".dummy-vertical-scroll").width(1);
+
+            $(".mps-product").addClass("with-scroll");
+            $(".mps-legend").addClass("with-scroll");
+
+            $(".mps-legend").css("padding-bottom", "auto");
+            $(".mps-legend").css("padding-bottom", getScrollbarWidth() + "px");
+
+            $(".mps-schedule").addClass("with-scroll");
+            $(".mps-action").addClass("with-scroll");
+
+            $(".mps-table-layout").scroll(function () {
+                $(".mps-product").scrollTop($(this).scrollTop());
+                $(".mps-legend").scrollTop($(this).scrollTop());
+                $(".mps-schedule").scrollTop($(this).scrollTop());
+                $(".mps-action").scrollTop($(this).scrollTop());
+
+                $(".mps-product").css("top", $(this).scrollTop() + "px");
+                $(".mps-legend").css("top", $(this).scrollTop() + "px");
+                $(".mps-schedule").css("top", $(this).scrollTop() + "px");
+                $(".mps-action").css("top", $(this).scrollTop() + "px");
+                $(".mps-table-layout table.mps-dummy-header").css("top", $(this).scrollTop() + "px");
+            });
+
+            $(".mps-dummy-header").html("");
+            $(".mps-table-layout table:not(.mps-dummy-header)").each(function () {
+                $("<thead class='thead-dark'>" + $(this).children("thead").html() + "</thead>").appendTo($(this).next());
+            });
+
+            $(".mps-table-layout table").css("table-layout", "fixed");
+        }
+
+        function getScrollbarWidth() {
+            var outer = document.createElement("div");
+            outer.style.visibility = "hidden";
+            outer.style.width = "100px";
+            outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+
+            document.body.appendChild(outer);
+
+            var widthNoScroll = outer.offsetWidth;
+            // force scrollbars
+            outer.style.overflow = "scroll";
+
+            // add innerdiv
+            var inner = document.createElement("div");
+            inner.style.width = "100%";
+            outer.appendChild(inner);
+
+            var widthWithScroll = inner.offsetWidth;
+
+            // remove divs
+            outer.parentNode.removeChild(outer);
+
+            return widthNoScroll - widthWithScroll;
+        }
+
+    </script>
+}
+
+

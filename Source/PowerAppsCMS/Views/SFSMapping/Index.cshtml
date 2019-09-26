@@ -1,0 +1,184 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.Unit>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Mapping";
+    Layout = "~/Views/Shared/_LayoutSFS.cshtml";
+}
+
+<h1 class="page-title mt-5">
+    Mapping
+</h1>
+@using (Html.BeginForm("Index", "SFSMapping", FormMethod.Get))
+{
+    <div class="form-row justify-content-between align-items-center">
+        <div class="col-auto">
+            <form>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="mb-3">Chasis Number</label>
+                        @Html.TextBox("searchChasisNumber", ViewBag.CurrentFilterSearchChasisNumber as string, new { @class = "form-control mx-sm-3 mb-3", placeholder="Enter Chasis Number" })
+                    </div>
+                    <div class="form-group">
+                        <label class="mb-3">Serial Number</label>
+                        @Html.TextBox("searchSerialNumber", ViewBag.CurrentFilterSearchSerialNumber as string, new { @class = "form-control mx-sm-3 mb-3", placeholder = "Enter Serial Number" })
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-primary mb-3">
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+<table class="table table-bordered custom-table">
+    <thead class="thead-dark">
+        <tr>
+            <th class="number-column">
+                No
+            </th>
+            <th>
+                Chasis Number
+            </th>
+            <th>
+                Serial Number
+            </th>
+            <th>
+                PRO Number
+            </th>
+            @*<th>
+                Product Name
+            </th>
+            <th>
+                Product Sub Group Name
+            </th>*@
+            <th class="text-right">
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+           // var indexNumber = 1;
+            var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+            var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+            var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr class="unit">
+                <td>
+                    @currentNumber
+                </td>
+                <td class="chasis-number-label">
+                    <label for="chasisNumberLabel">@item.ChasisNumber</label>
+                </td>
+                <td class="chasis-number-form hide">
+                    @Html.EditorFor(model => item.ChasisNumber, new { htmlAttributes = new { @class = "form-control full-width", placeholder="Chasis number" } })
+                </td>
+                <td>
+                    @item.SerialNumber
+                </td>
+                <td>
+                    @item.PRO.Number
+                </td>
+                @*<td>
+                    @item.Products.Name
+                </td>
+                <td>
+                    @item.Products.ProductSubGroups.Name
+                </td>*@
+                <td class="text-right edit-action">
+                    <input type="text" class="hide unitID" value="@item.ID" name="unitID" />
+                    <button class="btn btn-primary btn-sm edit-unit" href="#"  data-toggle="tooltip" data-placement="top" title="Edit"><i data-feather="edit"></i></button>
+                </td>
+                <td class="text-right cancel-edit-action hide">
+                    <button class="btn btn-danger btn-sm cancel-edit-unit" role="button"  data-toggle="tooltip" data-placement="top" title="Cancel"><i data-feather="x-circle"></i></button>
+                    <button class="btn btn-success btn-sm save-unit" role="button" data-toggle="tooltip" data-placement="top" title="Save"><i data-feather="save"></i></button>
+                </td>
+            </tr>
+            currentNumber++;
+        }
+    </tbody>
+</table>
+<div class="p-3">
+    <div class="row justify-content-md-center custom-pagination align-items-center">
+        @*<div class="col-auto">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>*@
+        <div class="col-auto">
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, currentFilterSearchChasisNumber = ViewBag.CurrentFilterSearchChasisNumber, currentFilterSearchSerialNumber = ViewBag.CurrentFilterSearchSerialNumber }))
+        </div>
+    </div>
+</div>
+
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $(".chosen").attr("data-placeholder", "Choose Chasis Number...");
+            $(".chosen").chosen({
+                width: "100%"
+            });
+
+            $('.edit-unit').click(function () {
+                $(this).closest(".unit").find('.chasis-number-label').addClass('hide');
+                $(this).closest(".unit").find('.edit-action').addClass('hide');
+                $(this).closest(".unit").find('.cancel-edit-action').removeClass('hide');
+                $(this).closest(".unit").find('.chasis-number-form').removeClass('hide');
+
+            });
+
+            $('.cancel-edit-unit').click(".unit", function () {
+                $(this).closest(".unit").find('.chasis-number-label').removeClass('hide');
+                $(this).closest(".unit").find('.edit-action').removeClass('hide');
+                $(this).closest(".unit").find('.cancel-edit-action').addClass('hide');
+                $(this).closest(".unit").find('.chasis-number-form').addClass('hide');
+            });
+
+            $('.save-unit').click(".unit", function () {
+                $('.loading').removeClass('hide');
+                var unitID = $(this).closest('.unit').find("input[name='unitID']").val();
+                var chasisNumberID = $(this).closest('.unit').find('#item_ChasisNumber').val();
+                var data = {
+                    ID: unitID,
+                    ChasisNumber: chasisNumberID
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("EditChasisNumber", "SFSMapping")",
+                    context: this,
+                    data: data,
+                    success: function (response) {
+                        $('.loading').addClass('hide');
+                        if (response.success) {
+                            alert(response.responseText);
+                            $(this).closest(".unit").find('.chasis-number-form').addClass('hide');
+                            $(this).closest(".unit").find('.chasis-number-label').removeClass('hide');
+                            $(this).closest(".unit").find('.edit-action').removeClass('hide');
+                            $(this).closest(".unit").find('.cancel-edit-action').addClass('hide');
+                            $(this).closest(".unit").find("label[for='chasisNumberLabel']").text(response.chasisNumber);
+
+                        }
+                        else {
+                            $('.loading').addClass('hide');
+                            alert(response.responseText);
+                            $(this).closest(".unit").find('.chasis-number-form').addClass('hide');
+                            $(this).closest(".unit").find('.chasis-number-label').removeClass('hide');
+                            $(this).closest(".unit").find('.edit-action').removeClass('hide');
+                            $(this).closest(".unit").find('.cancel-edit-action').addClass('hide');
+                        }
+
+                    }
+                });
+            });
+        });
+
+    </script>
+}

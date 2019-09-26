@@ -1,0 +1,246 @@
+﻿@model PowerAppsCMS.Models.User
+@*@using (Html.BeginForm("Create", "User"))
+    {*@
+<hr class="mb-4" />
+<h2 class="form-sub-header">
+    User From AD
+</h2>
+<div class="row">
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">Username</p>
+        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter Username" } })
+        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        <p id="NotExisting" class="text-danger"></p>
+        <p id="AlreadyExisting" class="text-danger"></p>
+        <label for="existUser" class="text-danger error"></label>
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label hidden">&nbsp;</p>
+        <button type="button" id="btnCheck" class="btn btn-primary chec-user mr-0 mb-3"><i data-feather="search"></i> &nbsp; Check</button>
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">Name</p>
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter Name" } })
+        <p id="NameAD"><p />
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">Email</p>
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { type = "email", @class = "form-control full-width", placeholder = "Enter Email" } })
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">Employee Number</p>
+        @Html.EditorFor(model => model.EmployeeNumber, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter Employee Number" } })
+        <input type="hidden" name="employeeNumber" id="employeeNumberHidden" value="@Model.EmployeeNumber" />
+        @Html.ValidationMessageFor(model => model.EmployeeNumber, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">Select Role</p>
+        @Html.DropDownList("RoleID", null, "Select Role", htmlAttributes: new { @class = "form-control full-width", @id = "RoleID" })
+        @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="row powerapps-access hide">
+    <div class="col-lg-6 col-12 custom-form-field" id="divProcessGroup">
+        <p class="form-custom-label">Process Group</p>
+        @Html.DropDownList("ProcessGroupID", null, "Select Process Group", htmlAttributes: new { @class = "form-control full-width" })
+        @Html.ValidationMessageFor(model => model.ProcessGroupID, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field" id="divPIN">
+        <p class="form-custom-label">PIN</p>
+        @Html.EditorFor(model => model.PIN, new { htmlAttributes = new { @class = "form-control small-form", placeholder = "7 digits number", @type = "password", maxlength = 7 } })
+        @Html.ValidationMessageFor(model => model.PIN, "", new { @class = "text-danger" })
+        <p class="text-danger pin-validation"></p>
+    </div>
+
+    <input type="text" class="powerappsAccess hide" />
+
+    @*<div class="col-lg-6 col-12 custom-form-field">
+            <p class="form-custom-label">Photo</p>
+            <input type="file" class="form-control full-width" />
+        </div>*@
+</div>
+
+<div class="row justify-content-between mt-5">
+    <div class="col-auto">
+        <a href="@Url.Action("Index", "User")" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to User</a>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-success create-ad-user mr-0 mb-3"><i data-feather="save"></i> &nbsp; Create</button>
+    </div>
+</div>
+@*}*@
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        feather.replace();
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@@\"]+(\.[^<>()[\]\\.,;:\s@@\"]+)*)|(\".+\"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+
+        $('.create-ad-user').click(function (e) {
+            var role = $('#RoleID').val();
+            var processGroup = $('#ProcessGroupID').val();
+            var employeeNumber = $('#EmployeeNumber').val();
+            var access = $('.powerappsAccess').val();
+            var pin = $('#PIN').val();
+            var email = $('#Email').val();
+
+            $("[data-valmsg-for='EmployeeNumber']").text("");
+            $("[data-valmsg-for='RoleID']").text("");
+            $("[data-valmsg-for='ProcessGroupID']").text("");
+            $("[data-valmsg-for='PIN']").text("");
+            $("[data-valmsg-for='Email']").text("");
+            $(".pin-validation").text("");
+
+            if (role != null && role != '') {
+
+                $("[data-valmsg-for='EmployeeNumber']").text("");
+                $("[data-valmsg-for='RoleID']").text("");
+                $("[data-valmsg-for='ProcessGroupID']").text("");
+                $("[data-valmsg-for='PIN']").text("");
+                $("[data-valmsg-for='Email']").text("");
+                $(".pin-validation").text("");
+
+
+                if (access == 1) {
+                    if (employeeNumber == null || employeeNumber == '') {
+                        $("[data-valmsg-for='EmployeeNumber']").text("Employee number is required. Please contact your IT to add this employee number on Active Directory ");
+                        e.preventDefault(e);
+                    }
+                    else if (processGroup == null || processGroup == '') {
+                        $("[data-valmsg-for='ProcessGroupID']").text("Process group must be selected ");
+                        e.preventDefault(e);
+                    }
+                    else if (pin == null || pin == '') {
+                        $("[data-valmsg-for='PIN']").text("Pin is required ");
+                        e.preventDefault();
+                    }
+                    else if (pin.length < 7) {
+                        $(".pin-validation").text("Pin digit can't be less than 7 digits ");
+                        e.preventDefault();
+                    }
+                    else if (!validateEmail(email))
+                    {
+                        $("[data-valmsg-for='Email']").text("Email format is incorrect");
+                        e.preventDefault();
+                    }
+                    else {
+                        $('.loading').removeClass('hide');
+                        $('.create-ad-user').attr('disabled', 'disabled');
+                        $("[data-valmsg-for='EmployeeNumber']").text("");
+                        $("[data-valmsg-for='ProcessGroupID']").text("");
+                        $("[data-valmsg-for='PIN']").text("");
+                        $("[data-valmsg-for='Email']").text("");
+                        $(".pin-validation").text("");
+                        $('form').submit();
+                    }
+                }
+                else {
+                    if (employeeNumber == null || employeeNumber == '') {
+                        $("[data-valmsg-for='EmployeeNumber']").text("Employee number is required. Please contact your IT to add this employee number on Active Directory ");
+                        e.preventDefault(e);
+                    }
+                    else if (!validateEmail(email)) {
+                        $("[data-valmsg-for='Email']").text("Email format is incorrect");
+                        e.preventDefault();
+                    }
+                    else {
+                        $('.loading').removeClass('hide');
+                        $('.create-ad-user').attr('disabled', 'disabled');
+                        $("[data-valmsg-for='EmployeeNumber']").text("");
+                        $("[data-valmsg-for='RoleID']").text("");
+                        $("[data-valmsg-for='ProcessGroupID']").text("");
+                        $("[data-valmsg-for='PIN']").text("");
+                        $(".pin-validation").text("");
+                        $("[data-valmsg-for='Email']").text("");
+                        $('form').submit();
+                    }
+                }
+            }
+            else {
+                $("[data-valmsg-for='EmployeeNumber']").text("");
+                $("[data-valmsg-for='RoleID']").text("Role must be selected");
+                $("[data-valmsg-for='ProcessGroupID']").text("");
+                $("[data-valmsg-for='PIN']").text("");
+                $(".pin-validation").text("");
+                e.preventDefault();
+            }
+        });
+
+        
+
+        //$("#Email").prop("disabled", true);
+        $("#RoleID").prop("disabled", true);
+        $("#PIN").prop("disabled", true);
+        $("#ProcessGroupID").prop("disabled", true);
+        $('#btnCheck').click(function () {
+            //alert('ok');
+            var userInput = $("#Username").val();
+            if (userInput != null && userInput != '') {
+                $.getJSON('@Url.Action("CheckUserToAD")', { username: userInput }, function (userAD) {
+                    if (userAD.success) {
+
+                        $(".row").find("label[for='existUser']").text("");
+                        if (userAD.sResultSet != null && !jQuery.isEmptyObject(userAD.sResultSet)) {
+                            //$("#NameAD").text(userAD[0].Properties['name']);
+                            //$("#EmailAD").text(userAD[0].Properties['userprincipalname']);
+                            $("#Name").val(userAD.sResultSet[0].Properties['name']);
+                            $("#Email").val(userAD.sResultSet[0].Properties['userprincipalname']);
+                            $("#EmployeeNumber").val(userAD.sResultSet[0].Properties['description']);
+                            $("#employeeNumberHidden").val(userAD.sResultSet[0].Properties['description']);
+                            //Enable semua controllers
+                            $("#Name").prop("readonly", "readonly");
+                            $("#Email").prop("readonly", "readonly");
+                            $("#EmployeeNumber").prop("disabled", true);
+                            $("#RoleID").prop("disabled", false);
+                            $("#PIN").prop("disabled", false);
+                            $("#ProcessGroupID").prop("disabled", false);
+                            $("#NotExisting").text('');
+                        }
+                        else {
+                            $("#NotExisting").text('Username does not exist on Active Directory');
+                            //$("#Email").prop("disabled", true);
+                            $("#RoleID").prop("disabled", true);
+                            $("#PIN").prop("disabled", true);
+                            $("#ProcessGroupID").prop("disabled", true);
+                        }
+                    }
+                    else {
+                        $(".row").find("label[for='existUser']").text(userAD.message);
+                        $("#NotExisting").text('');
+                    }
+                });
+            }
+        });
+
+        $('#RoleID').change(function () {
+            var selectedRole = $("#RoleID").val();
+            if (selectedRole != null && selectedRole != '') {
+                $.getJSON('@Url.Action("GetIsAccessPA")', { role: selectedRole }, function (isHave) {
+                    if (isHave != null) {
+                        if (isHave == true)
+                        {
+                            $('.powerapps-access').removeClass('hide');
+                            $('.powerappsAccess').val(1);
+                        }
+                        else
+                        {
+                            $('.powerapps-access').addClass('hide');
+                            $('.powerappsAccess').val(0);
+                        }
+                    }
+                });
+            }
+        });
+
+    }); </script>

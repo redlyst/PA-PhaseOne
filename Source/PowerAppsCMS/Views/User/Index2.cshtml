@@ -1,0 +1,145 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.User>
+@using PagedList.Mvc
+@using PowerAppsCMS.Models
+
+@{
+    ViewBag.Title = "User";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User Management</li>
+        <li class="breadcrumb-item active" aria-current="page">Users</li>
+    </ol>
+</nav>
+<h1 class="page-title">Users</h1>
+<div class="card shadow">
+    <div class="card-header">
+        List of Users
+    </div>
+    <div class="form-row align-items-center justify-content-between filter-table-row">
+        <div class="col-auto">
+            @using (Html.BeginForm("Index", "User", FormMethod.Get))
+            {
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Find by name</label>
+                        @Html.TextBox("searchName", ViewBag.CurrentFilter as string, new { @class = "form-control mx-sm-3", placeholder = "Enter Name" })
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+        @{
+            PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+            var username = User.Identity.Name;
+            var name = username.Split('\\')[1];
+            var userData = db.Users.Where(x => x.Username == name).First();
+        }
+        <div class="col-auto">
+            <a href="@Url.Action("Create", "User")" class="btn btn-primary"><i data-feather="plus-circle"></i> &nbsp; Add User</a>
+            @if (userData.RoleID == 0)
+            {
+                <a href="@Url.Action("RetrailAllUserAsync", "FaceAPI")" class="btn btn-primary retrain-all-user"><i data-feather="refresh-ccw"></i> &nbsp; Retrain All User</a>
+            }
+        </div>
+    </div>
+</div>
+<table class="table card-table">
+    <thead>
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Employee Number
+            </th>
+            <th>
+                ID
+            </th>
+            <th>
+                IMAGES
+            </th>   
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+            var itemperPage = Convert.ToInt32(ViewBag.Itemperpage);
+            var currentPage = ((pageNumber - 1) * itemperPage) + 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr class="employee">
+                <td>
+                    @currentPage
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @foreach (var image in item.UserImages)
+                    {
+                        <div class="masonry-item" id="uploadedImage">
+                            <img src="@image.BlobImage" class="masonry-thumbnail" />
+                            <input type="text" class="hide" value="@image.ID" name="imageID" />
+                        </div>
+                    }
+                </td>
+            </tr>
+            currentPage++;
+        }
+    </tbody>
+</table>
+<div class="p-3">
+    <div class="row justify-content-md-center custom-pagination align-items-center">
+        <div class="col-auto">
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+</div>
+</div>
+
+<div>
+    <p class="text-danger">@ViewBag.Exception</p>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var employeeID = 0;
+
+            $(".deleteUser").click(function () {
+                employeeID = $(this).closest(".employee").find("input[name='employeeId']").val();
+                if (confirm("Are you sure want to delete this employee?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "User")?id=" + employeeID;
+                };
+                return false;
+            });
+
+            $('.retrain-all-user').click(function (){
+                $('.loading').removeClass('hide');
+            });
+
+        });
+    </script>
+}

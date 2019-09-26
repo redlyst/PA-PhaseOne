@@ -1,0 +1,205 @@
+﻿@model PowerAppsCMS.ViewModel.MappingSalesOrderViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<nav aria-label="breadcrumb mt-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "MappingSalesOrder")">Mapping Sales Order</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Mapping Sales Order Details
+        </li>
+    </ol>
+</nav>
+
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <h1 class="page-title mt-0">
+            Mapping Sales Order Details
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            <div class="custom-form-container pt-0">
+                <br />
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">SO Number</label>
+                        <p class="view-data__content">@Model.SalesOrder.Number</p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">Customer Name</label>
+                        <p class="view-data__content">@Model.SalesOrder.CustomerName</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">Part Number</label>
+                        <p class="view-data__content">@Model.SalesOrder.PartNumber</p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">Total Price</label>
+                        <p class="view-data__content">@Model.SalesOrder.CurrencyCode @Html.DisplayFor(model => model.SalesOrder.TotalPrice)</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">Line Item</label>
+                        <p class="view-data__content">@Model.SalesOrder.LineItem</p>
+                    </div>
+                    @if (Model.Products != null)
+                    {
+                        <div class="col-md-6 col-12">
+                            <label class="view-data__label form-custom-label">Product</label>
+                            <p class="view-data__content">@Model.Products.Name</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-6 col-12">
+                            <label class="view-data__label form-custom-label">Product</label>
+                            <p class="view-data__content text-danger">No Product</p>
+                        </div>
+                    }
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">Quantity</label>
+                        <p class="view-data__content">@Model.SalesOrder.Quantity</p>
+                    </div>
+                </div>
+
+                <br />
+                @if (Model.Products != null)
+                {
+                    <div class="form-row align-items-center justify-content-between mt-3 mb-3">
+                        <div class="col-auto">
+                            <p class="mt-3 mb-2"><strong>List of Serial Number</strong></p>
+                        </div>
+
+                        <div class="col-auto">
+                            <a href="@Url.Action("Edit", "MappingSalesOrder", new { id = Model.SalesOrder.ID, page = ViewBag.Page })" class="btn btn-primary mb-3"><i data-feather="settings"></i> &nbsp; Manage Serial Number</a>
+                        </div>
+
+                    </div>
+                }
+
+                <div class="table-responsive table-serial-number-unit" id="tableSerialNumberUnit">
+                    <table class="table table-bordered table-sm" id="serialNumberUnit">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Sales Order</th>
+                                <th>Serial Number</th>
+                                <th>Product</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var number = 1;
+                            }
+
+                            @foreach (var item in Model.MappedUnits)
+                            {
+                                <tr class="serial-number-unit">
+                                    <td>@number</td>
+                                    <td class="sales-order-per-unit" data-salesOrder="@item.SalesOrder.Number">@item.SalesOrder.Number</td>
+                                    <td class="serial-number-per-unit" data-serialNumber="@item.SerialNumber">@item.SerialNumber</td>
+                                    <td>@item.Product.Name</td>
+                                </tr>
+                                number++;
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row justify-content-between mt-5">
+                    <div class="col-auto">
+                        <a href="@Url.Action("Index", "MappingSalesOrder", new {page = ViewBag.Page})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Mapping Sales Order</a>
+                    </div>
+                </div>
+                <p class="message hide">@Session["message"]</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script>
+        $(document).ready(function () {
+            $('.serial-number').chosen({
+                width: "300px",
+                search_contains: true
+            });
+
+            if ($('.serial-number-unit').length > 0) {
+                $('.table-serial-number-unit').removeClass('hide');
+            }
+            else {
+                $('.table-serial-number-unit').addClass('hide');
+            }
+
+            $('.add-serial-number').click(function () {
+
+                $('.form').removeClass('hide');
+
+            });
+
+            $('.cancel-add-serial-number').click(function () {
+                $('.form').addClass('hide');
+            });
+
+            $('.submit').click(function (e) {
+                var serialNumber = $('.serial-number').val();
+
+                $('.serial-number-validation').text("");
+
+                if (serialNumber == null || serialNumber == '') {
+                    e.preventDefault();
+                    $('.serial-number-validation').text("Serial number can't be empty");
+                }
+                else {
+                    $('.serial-number-validation').text("");
+                    $('.loading').removeClass('hide');
+                    $(this).prop('disabled', true);
+                    $('form').submit();
+                }
+            });
+
+            if ($('.message').text() == "success") {
+                $('html, body').animate({ scrollTop: $('#serialNumberUnit').offset().top }, 'slow');
+            }
+
+            $('.delete-unit').click(function () {
+                var unitID = $(this).closest(".serial-number-unit").find("input[name='unitID']").val();
+                var salesOrder = $(this).closest(".serial-number-unit").find(".sales-order-per-unit").attr('data-salesOrder');
+                var serialNumber = $(this).closest(".serial-number-unit").find(".serial-number-per-unit").attr('data-serialNumber');
+
+                if (confirm("Are you sure want to delete " + serialNumber + " serial number from " + salesOrder + " sales order ?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("DeleteSerialNumber", "MappingSalesOrder")?id=" + unitID;
+                };
+                return false;
+            });
+
+        });
+
+
+    </script>
+}

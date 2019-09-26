@@ -1,0 +1,2899 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PowerAppsCMS</name>
+    </assembly>
+    <members>
+        <member name="T:PowerAppsCMS.Constants.ProcessStatus">
+            <summary>
+            Merupakan sebuah enumarasi untuk menandai status pada process
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Constants.ProcessActivityStatus">
+            <summary>
+            Merupakan sebuah enumarasi untuk menandai status pada process activity
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Constants.ProcessAssignStatus">
+            <summary>
+            Merupakan sebuah enumarasi untuk menandai status pada process assign
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Constants.ProcessAssignType">
+            <summary>
+            Merupakan sebuah enumarasi untuk menandai type pada process assign
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Constants.MemoStatus">
+            <summary>
+            Merupakan sebuah enumarasi untuk menandai status pada memo
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Constants.UnitStatus">
+            <summary>
+            Merupakan sebuah enumarasi untuk menandai status pada unit
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Constants.TypeStatus">
+            <summary>
+            Merupakan sebuah enumarasi untuk menandai tipe status
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Constants.RoleNames">
+            <summary>
+            Merupakan sebuah class untuk menjadi konstanta nama role dari user
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.CapacitySettingController">
+            <summary>
+            CapacitySettingController berfungsi untuk mengubah kapasitas per bulan dan tanggal mulai
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.CapacitySettingController.Index">
+            <summary>
+            Method Index berfungsi untuk menampilkan semua list capacity design
+            </summary>
+            <returns>Menampilkan semua list capacity design</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.CapacitySettingController.Edit(PowerAppsCMS.Models.ProductGroupCapacity)">
+            <summary>
+            Method Edit berfungsi untuk mengubah capacity permonth atau start month
+            </summary>
+            <param name="productGroupCapacity">Parameter productGroupCapacity merupakan parameter model dari product group capacity</param>
+            <returns>Data berhasil dirubah</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.CapacitySettingController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus data capacity design
+            </summary>
+            <param name="id">parameter id merupakan id dari product group capacity</param>
+            <returns>Data berhasil dihapus</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ComponentController">
+            <summary>
+            ComponentController berfungsi sebagai CRUD component
+            </summary>
+            <remarks>
+            selain sebagai CRUD component, ComponentController juga berfungsi sebagai CRUD material preparation
+            </remarks>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan list semua component
+            </summary>
+            <param name="searchName">Parameter searchName digunakan untuk mencari component berdasarkan nama yang di input</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user membuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan list semua component</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.Details(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Details berfungsi untuk menampilkan detail dari sebuah component
+            </summary>
+            <param name="id">Parameter id merupakan id dari component</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan detail dari sebuah component</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.Create">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create
+            </summary>
+            <returns>Menampilkan halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.Create(PowerAppsCMS.Models.Component)">
+            <summary>
+            Method Post Create berfungsi untuk menambah data baru di component
+            </summary>
+            <param name="component">Parameter model dari component</param>
+            <returns>Jika data berhasil di input, maka web akan menavigasikan ke halaman detail</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.Edit(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Edit berfungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">Parameter id merupakan id dari component</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.Edit(System.Int32,PowerAppsCMS.Models.Component,System.Web.Mvc.FormCollection)">
+            <summary>
+            Method Post Edit berfungsi untuk merubah sebuah data dari component
+            </summary>
+            <param name="id">Parameter id merupakan id dari component</param>
+            <param name="component">Parameter model dari component</param>
+            <param name="collection">Parameter yang digunakan oleh object FormCollection</param>
+            <returns>Jika data berhasil dirubah, maka web akan menavigasikan ke halaman detail</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus sebuah data dari component
+            </summary>
+            <param name="id">Parameter id merupakan id dari component</param>
+            <returns>Jika data berhasil di hapus, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.AddMaterialPreparation(System.Int32,PowerAppsCMS.ViewModel.ComponentViewModel,System.Web.Mvc.FormCollection)">
+            <summary>
+            Method AddMaterialPreparation berfungsi untuk menambah material preparation
+            </summary>
+            <param name="componentID">Parameter componentID merupakan id dari component</param>
+            <param name="componentViewModel">Parameter componentViewModel merupakan view model dari component</param>
+            <param name="collection">Parameter collection merupakan parameter yang digunakan oleh object FormCollection</param>
+            <returns>Jika data berhasil ditambahkan, maka web akan menavigasikan ke halaman detail component</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.EditMaterialPreparation(PowerAppsCMS.Models.ComponentMaterialPreparationProcess)">
+            <summary>
+            MethodEditMaterialPreparation befungsi untuk mengubah sebuah data di material preparation
+            </summary>
+            <param name="componentMaterialPreparationProcess">Parameter componentMaterialPreparationProcess merupakan model dari component material preparation process</param>
+            <returns>Data berhasil dirubah</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ComponentController.DeleteMaterialPreparation(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Method DeleteMaterialPreparation berfungsi untuk menghapus sebuah data di material preparation
+            </summary>
+            <param name="id">Parameter id merupakan id dari component material preparation process</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Jika data berhasil di hapus, maka web akan menavigasikan ke halaman detail component</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ErrorController">
+            <summary>
+            ErrorController berfungsi untuk menampilkan halaman error karena tidak punya akses
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ErrorController.Unauthorized">
+            <summary>
+            Method Unauthorized berfungsi untuk menampilkan halaman error karena tidak punya akses
+            </summary>
+            <returns>Menampilkan halaman error</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.FaceAPIController">
+            <summary>
+            FaceAPIController berfungsi untuk meretrain gambar dari user yang sudah di upload ke blob storage
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.FaceAPIController.Index(System.Guid,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk meretrain gambar dari user
+            </summary>
+            <param name="id">Parameter id merupakan id dari user</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Gambar yang berhasil di train di face api, akan mengembalikan person id user</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.FaceAPIController.RetrailAllUserAsync">
+            <summary>
+            Berfungsi untuk train gambar semua user
+            </summary>
+            <returns>Gambar user di train dan user mendapatkan personid</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.FaceAPIController.RetrainImageAsync(PowerAppsCMS.Models.User)">
+            <summary>
+            Method yang di gunakan untuk train gambar user
+            </summary>
+            <param name="userData">Sebuah object dari model user</param>
+            <returns>user mendapat personid yang baru</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.GroupProductController">
+            <summary>
+            GroupProductController berfungsi untuk CRUD product group
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.GroupProductController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan list semua product group
+            </summary>
+            <param name="searchName">Parameter searchName digunakan untuk mencari product group berdasarkan nama yang di input</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user membuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan list semua product group</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.GroupProductController.Details(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            Method Details berfungsi untuk menampilkan detail dari sebuah product group
+            </summary>
+            <param name="id">Parameter id merupakan id dari product group</param>
+            <param name="page">Parameter nomor halaman</param>
+            <param name="tab">Parameter tab digunakan sebagai referensi tab mana yang akan di tampilkan di halaman detail</param>
+            <returns>Menampilkan detail dari sebuah product group</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.GroupProductController.Create">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create
+            </summary>
+            <returns>Menampilkan halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.GroupProductController.Create(PowerAppsCMS.Models.ProductGroup)">
+            <summary>
+            Method Post Create berfungsi untuk menambah data baru di product group
+            </summary>
+            <param name="productGroup">Parameter model dari product group</param>
+            <returns>Ketika data baru berhasil di tambahkan, maka web akan menavigasikan ke halaman detail</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.GroupProductController.Edit(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Edit berfungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">Parameter id merupakan id dari product group</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.GroupProductController.Edit(System.Int32,PowerAppsCMS.Models.ProductGroup)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah data dari sebuah product group
+            </summary>
+            <param name="id">Parameter id merupakan id dari product group</param>
+            <param name="productGroup">Parameter model dari product group</param>
+            <returns>Jika data berhasil dirubah, maka web akan menavigasikan ke halaman detail</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.GroupProductController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus sebuah data dari product group
+            </summary>
+            <param name="id">Parameter id merupakan id dari product group</param>
+            <returns>Jika data berhasil di hapus, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.HolidayController">
+            <summary>
+            HolidayController berfungsi sebagai CRUD holiday
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.HolidayController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan list semua holiday
+            </summary>
+            <param name="searchName">Parameter searchName digunakan untuk mencari holiday berdasarkan nama yang di input</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user membuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan list semua holiday</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.HolidayController.Create">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create
+            </summary>
+            <returns>Menampilkan halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.HolidayController.Create(PowerAppsCMS.Models.Holiday)">
+            <summary>
+            Method Post Create berfungsi untuk menambah data baru di holiday
+            </summary>
+            <param name="holiday">Parameter holiday merupakan paramter dari model holiday</param>
+            <returns>Jika data baru berhasil di input, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.HolidayController.Edit(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Edit berfungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">Parameter id merupakan id dari holiday</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.HolidayController.Edit(System.Int32,PowerAppsCMS.Models.Holiday,System.Web.Mvc.FormCollection)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah sebuah data di holiday
+            </summary>
+            <param name="id">Parameter id merupakan id dari holiday</param>
+            <param name="holiday">Parameter holiday merupakan paramter dari model holiday</param>
+            <param name="collection">Parameter collection merupakan parameter yang di gunakan oleh object FormCollection</param>
+            <returns>Jika data berhasil dirubah, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.HolidayController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus sebuah data dari holiday
+            </summary>
+            <param name="id">Parameter id merupakan id dari holiday</param>
+            <returns>Jika data berhasil di hapus, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.HolidayController.SetHolidayDetailList(PowerAppsCMS.Models.Holiday)">
+            <summary>
+            Merupakan fungsi yang untuk menambahkan Holiday Details dari sebuah data holiday
+            </summary>
+            <param name="holiday">sebuah object class holiday yang merupakan data holiday yang akan ditambahkan holiday details nya.</param>
+            <returns>holiday yang sudah di tambahkan holiday detailsnya</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.HomeController">
+            <summary>
+            HomeController berfungsi menampilkan halaman home. Halaman yang pertama kali muncul ketika mengakses web
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.HomeController.Index">
+            <summary>
+            Menampilkan halaman home
+            </summary>
+            <returns>Jika user sudah teregistrasi, halaman home akan muncul, jika tidak maka akan muncul pesan error</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.MappingSalesOrderController">
+            <summary>
+            Controller untuk mapping antara sales order dan serial number
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MappingSalesOrderController.Index(System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Menampilkan list dari sales order
+            </summary>
+            <param name="searchSONumber">Parameter string filter search dengan SO number</param>
+            <param name="searchPartNumber">Para</param>
+            <param name="currentFilterSearchSONumber"></param>
+            <param name="currentFilterSearchPartNumber"></param>
+            <param name="page"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.MasterProcessController">
+            <summary>
+            MasterProcessController berisikan fungsi-fungsi untuk proses CRUD data Master Process
+            </summary>
+            <remarks>
+            Fungsi-fungsi yang ada pada controller ini adalah index, Details, Create, Edit, Delete, UpdateMasterProcessOrder dan GetMasterProcessList
+            </remarks>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.Index">
+            <summary>
+            Fungsi Index berfungsi untuk mengambil dan menampilkan daftar data MasterProcess yang ada
+            </summary>
+            <returns>Mengembalikan View Index untuk menampilkan daftar data Master Process</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.Details(System.Int32)">
+            <summary>
+            Details berfungsi menampilkan detail data dari sebuah master process yang dipilih berdasarkan id
+            </summary>
+            <param name="id">Merupakan sebuah bilangan integer</param>
+            <returns>Mengembalikan sebuah action result yang menampilkan halaman view detail data sebuah master process berdasarkan id yang dipilih</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.Create(System.Int32)">
+            <summary>
+            Fungsi Create ini merupakan fungsi yang digunakan untuk menampilkan form untuk menambahkan data Master Process yang baru untuk sebuah product
+            </summary>
+            <param name="productID">Merupakan sebuah bilangan integer</param>
+            <returns>Mengembalikan sebuah action result yang memanggil halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.Create(System.Int32,PowerAppsCMS.ViewModel.MasterProcessViewModel)">
+            <summary>
+            Fungsi Create ini merupakan fungsi yang digunakan untuk menambahkan data Master Process yang baru untuk sebuah product
+            </summary>
+            <param name="productID">merupakan sebuah bilangan integer</param>
+            <param name="masterProcess">merupakan sebuah objek yang berisikan data master process yang baru</param>
+            <returns>Mengembalikan sebuah action result yang memanggil halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.Edit(System.Int32)">
+            <summary>
+            Fungsi Edit ini merupakan fungsi yang digunakan untuk menampilkan form untuk mengubah data Master Process yang telah ditentukan
+            </summary>
+            <param name="id">Merupakan sebuah bilangan integer yang berarti id Master Process yang akan diubah</param>
+            <returns>Mengembalikan sebuah action result yang memanggil halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.Edit(System.Int32,PowerAppsCMS.ViewModel.MasterProcessViewModel)">
+            <summary>
+            Fungsi Edit ini merupakan fungsi yang digunakan untuk menampilkan form untuk mengubah dan menyimpan perubahan data Master Process yang telah ditentukan
+            </summary>
+            <param name="id">sebuah bilangan integer yang berarti id MasterProcess yang akan diubah</param>
+            <param name="masterProcess">sebuh object yang berisikan daftar perubahan master process</param>
+            <returns>Mengembalikan sebuah action result yang memanggil halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.UpdateMasterProcessOrder(System.Collections.Generic.List{PowerAppsCMS.Models.MasterProcess})">
+            <summary>
+            Fungsi UpdateMasterProcessOrder merupakan sebuah fungsi yang digunakan untuk mengupdate nilai Process Order pada sebuah product
+            </summary>
+            <param name="masterProcessList">merupakan list of object dari masterprocess yang merupakan daftar master process yang akan mengalami perubahan process order</param>
+            <returns>mengembalikan json yang berisikin status dan pesan perubahan apakan berhasil atau tidak</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.Delete(System.Int32)">
+            <summary>
+            Fungsi Delete merupakan sebuah fungsi yang digunakan untuk mengahapus data master process
+            </summary>
+            <param name="id">sebuah bilangan integer yang berarti id dari master process yang akan dihapus</param>
+            <returns>jika berhasil akan diredirect kehalaman daftar master process namu jika tidak berhasil akan menampilkan halaman error </returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.GetMasterProcessList(System.Int32)">
+            <summary>
+            Fungsi GetMasterProcessList merupakan fungsi untuk mendapatkan daftar master process dari sebuah product
+            </summary>
+            <param name="productID">sebuah bilangan integer yang berarti id dari sebuah product yang akan diambil data master processnya</param>
+            <returns>List of Master Process yang berisikan daftar Master Process</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MasterProcessController.GetMasterProcessListThatCreatedBeforeItProcess(System.Int32,System.Int32)">
+            <summary>
+            Merupakan sebuah fungsi untuk mendapatkan daftar master process yang dibuat sebelum master process itu sendiri (master process yang memiliki id lebih kecil dari id master process yang diinginkan)
+            </summary>
+            <param name="productID">sebuah bilangan integer yang berarti ID sebuah product</param>
+            <param name="masterProcessID">sebuah bilangan integer yang berarti ID sebuah master process</param>
+            <returns></returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.MaterialController">
+            <summary>
+            MaterialController berfungsi untuk CRUD material
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MaterialController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan list semua material
+            </summary>
+            <param name="searchName">Parameter searchName digunakan untuk mencari material berdasarkan nama yang di input</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user membuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan list semua material</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MaterialController.Details(System.Int32)">
+            <summary>
+            Method Details berfungsi untuk menampilkan detail dari sebuah material
+            </summary>
+            <param name="id">Parameter id merupakan id dari material</param>
+            <returns>Menampilkan detail dari sebuah material</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MaterialController.Create">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create
+            </summary>
+            <returns>Menampilkan halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MaterialController.Create(PowerAppsCMS.Models.Material)">
+            <summary>
+            Method Post Create berfungsi untuk menambah data baru kedalam material
+            </summary>
+            <param name="material">Parameter material merupakan model dari material</param>
+            <returns>Jika data baru berhasil di input, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MaterialController.Edit(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Edit berfungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">Parameter id merupakan id dari material</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MaterialController.Edit(System.Int32,PowerAppsCMS.Models.Material,System.Web.Mvc.FormCollection)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah sebuah data di material
+            </summary>
+            <param name="id">Parameter id merupakan id dari material</param>
+            <param name="material">Parameter material merupakan model dari material</param>
+            <param name="collection">Parameter collection merupakan parameter yang digunakan oleh object FormCollection</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MaterialController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus sebuah data di material
+            </summary>
+            <param name="id">Parameter id merupakan id dari material</param>
+            <returns>Jika data berhasil di hapus, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.MemoController">
+            <summary>
+            Merupakan controller yang berisikin fungsi-fungsi CRUD modul Memo
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Fungsi Index berfungsi untuk mengambil dan menampilkan daftar data Memo yang ada
+            </summary>
+            <param name="searchName">sebuah string yang berarti nama dari product yang akan di cari memonya</param>
+            <param name="currentFilter">sebuah string yang berarti nama dari product yang sedang di cari memonya</param>
+            <param name="page">sebuah bilangan integer yang boleh kosong dan berfungsi sebagai angka parameter nomor halaman</param>
+            <returns>mamanggil halaman daftar memo dengan data yang sesuai dengan filter parameter</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.Create">
+            <summary>
+            merupakan fungsi untuk menampilkan halaman form create Memo
+            </summary>
+            <returns>>Menampilkan halaman create memo</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.Create(PowerAppsCMS.ViewModel.MemoViewModel)">
+            <summary>
+            Merupakan fungsi post yang digunakan untuk menambahkan data memo
+            </summary>
+            <param name="memoViewModel">sebuah object memoViewModel yang berisikan data memo yang akan dibuat</param>
+            <returns>Ketika data baru berhasil di input, maka web akan menavigasikan ke halaman details memo</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.CreateMemoPRO(PowerAppsCMS.ViewModel.MemoViewModel)">
+            <summary>
+            Merupakan fungsi yang digunakan untuk menambahkan data create memo pro
+            </summary>
+            <param name="memoViewModel">sebuah object MemoViewModel yang berisikan data memo yang akan di tambahkan data memo pro nya</param>
+            <returns>menampilkan halaman details</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.CreateMemoComponent(PowerAppsCMS.ViewModel.MemoViewModel)">
+            <summary>
+            Merupakan fungsi yang digunakan untuk menambahkan data create memo component
+            </summary>
+            <param name="memoViewModel">sebuah object MemoViewModel yang berisikan data memo yang akan di tambahkan data memo pro nya</param>
+            <returns>menampilkan halaman details</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.SaveMemo(PowerAppsCMS.ViewModel.MemoViewModel)">
+            <summary>
+            Berfungsi untuk menambahkan memo baru ke dalam database
+            </summary>
+            <param name="memoViewModel">Sebuah object dari memo view model</param>
+            <returns>Ketika memo berhasil ditambahkan, maka web akan meredirect ke halaman detail</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.UpdateMemoPRO(System.Web.Mvc.FormCollection,PowerAppsCMS.ViewModel.MemoViewModel)">
+            <summary>
+            Merupakan fungsi yang digunakan untuk mengubah data  memo pro
+            </summary>
+            <param name="collection">Object dari FormCollection yang isinya data dari input form halaman view</param>
+            <param name="memoViewModel">Sebuah object view model dari MemoViewModel</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.AddPRO(PowerAppsCMS.ViewModel.MemoViewModel,System.Web.Mvc.FormCollection)">
+            <summary>
+            Berfungsi untuk menambahkan pro di halaman edit memo
+            </summary>
+            <param name="memoViewModel">Sebuah object dari memo view model</param>
+            <param name="collection">Object dari FormCollection yang isinya data dari input form halaman view</param>
+            <returns>PRO berhasil ditambahkan</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.AddMemoComponent(System.Int32,PowerAppsCMS.ViewModel.MemoViewModel)">
+            <summary>
+            Berfungsi untuk menambahkan component di halaman edit memo
+            </summary>
+            <param name="memoID">Sebuah integer yang merupakan id dari memo</param>
+            <param name="memoViewModel">Sebuah object dari memo view model</param>
+            <returns>Component berhasil ditambahkan</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.Details(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Berfungsi untuk menampilkan detail dari memo
+            </summary>
+            <param name="id">Sebuah integer yang nilainya boleh kosong yang merupakan id dari memo</param>
+            <param name="page">Sebuah bilangan integer yang boleh kosong dan berfungsi sebagai angka parameter nomor halaman</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.Edit(System.Nullable{System.Int32})">
+            <summary>
+            Befungsi untuk menampilkan halaman edit memo
+            </summary>
+            <param name="id">Sebuah integer yang nilainya boleh kosong yang merupakan id dari memo</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.Edit(System.Int32,PowerAppsCMS.ViewModel.MemoViewModel)">
+            <summary>
+            Berfungsi untuk mengubah sebuah data dari memo yang dipilih oleh user
+            </summary>
+            <param name="id">Sebuah integer yang merupakan id dari memo</param>
+            <param name="memoViewModel">Sebuah object dari memo view model</param>
+            <returns>Jika data berhasil dirubah, maka web akan meredirect ke halaman detail</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.EditMemoPRO(PowerAppsCMS.Models.MemoPRO)">
+            <summary>
+            Berfungsi untuk mengubah quantity dari pro pada saat pro baru di input oleh user ketika user ingin create memo baru
+            </summary>
+            <param name="memoPRO">Sebuah object dari memo pro</param>
+            <returns>Quantity berhasil ditambahkan</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.Delete(System.Int32)">
+            <summary>
+            Merupakan sebuah fungsi yang digunakan untuk menghapus data memo
+            </summary>
+            <param name="id">sebuah bilangan integer yang berarti id dari memo yang akan dihapus</param>
+            <returns>Jika berhasil akan memanggil halaman daftar memo, namun jika tidak berhasil akan menampilkan halaman error</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.DeleteMemoPRO(System.Int32)">
+            <summary>
+            Merupakan sebuah fungsi yang digunakan untuk menghapus data memo pro
+            </summary>
+            <param name="id">sebuah bilangan integer yang berarti id dari memo pro yang akan dihapus</param>
+            <returns>Jika berhasil akan memanggil halaman edit Memo, namun jika tidak berhasil akan menampilkan halaman error</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MemoController.DeleteMemoPROComponent(System.Int32)">
+            <summary>
+            Merupakan sebuah fungsi yang digunakan untuk menghapus data memo component
+            </summary>
+            <param name="id">sebuah bilangan integer yang berarti id dari memo component yang akan dihapus</param>
+            <returns>Jika berhasil akan memanggil halaman edit Memo, namun jika tidak berhasil akan menampilkan halaman error</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.MPSController">
+            <summary>
+            Merupakan Class Controller yang berisikan fungsi fungsi untuk mengelola data MPS
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSController.Index">
+            <summary>
+            Merupakan fungsi yang menampilkan halaman index dari modul MPS yang bersikan daftar nama-nama product yang ada.
+            </summary>
+            <returns>View Index yang berisikan daftar Product</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSController.Details(System.Nullable{System.Int32})">
+            <summary>
+            Merupakan sebuah fungsi yang menampilkan halaman berisikan daftar PRO dan MPS yang dimiliki sebuah product yang di
+            </summary>
+            <param name="id">sebuah bilangan integer yang berarti id dari sebuah product</param>
+            <returns>Sebuah ActionResult yang menampilkan halaman MPS berdasarkan product yang dipilih</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSController.UpdateMPSValue(System.Collections.Generic.List{PowerAppsCMS.Models.MasterPlanSchedule})">
+            <summary>
+            Merupakan fungsi untuk melakukan update nilai dari MPS
+            </summary>
+            <param name="masterPlanScheduleList">list of MPS yang berisikan daftar MPS yang akan di update valuenya</param>
+            <returns>JSON yang berisikan pesan dan kondisi dari proses update berhasil</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSController.AddMPSData(PowerAppsCMS.Models.MasterPlanSchedule,System.String,System.DateTime)">
+            <summary>
+            Merupakan fungsi yang digunakan untuk menambahkan data MPS ke table MasterPlanSchedule
+            </summary>
+            <param name="dataMPS">Sebuah object MasterPlanSchedule yang berisikan data-data MasterPlanSchedule yang akan ditambahkan</param>
+            <param name="username">sebuah string yang berisikan nama username dari user yang sedang login</param>
+            <param name="now">sebuh data bertipe datetime yang bersisikan tanggal sekarang</param>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSController.UpdateMPSData(PowerAppsCMS.Models.MasterPlanSchedule,PowerAppsCMS.Models.MasterPlanSchedule,System.String,System.DateTime)">
+            <summary>
+            Merupakan fungsi yang digunakan untuk mengubah/memperbaharui data dari sebuah MPS
+            </summary>
+            <param name="newDataMPS">sebuah object bertipe MasterPlanSchedule yang menyimpan informasi data MPS yang baru</param>
+            <param name="currenDataMPS">sebuah object bertipe MasterPlanSchedule yang menyimpan informasi data MPS yang saat ini di database</param>
+            <param name="username">sebuah string yang berisikan nama username dari user yang sedang login</param>
+            <param name="now">sebuh data bertipe datetime yang bersisikan tanggal sekarang</param>
+            <returns>sebuah object MasterPlanSchedule yang berisikan data MPS yang terbaru</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSController.DeleteMPSData(PowerAppsCMS.Models.MasterPlanSchedule,System.String,System.DateTime)">
+            <summary>
+            Merupakan fungsi yang digunakan untuk menghapus data dari sebuah MPS
+            </summary>
+            <param name="currenDataMPS">sebuah object bertipe MasterPlanSchedule yang menyimpan informasi data MPS yang akan dihapus</param>
+            <param name="username">sebuah string yang berisikan nama username dari user yang sedang login</param>
+            <param name="now">sebuh data bertipe datetime yang bersisikan tanggal sekarang</param>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSController.DeactivateUnit(System.Collections.Generic.List{PowerAppsCMS.Models.Unit})">
+            <summary>
+            Merupakan fungsi yang digunakan untuk mengubah data unit-unit menjadi tidak aktif
+            </summary>
+            <param name="unitList">sebuah list of unit yang berisikan daftar unit yang akan diubah jadi tidak aktif</param>
+            <returns>sebuah action result yang mengembalikan json yang berisikan status perubahan apakah berhasil atau tidak</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSController.ReactivateUnit(System.Int32)">
+            <summary>
+            Merupakan fungsi yang digunakan untuk mengubah data unit-unit menjadi aktif
+            </summary>
+            <param name="unitID">sebuah bilangan integer yang berarti id dari Unit yang akan diubah</param>
+            <returns>sebuah action result yang mengembalikan json yang berisikan status perubahan apakah berhasil atau tidak</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSController.GetWeekNumberListofMonths(System.Int32,System.Int32)">
+            <summary>
+            Merupakan fungsi yang digunakan untuk mendapatkan daftar data minggu number dalam sebuah bulan
+            </summary>
+            <param name="month">sebuah bilangan integer yang berarti bulan</param>
+            <param name="year">sebuah bilangan integer yang berarti tahun</param>
+            <returns>Daftar Week Number dalam sebuah bulan dan tahun yang udah dipilih</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.MPSMappingController">
+            <summary>
+            Merupakan controller yang digunakan untuk melakukan CRUP Mappin Memo PRO
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSMappingController.Index(System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Fungsi Index berfungsi untuk mengambil dan menampilkan daftar PRO yang ada beserta hasil mappingnta terhadap data SO
+            </summary>
+            <param name="searchSONumber">sebuah string yang berarti nomor dari SO yang dicari</param>
+            <param name="searchPartNumber">sebuah string yang berarti nomor dari partnumber yang dicari</param>
+            <param name="currentFilter">sebuah string yang berarti nama dari product yang sedang di cari memonya</param>
+            <param name="page">sebuah bilangan integer yang boleh kosong dan berfungsi sebagai angka parameter nomor halaman</param>
+            <returns>mamanggil halaman index dari MPS Mapping yang berisikan daftar PRO yang sesuai dengan filter parameter</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSMappingController.AddPRO(System.Int32,PowerAppsCMS.ViewModel.MPSMappingViewModel,System.Web.Mvc.FormCollection)">
+            <summary>
+            Berfungsi untuk menambahkan PRO ke dalam sales order
+            </summary>
+            <param name="SalesOrderID">Sebuah integer yang merupakan id dari sales order</param>
+            <param name="mPSMappingViewModel">sebuah object dari view model MPSMappingViewModel</param>
+            <param name="collection">Object dari FormCollection yang isinya data dari input form halaman view</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSMappingController.Details(System.Nullable{System.Int32},System.Nullable{System.Int32},PowerAppsCMS.ViewModel.MPSMappingViewModel)">
+            <summary>
+            Merupakan sebuah fungsi yang menampilkan halaman detail MPSMapping
+            </summary>
+            <param name="id">sebuah bilangan integer yang berarti id dari SalesOrder</param>
+            <param name="page">sebuah bilangan integer yang boleh kosong dan berfungsi sebagai angka parameter nomor halaman</param>
+            <param name="mPSMappingViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.MPSMappingController.DeleteSalesOrderPRO(System.Int32)">
+            <summary>
+            Merupakan sebuah fungsi digunakan untuk menghapus data SalesOrderPRO
+            </summary>
+            <param name="id">sebuah bilangan integer yang berarti id dari data SalesOrderPRO</param>
+            <returns>Jika berhasil akan mengembalikan halaman detail dari MPSMapping, jika tidak mengembalikan halaman error</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ProcessGroupController">
+            <summary>
+            ProcessGroupController berfungsi sebagai CRUD Process Group
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProcessGroupController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index befungsi untuk menampilkan list dari process group
+            </summary>
+            <param name="searchName">Parameter searchName digunakan untuk mencari process group berdasarkan nama yang di input</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user membuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>List semua process group</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProcessGroupController.Create">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create process group
+            </summary>
+            <returns>Menampilkan halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProcessGroupController.Create(PowerAppsCMS.Models.ProcessGroup)">
+            <summary>
+            Method Post ProcessGroup berfungsi untuk menambah process group baru
+            </summary>
+            <param name="processGroup">parameter model dari process group</param>
+            <returns>Jika data baru berhasil di input, maka user web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProcessGroupController.Edit(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Edit berfungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">Parameter id yang merupakan id dari ProcessGroup</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProcessGroupController.Edit(System.Int32,PowerAppsCMS.Models.ProcessGroup)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah data dari process group
+            </summary>
+            <param name="id">parameter id yang merupakan id dari process group</param>
+            <param name="processGroup">parameter model dari process group</param>
+            <returns>Jika data berhasil di rubah, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProcessGroupController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus data process group
+            </summary>
+            <param name="id">parameter id yang merupakan id dari process group</param>
+            <returns></returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ProductCompositionController">
+            <summary>
+            ProductCompositionController berfungsi untuk menambahkan component di dalam product
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductCompositionController.Create(System.Int32,PowerAppsCMS.ViewModel.ProductViewModel,System.Web.Mvc.FormCollection)">
+            <summary>
+            Method Create berfungsi untuk menambahkan component di dalam product
+            </summary>
+            <param name="productId">Parameter productId merupakan id dari product</param>
+            <param name="productViewModel">Parameter productViewModel merupakan view model dari product</param>
+            <param name="collection">Parameter collection merupakan parameter yang digunakan oleh object FormCollection</param>
+            <returns>Component berhasil ditambahkan ke dalam product</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductCompositionController.Edit(PowerAppsCMS.Models.ProductComposition)">
+            <summary>
+            Method Edit berfungsi untuk mengubah quantity di dalam product composition
+            </summary>
+            <param name="productComposition">Parameter productComposition merupakan model dari product composition</param>
+            <returns>Quantity berhasil dirubah</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductCompositionController.Delete(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Method Delete berfungsi menghapus component dari product
+            </summary>
+            <param name="id">Parameter id merupakan id dari product composition</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Component berhasil dirubah di product</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ProductController">
+            <summary>
+            ProductController berfungsi sebagai CRUD product
+            </summary>
+            <remarks>
+            Di dalam ProductController terdapat beberapa method lain selain CRUD, seperti
+            CalculateTotalDay, dan juga GetProcessDay
+            </remarks>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ProductController.ProcessDay">
+            <summary>
+            Merupakan sebuah class berisikan sebuah bilangan integer dan bilangan decimal
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Controllers.ProductController.ProcessDay.StartDay">
+            <summary>
+            sebuah bilangan integer yang menandakan angka hari kapan sebuah process itu dimulai
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Controllers.ProductController.ProcessDay.UsedDay">
+            <summary>
+            sebuah bilangan decimal yang menandakan sebarapa banyak hari tersebut di gunakan
+            </summary>
+            <remarks>
+            bernilai 0-1, dimana 1 menandakan bahwa hari yang digunakan satu hari penuh
+            </remarks>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan list semua product
+            </summary>
+            <param name="searchName">Parameter searchName digunakan untuk mencari product berdasarkan nama yang di input</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user membuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>List semua product</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductController.Details(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            Method Details berfungsi untuk menampilkan detail dari sebuah product
+            </summary>
+            <param name="id">Parameter id merupakan id dari product</param>
+            <param name="page">Parameter nomor halaman</param>
+            <param name="tab">Parameter tab digunakan sebagai referensi tab mana yang akan di tampilkan di halaman detail</param>
+            <returns>Menampilkan detail dari sebuah product</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductController.CalculateTotalDay(System.Int32)">
+            <summary>
+            Merupakan fungsi untuk menghitung Total Day lamanya sebuah produk dikerjakan
+            </summary>
+            <param name="productID">sebuah bilangan integer yang berarti id dari product yang akan dihitung total day prosesnya</param>
+            <returns>nilai dari total day dan ditampilkan halaman details product</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductController.GetProcessDay(PowerAppsCMS.Models.ProcessDependency,System.Collections.Generic.List{PowerAppsCMS.Models.ProcessDailySchedule})">
+            <summary>
+            Merupakan fungsi yang menghitung nilai hari yang berlaku pada sebuah process
+            hari yang berlaku untuk sebuah process dilihat dari nilai hari maksimun yang dimiliki olah proses yang menjadi dependency proses tersebut
+            </summary>
+            <param name="processDependency">sebuah class processDependency yang berarti dependency yang dimiliki ssebuah proses</param>
+            <param name="currentProductProcessDailyScheduleList">sebuah list dari processDailySchedule yang dimiliki oleh process yang akad dihitung nilai harinya</param>
+            <returns>sebuah class processday yang berisikan angka hari kapan process dimulai dan seberapa lama hari tersebut digunakan </returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductController.Create">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create
+            </summary>
+            <returns>Menampilkan halaman create product</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductController.Create(PowerAppsCMS.Models.Products)">
+            <summary>
+            Method Post Create digunakan untuk menambahkan data baru di product
+            </summary>
+            <param name="product">Parameter model dari product</param>
+            <returns>Ketika data baru berhasil di input, maka web akan menavigasikan ke halaman details</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductController.Edit(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Edit berfungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">Parameter id yang merupakan id dari product</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductController.Edit(System.Int32,PowerAppsCMS.Models.Products,System.Web.Mvc.FormCollection)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah data dari sebuah product
+            </summary>
+            <param name="id">Parameter id yang merupakan id dari product</param>
+            <param name="product">Parameter model dari product</param>
+            <param name="collection">Parameter dari object FormCollection</param>
+            <returns>Jika data berhasil dirubah, maka web akan menavigasikan ke halaman details</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus sebuah data dari product
+            </summary>
+            <param name="id">Parameter id yang merupakan id dari product</param>
+            <returns>Data berhasil di hapus, dan web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ProductGroupCapacityController">
+            <summary>
+            ProductGroupCapacityController berfungsi sebagai CRUD product group capacity
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductGroupCapacityController.Create(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create
+            </summary>
+            <param name="productGroupId">Parameter productGroupId merupakan id dari product group</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductGroupCapacityController.Create(System.Int32,PowerAppsCMS.Models.ProductGroupCapacity,System.Web.Mvc.FormCollection)">
+            <summary>
+            Method Post Create berfungsi untuk menambah data baru product group capacity
+            </summary>
+            <param name="productGroupId">Parameter productGroupId merupakan id dari product group</param>
+            <param name="productGroupCapacity">Parameter model dari product group capacity</param>
+            <param name="collection">Parameter yang digunakan oleh object FormCollection</param>
+            <returns>Jika data baru berhasil di tambahkan, maka web akan menavigasikan ke halaman detail product group</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductGroupCapacityController.Edit(System.Nullable{System.Int32})">
+            <summary>
+            Method Edit befungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">Parameter id merupakan id dari product group capacity</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductGroupCapacityController.Edit(System.Int32,PowerAppsCMS.Models.ProductGroupCapacity)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah sebuah data dari product group capacity
+            </summary>
+            <param name="id">Parameter id merupakan id dari product group capacity</param>
+            <param name="productGroupCapacity">Parameter model dari product group capacity</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductGroupCapacityController.Delete(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Method Delete berfungsi untuk menghapus sebuah data dari product group capacity
+            </summary>
+            <param name="id">Parameter id merupakan id dari product group capacity</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Jika data berhasil di hapus, maka web akan menavigasikan ke halaman detail product group</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ProductSubGroupController">
+            <summary>
+            ProductSubGroupController berfungsi sebagai CRUD product sub group
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductSubGroupController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan semua list product sub group
+            </summary>
+            <param name="searchName">Parameter searchName digunakan untuk mencari product sub group berdasarkan nama yang di input</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user membuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan semua list product sub group</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductSubGroupController.Details(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Details berfungsi untuk menampilkan detail dari sebuah product sub group
+            </summary>
+            <param name="id">Parameter id yang merupakan id dari product sub group</param>
+            <param name="page">Parameter nomor halaman</param>
+            <param name="currentPage">Parameter nomor halaman saat ini</param>
+            <returns>Menampilkan detail dari sebuah product sub group</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductSubGroupController.Create(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create
+            </summary>
+            <param name="productGroupId">Parameter productGroupId merupakan id dari product group</param>
+            <param name="groupProductPage">Parameter groupProductPage merupakan halaman saat ini yang dibuka ketika user membuka halaman group product</param>
+            <returns>Menampilkan halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductSubGroupController.Create(System.Int32,PowerAppsCMS.Models.ProductSubGroup,System.Web.Mvc.FormCollection)">
+            <summary>
+            Method Post Create berfungsi untuk menambah data baru di product sub group
+            </summary>
+            <param name="productGroupId">Parameter productGroupId merupakan id dari product group</param>
+            <param name="productSubGroup">Parameter model dari product sub group</param>
+            <param name="collection">Parameter yang digunakan oleh object FormCollection</param>
+            <returns>Jika data baru berhasil di input, maka web akan menavigasikan ke halaman detail product group</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductSubGroupController.Edit(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Method Edit befungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">Parameter id merupakan id dari product sub group</param>
+            <param name="currentPage">Parameter currentPage merupakan halaman saat ini yang sedang di akses user</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductSubGroupController.Edit(System.Int32,PowerAppsCMS.Models.ProductSubGroup)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah data dari suatu product sub group
+            </summary>
+            <param name="id">Parameter id merupakan id dari product sub group</param>
+            <param name="productSubGroup">Parameter dari model ProductSubGroup</param>
+            <returns>Jika data berhasil dirubah, maka web akan menavigasikan ke halaman detail product group</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ProductSubGroupController.Delete(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Method Delete berfungsi untuk menghapus sebuah data product sub group
+            </summary>
+            <param name="id">Parameter id merupakan id dari product sub group</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Jika berhasil di delete, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.PROSynchronizeController">
+            <summary>
+            controller ini berfungsi untuk mensinkronisasikan PRO 
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.PROSynchronizeController.Index(System.Nullable{System.Int32},System.String,System.String)">
+            <summary>
+            method ini berfungsi untuk menampilkan halaman yang berisi data-data dari tabel DataZemesFails
+            </summary>
+            <param name="page">merupakan parameter bertipe integer yang berisi data halaman saat ini</param>
+            <param name="proNumber">merupakan parameter bertipe string yang berisi data PRO number</param>
+            <param name="currentFilter">merupakan parameter bertipe string yang berisi data currentFilter</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.PROSynchronizeController.SynchronizePRO(System.Nullable{System.Int32})">
+            <summary>
+            method ini berfungsi untuk menampilkan halaman yang berisi data-data dari tabel DataZemesFails 
+            yang berhasil disinkronisasikan (data yang berhasil ditambahkan ke tabel PRO)
+            dan kemudian data pada tabel DataZemesFails dihapus apabaila data tersebut berhasil ditambahkan
+            </summary>
+            <param name="page">merupakan parameter bertipe integer yang berisi data halaman saat ini</param>
+            <returns></returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ReasonIssueController">
+            <summary>
+            ReasonIssueController berfungsi sebagai CRUD reason issue
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonIssueController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan list semua reason issue
+            </summary>
+            <param name="searchName">Parameter searchName digunakan untuk mencari reason issue berdasarkan nama yang diinput</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user mebuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan list semua reason issue</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonIssueController.Create">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create
+            </summary>
+            <returns>Menampilkan halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonIssueController.Create(PowerAppsCMS.Models.ReasonIssue)">
+            <summary>
+            Method Post Create berfungsi untuk menambah data baru di reason issue
+            </summary>
+            <param name="reasonIssue">Parameter reason issue merupakan parameter dari model reason issue</param>
+            <returns>Jika data baru berhasil diinput, maka web akan menavigasi ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonIssueController.Edit(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Edit berfungsi untuk menampilkan halaman Edit
+            </summary>
+            <param name="id">Parameter id merupakan id dari reason issue</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonIssueController.Edit(System.Int32,PowerAppsCMS.Models.ReasonIssue)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah sebuah data di reason issue
+            </summary>
+            <param name="id">Parameter id merupakan id dari reason issue</param>
+            <param name="reasonIssue">Parameter reasonIssue merupakan parameter dari model reasonissue</param>
+            <returns>Jika data berhasil dirubah, maka web akan menavigasi ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonIssueController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus sebuah data dari reason issue
+            </summary>
+            <param name="id">Parameter id merupakan id dari reason issue</param>
+            <returns>Jika data berhasil dihapus, maka web akan menavigasi ke halaman index</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.ReasonPauseController">
+            <summary>
+            ReasonPauseController berfungsi sebagai CRUD reason pause
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonPauseController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan list semua reason pause
+            </summary>
+            <param name="searchName">Parameter searchName digunakan untuk mencari reason pause berdasarkan nama yang di input</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user membuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan list semua reason pause</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonPauseController.Create">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create
+            </summary>
+            <returns>Menampilkan halaman create</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonPauseController.Create(PowerAppsCMS.Models.ReasonPause)">
+            <summary>
+            Method Post Create berfungsi untuk menambah data baru di reason pause
+            </summary>
+            <param name="reasonPause">Parameter reason pause merupakan parameter dari model reason pause</param>
+            <returns>Jika data baru berhasil diinput, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonPauseController.Edit(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Edit berfungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">Parameter id merupakan id dari reason pause</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonPauseController.Edit(System.Int32,PowerAppsCMS.Models.ReasonPause)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah sebuah data di reason pause
+            </summary>
+            <param name="id">Parameter id merupakan id dari reason pause</param>
+            <param name="reasonPause">Parameter reason pause merupakan parameter dari model reason pause</param>
+            <returns>Jika data berhasil dirubah, maka web akan menavigasikan kehalaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.ReasonPauseController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus sebuah data dari reason pause
+            </summary>
+            <param name="id">Parameter id merupakan id dari reason pause</param>
+            <returns>Jika data berhasil dihapus, maka web akan menavigasikan ke halaman index</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.RoleController">
+            <summary>
+            RoleController berfungsi sebagai CRUD role
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.RoleController.Index(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan list role
+            </summary>
+            <param name="searchName">Parameter nama role yang digunakan untuk mencari role berdasarkan nama yang di input</param>
+            <param name="currentFilter">Parameter yang digunakan untuk mengatur filter ketika user membuka halaman saat ini atau berikutnya</param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>List semua role</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.RoleController.Create">
+            <summary>
+            Method Create berfungsi untuk menampilkan halaman create role
+            </summary>
+            <returns>Menampilkan halaman create role</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.RoleController.Create(PowerAppsCMS.Models.Role)">
+            <summary>
+            Method Post Create berfungsi untuk menambah role baru
+            </summary>
+            <param name="role">Parameter role digunakan oleh object role yang isinya adalah data yang berhubungan dengan role</param>
+            <returns>Jika data berhasil di masukkan, maka akan dinavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.RoleController.Edit(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Method Edit berfungsi untuk menampilkan halaman edit
+            </summary>
+            <param name="id">parameter id yang merupakan id dari role</param>
+            <param name="page">parameter nomor halaman</param>
+            <returns>menampilkan halaman edit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.RoleController.Edit(System.Int32,PowerAppsCMS.Models.Role)">
+            <summary>
+            Method Post Edit berfungsi untuk mengubah data dari role
+            </summary>
+            <param name="id">parameter id yang merupakan id dari role</param>
+            <param name="role">parameter role yang digunakan oleh object Role yang isinya data yang berhubungan dengan role</param>
+            <returns>Jika data berhasil di rubah, maka akan dinavigasikan ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.RoleController.Delete(System.Int32)">
+            <summary>
+            Method Delete berfungsi untuk menghapus data role
+            </summary>
+            <param name="id">parameter id yang merupakan id dari role</param>
+            <returns>jika data berhasil di hapus, maka akan dinavigasikan ke halaman index</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.SFSController">
+            <summary>
+            Controller untuk modul SFS
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SFSController.Index">
+            <summary>
+            Method Index, method yang pertama kali dijalankan ketika user memilih SFS dari 3 pilihan yang ada [MPS, SFS, Master Data]
+            Memfilter Role apa saja yang bisa mengakses SFS
+            Menampilkan Grup Produk yang akan dipilih untuk pengaturan SFS
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SFSController.SetAuthorize">
+            <summary>
+            Method SetAuthorize, mengatur autorisasi pengguna yang memiliki hak akses terhadap SFS
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SFSController.Details(System.Int32)">
+            <summary>
+            Method Details, menampilkan SFS secara rinci untuk setiap Produk Grup yang dipilih pada halaman utama SFS
+            Memfilter Role apa saja yang bisa mengakses halaman Details SFS
+            Menampilkan semua produk yang termasuk ke dalam Grup Produk yang dipilih, untuk mengatur jadwal pengerjaan masing-masing produk
+            </summary>
+            <param name="id">Parameter id dengan tipe data integer, yang dikirim dari halaman utama SFS ketika memilih Grup Produk</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SFSController.GenerateDateForTableHeader">
+            <summary>
+            Method GenerateDateForTableHeader, menghasilkan daftar Bulan-Tahun dengan ketentuan 2 bulan sebelum Bulan Sekarang dan 4 bulan setelah Bulan Sekarang
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SFSController.UpdateDueDate(System.DateTime,System.Int32,System.String)">
+            <summary>
+            Method UpdateDueDate, mengubah Batas Tanggal Terakhir SFS pada pengaturan jadwal pengerjaan SFS untuk setiap Unit
+            Mengubah Batas Tanggal Akhir (SFSDueDate) pada tabel Units
+            Menghapus Isu Proses jika ada
+            Menghapus Proses jika ada
+            Menambahkan Proses untuk setiap Unit
+            </summary>
+            <param name="dueDate">Parameter dueDate dengan tipe data DateTime, Batas Tanggal Terakhir</param>
+            <param name="idUnit">Parameter idUnit dengan tipe data integer, ID untuk setiap Unit yang diubah SFSnya</param>
+            <param name="dataProcess">Parameter dataProcess dengan tipe data string, rangkaian proses-proses untuk setiap Unit yang diubah SFSnya</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SFSController.GetSFSBy(System.Int32)">
+            <summary>
+            Method GetSFSBy, menampilkan semua produk yang ada pada Grup Produk yang dipilih, dimulai dari mengambil PRO, membuat header tabel yang berupa tanggal, mengambil Proses untuk setiap produk, mengambil Aktifitas Harian SFS berdasarkan Unit
+            </summary>
+            <param name="id">Parameter id dengan tipe data integer, yang dikirim dari halaman utama SFS ketika memilih Grup Produk</param>
+            <returns>Return SFSViewModel</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.SFSMappingController">
+            <summary>
+            SFSMappingController berfungsing untuk memapping antara PRO suatu product dengan chasis number
+            </summary>
+            <remarks>Di dalam SFSMappingController terdapat method edit chasis number dan delete</remarks>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SFSMappingController.Index(System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Method Index berfungsi untuk menampilkan list semua unit
+            </summary>
+            <param name="searchSerialNumber">Parameter searchSerialNumber digunakan untuk mencari unit berdasarkan serial number yang di input</param>
+            <param name="searchChasisNumber">Parameter searchChasisNumber digunakan untuk mencari unit berdasarkan chasis number yang di input</param>
+            <param name="currentFilter"></param>
+            <param name="page">Parameter nomor halaman</param>
+            <returns>Menampilkan list semua unit</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SFSMappingController.EditChasisNumber(PowerAppsCMS.Models.Unit)">
+            <summary>
+            Method EditChasisNumber berfungsi untuk mengubah chasis number di unit
+            </summary>
+            <param name="unit">Parameter unit merupakan parameter model dari unit</param>
+            <returns>Chasis number di unit berhasil dirubah</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.SwaggerFaceAPIController">
+            <summary>
+            Menentukan FaceAPIKey dan FaceAPIRoot yang akan digunakan
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerFaceAPIController.#ctor">
+            <summary>
+            Mengambil FaceAPIKey dan FaceAPIRoot yang akan digunakan dari web config
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.SwaggerFaceIdentifyController">
+            <summary>
+            Controller yang digunakan untuk Face Identify
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerFaceIdentifyController.identifyFace(System.String,System.String)">
+            <summary>
+            Mengidentifikasi apakah user yang login memiliki akun di face api,
+            </summary>
+            <param name="groupId"></param>
+            <param name="faceID"></param>
+            <returns>PersonID user</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.SwaggerGetUserController">
+            <summary>
+            Controller untuk mendapatkan user
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGetUserController.GetAllOperator">
+            <summary>
+            Mengambil daftar operator yang masih aktif
+            </summary>
+            <returns>Daftar operator yang masih aktif</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGetUserController.GetAllOperatorPB">
+            <summary>
+            Mengambil daftar operator PB
+            </summary>
+            <returns>Daftar operator PB</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGetUserController.GetOperator(System.String)">
+            <summary>
+            Mengambil spesifik operator berdasarkan personID
+            </summary>
+            <param name="PersonID"></param>
+            <returns>Data operator</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGetUserController.Login(System.String,System.String)">
+            <summary>
+            Login dengan menggunakan username(NRP) dan PIN
+            </summary>
+            <param name="userName"></param>
+            <param name="PIN"></param>
+            <remarks>mengubah pin yang dimasukkan user dalam bentuk encrypt</remarks>
+            <returns>Data operator</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.SwaggerGroupLeaderController">
+            <summary>
+            Controller yang digunakan untuk mengelola fungsi-fungsi yang ada pada halaman grup leader di aplikasi powerapps
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGroupLeaderController.GetGroupLeaderProductionPlanning(System.Int32)">
+            <summary>
+            Mengambil production list yang sesuai dengan process group Group Leader yang login
+            </summary>
+            <param name="processGroupID"></param>
+            <returns>Daftar production list yang sesuai dengan process group Group Leader yang login</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGroupLeaderController.GetProductionProcessDetail(System.Int32,System.Int32)">
+            <summary>
+            Mengambil semua daftar process yang ada pada unit yang dipilih
+            </summary>
+            <param name="productID"></param>
+            <param name="unitID"></param>
+            <param name="userID"></param>
+            <returns>Daftar process dari unit yang dipilih</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGroupLeaderController.GetListAddedOperator(System.Int32)">
+            <summary>
+            Mengambil semua daftar operator yang ditugaskan pada suatu process
+            </summary>
+            <param name="processID"></param>
+            <returns>Daftar operator yang ditugaskan pada suatu process</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGroupLeaderController.GetProcessIssue(System.Int32)">
+            <summary>
+            Mengambil semua daftar list issue yang ada pada process yang dipilih
+            </summary>
+            <param name="processID"></param>
+            <returns>Daftar issue yang ada pada process yang dipilih</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGroupLeaderController.PostAddedOperator(System.Int32,System.String,System.Int32,System.String)">
+            <summary>
+            Menambahkan operator yang akan ditugaskan pada process yang dipilih 
+            </summary>
+            <param name="processID"></param>
+            <param name="userID"></param>
+            <param name="type"></param>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerGroupLeaderController.ForceStop(System.Int32,System.String,System.String)">
+            <summary>
+            Fungsi untuk group leader, untuk menghentikan process kerja operator. Digunakan apabila 
+            operator mengalami kecelakaan atau ada urgensi lain
+            </summary>
+            <param name="processAssignID"></param>
+            <param name="userName"></param>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.SwaggerInspectorController">
+            <summary>
+            Controller yang berisikan fungsi-fungsi yang digunakan dihalaman Inspektor
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerInspectorController.GetInspectorUnitList">
+            <summary>
+            Menampilkan unit yang memiliki status process siap untuk dilakukan pengecekan QC
+            </summary>
+            <returns>Daftar unit yang memiliki status process siap untuk dilakukan pengecekan QC</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerInspectorController.GetInspectorUnitDetail(System.Int32,System.Int32)">
+            <summary>
+            Menampilkan process dari unit yang dipilih
+            </summary>
+            <param name="productID"></param>
+            <param name="unitID"></param>
+            <returns>Daftar process dari unit yang dipilih</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerInspectorController.QCCheck(System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Fungsi untuk mengubah status process menjadi QC Good, dan menghitung
+            apakah semua process pada unit tersebut sudah QC Good, apabila suda maka statusnya menjadi Finishs
+            </summary>
+            <param name="productID"></param>
+            <param name="unitID"></param>
+            <param name="processID"></param>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.SwaggerOperatorController">
+            <summary>
+            Controller yang berisikan fungsi-fungsi yang digunakan dihalaman Operator
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerOperatorController.GetTaskListOperator(System.String,System.Int32)">
+            <summary>
+            Mengambil daftar tugas yang telah ditgaskan pada operator
+            </summary>
+            <param name="userID"></param>
+            <param name="prevStatus"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerOperatorController.GetWorkingLog(System.Int32,System.String)">
+            <summary>
+            Mengambil daftar log pekerjaan operator, untuk melihat aktivitas pekerjaan operator
+            </summary>
+            <param name="processAssignID"></param>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerOperatorController.StartByOperator(System.Int32,System.Int32,System.String)">
+            <summary>
+            Fungsi untuk start proses pekerjaan operator
+            </summary>
+            <param name="processID"></param>
+            <param name="processAssignID"></param>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerOperatorController.StopByOperator(System.Int32,System.String,System.String)">
+            <summary>
+            Fungsi untuk stop pekerjaan operator
+            </summary>
+            <param name="processAssignID"></param>
+            <param name="userName"></param>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerOperatorController.PauseByOperator(System.Int32,System.String,System.String,System.Int32)">
+            <summary>
+            Fungsi untuk pause operator
+            </summary>
+            <param name="processAssignID"></param>
+            <param name="userName"></param>
+            <param name="userID"></param>
+            <param name="reasonID"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.SwaggerPBPlanningController">
+            <summary>
+            Controller yang berisikan fungsi-fungsi yang digunakan dihalaman PB Planning / Group Leader PB
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerPBPlanningController.GetPBPlanning">
+            <summary>
+            Mengambil daftar memo komponen
+            </summary>
+            <returns>Daftar memo komponen</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerPBPlanningController.GetMaterialPreparationProcess(System.Int32)">
+            <summary>
+            Mengambil daftar process untuk komponen yang telah dipilih
+            </summary>
+            <param name="componentID"></param>
+            <returns>Daftar process untuk komponen yang telah dipilih</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerPBPlanningController.GetMemoJobCard(System.Int32)">
+            <summary>
+            Mengambil memo jobcard untuk memo komponen yang dipilih
+            </summary>
+            <param name="memoComponentID"></param>
+            <returns>Daftar memo jobcard untuk memo komponen yang dipilih</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerPBPlanningController.PostMemoJobCard(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Fungsi untuk menambah aktual process memojobcard
+            </summary>
+            <param name="componentID"></param>
+            <param name="memoComponentID"></param>
+            <param name="PBProcessID"></param>
+            <param name="quantity"></param>
+            <param name="memoQuantity"></param>
+            <param name="userID"></param>
+            <param name="userName"></param>
+            <remarks>Menghitung quantity aktual process pada memo jobcard, apakah sudah terpenuhi atau belum</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerPBPlanningController.EditMemoJobCard(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Mengubah quantity aktual komponent pada memo jobcard
+            </summary>
+            <param name="memoJobCardID"></param>
+            <param name="componentID"></param>
+            <param name="memoComponentID"></param>
+            <param name="PBProcessID"></param>
+            <param name="quantity"></param>
+            <param name="memoQuantity"></param>
+            <param name="userID"></param>
+            <param name="userName"></param>
+            <remarks>Menghitung quantity aktual process pada memo jobcard, apakah sudah terpenuhi atau belum</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerPBPlanningController.DeleteMemoJobCard(System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Menghapus aktual komponent pada memo jobcard
+            </summary>
+            <param name="memoJobCardID"></param>
+            <param name="componentID"></param>
+            <param name="memoComponentID"></param>
+            <param name="memoQuantity"></param>
+            <param name="userID"></param>
+            <param name="userName"></param>
+            <remarks>Menghitung quantity aktual process pada memo jobcard, apakah sudah terpenuhi atau belum</remarks>
+            <returns></returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.UploadController">
+            <summary>
+            Controller yang berisikan fungsi-fungsi yang digunakan untuk upload image ketika login di aplikasi powerapps
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UploadController.PostFormData">
+            <summary>
+            Upload foto wajah user ke blobstorage
+            </summary>
+            <remarks>Upload foto wajah user ke blobstorage dan mengembalikan informasi file yang diupload, 
+            seperti extensi file, nama file dan alamat URL file</remarks>
+            <returns>Info dari foto yang diupload, seperti URL foto dan nama file</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UploadController.PostFormData2">
+            <summary>
+            Upload the image to the blob storage
+            </summary>
+            <remarks>Upload the image to the blob storage and returns the UploadedFileInfo</remarks>
+            <returns>UploadedFileInfo</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UploadController.ImageToByte(System.Drawing.Image)">
+            <summary>
+            Image to byte
+            </summary>
+            <param name="img">Image</param>
+            <returns>byte array</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.UserController">
+            <summary>
+            UserController berfungsi sebagai CRUD modul user
+            </summary>
+            <remarks>
+            Di dalam UserController juga terdapat fungsi lain seperti DeleteImages, UserPreview, UploadImages, RetrainImage,
+            EncryptPin, LoadPartialView, IsExistingInAD, GetParent, GetIsAccessPA, CheckUserToAD
+            </remarks>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.Index(System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Berfungsi untuk menampilkan semua list user
+            </summary>
+            <param name="searchName">sebuah string yang berarti nama dari product yang akan di cari memonya</param>
+            <param name="currentFilter">sebuah string yang berarti sedang di filter di halaman index</param>
+            <param name="page">sebuah bilangan integer yang boleh kosong dan berfungsi sebagai angka parameter nomor halaman</param>
+            <returns>mamanggil halaman daftar memo dengan data yang sesuai dengan filter parameter</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.Details(System.Nullable{System.Guid},System.Nullable{System.Int32})">
+            <summary>
+            Berfungsi untuk menampilkan detail dari sebuah user
+            </summary>
+            <param name="id">Sebuah guid yang merupakan id dari user</param>
+            <param name="page">sebuah bilangan integer yang boleh kosong dan berfungsi sebagai angka parameter nomor halaman</param>
+            <returns>Menampilkan detail user</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.Create(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Berfungsi untuk menampilkan halaman create new user
+            </summary>
+            <param name="RoleId">Sebuah bilangan integer yang merupakan id dari role</param>
+            <param name="ProcessGroupId">Sebuah bilangan integer yang merupakan id dari process group</param>
+            <returns>Menampilkan halaman create new user dengan bebrapa data seperti kumpulan role, user, dan process group</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.Create(PowerAppsCMS.Models.User,System.Web.Mvc.FormCollection)">
+            <summary>
+            Berfungsi untuk menambahkan data baru di user
+            </summary>
+            <param name="user">Sebuah object dari model user</param>
+            <returns>Jika data baru berhasil di input, makan web akan meredirect ke halaman yang sesuai dengan role nya</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.Edit(System.Nullable{System.Guid},System.Nullable{System.Int32})">
+            <summary>
+            Berfungsi untuk menampilkan halaman edit user
+            </summary>
+            <param name="id">Sebuah guid yang merupakan id dari user</param>
+            <param name="page">sebuah bilangan integer yang boleh kosong dan berfungsi sebagai angka parameter nomor halaman</param>
+            <returns>Menampilkan halaman edit user</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.Edit(System.Web.Mvc.FormCollection,PowerAppsCMS.Models.User)">
+            <summary>
+            Berfungsi untuk mengubah data user yang dipilih
+            </summary>
+            <param name="collection">Object dari FormCollection yang isinya data dari input form halaman view</param>
+            <param name="user">Object dari model user</param>
+            <returns>Jika data berhasil dirubah, makan web akan meredirect ke halaman detail</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.Delete(System.Guid)">
+            <summary>
+            Berfungsi untuk menghapus data user yang dipilih
+            </summary>
+            <param name="id">Sebuah guid yang merupakan id dari user</param>
+            <returns>Jika berhasil di delete, makan akan meredirect ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.DeleteImage(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Berfungsi untuk menghapus gambar di halaman edit
+            </summary>
+            <param name="id">Sebuah integer yang merupakan id dari user images</param>
+            <param name="page">Sebuah bilangan integer yang boleh kosong dan berfungsi sebagai angka parameter nomor halaman</param>
+            <returns>Gambar berhasil di delete dari database dan blob storage</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.DeletePreviewImage(System.Int32)">
+            <summary>
+            Berfungsi untuk menghapus gambar di halaman user preview
+            </summary>
+            <param name="id">Sebuah integer yang merupakan id dari user image</param>
+            <returns>Gambar berhasil di delete dari database dan blob storage</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.UserPreview(System.Nullable{System.Guid})">
+            <summary>
+            Berfungsi untuk menampilkan halaman user preview yang berfungsi untuk menambahkan gambar user dan 
+            training gambar tersebut sehingga bisa login menggunakan face api
+            </summary>
+            <param name="id">Sebuah guid yang merupakan id dari user</param>
+            <returns>Jika gambar berhasil ditambahkan dan berhasil di train, makan web akan meredirect ke halaman index</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.UploadPhotos(System.Web.Mvc.FormCollection,System.Web.HttpPostedFileBase[])">
+            <summary>
+            Berfungsi untuk mengupload gambar di halaman user preview
+            </summary>
+            <param name="collection">Object dari FormCollection yang isinya data dari input form halaman view</param>
+            <param name="photos">Sebuah array yang berisi kumpulan beberapa gambar yang di upload</param>
+            <returns>Gambar berhasil ditambahkan ke blob storage dan database</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.UpdatePhoto(System.Web.Mvc.FormCollection,System.Web.HttpPostedFileBase[])">
+            <summary>
+            Berfungsi untuk mengupload gambar di halaman edit
+            </summary>
+            <param name="collection">Object dari FormCollection yang isinya data dari input form halaman view</param>
+            <param name="photos">Sebuah array yang berisi kumpulan beberapa gambar yang di upload</param>
+            <returns>Gambar berhasil ditambahkan ke blob storage dan database</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.RetrainImage(System.Guid,System.Nullable{System.Int32})">
+            <summary>
+            Berfungsi untuk train ulang gambar user
+            </summary>
+            <param name="id">Sebuah guid yang merupakan id dari user</param>
+            <param name="page">Sebuah bilangan integer yang boleh kosong dan berfungsi sebagai angka parameter nomor halaman</param>
+            <returns>Person id yang lama akan di hapus terlebih dahulu, dan fungsi akan meredirect ke controller FaceAPI untuk 
+            di train ulang dan mendapatkan person id yang baru</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.EncryptPin(System.String)">
+            <summary>
+            Berfungsi untuk mengenkripsi pin
+            </summary>
+            <param name="pin">Sebuah string yang isinya merupakan pin user</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.LoadPartialView(System.String)">
+            <summary>
+            Berfungsi untuk menampilkan partial view berdasarkan tipe user, apakah user powerapps atau user ad di halaman create new user
+            </summary>
+            <param name="target">Sebuah string bersisikan referensi halaman mana yang akan ditampilkan</param>
+            <returns>Menampilkan halaman sesuai dengan yang dipilih user</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.IsExistingInAD(System.String)">
+            <summary>
+            Berfungsi untuk mengecek apakah username yang di input, ada di ad atau tiak
+            </summary>
+            <param name="name">Sebuah string yang merupakan username yang di input oleh user</param>
+            <returns>Jika ada makan return nya true, jika tidak ada maka return nya false</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.GetParent(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Berfungsi untuk mengambil data parent user
+            </summary>
+            <param name="role">Sebuah integer yang merupakan id dari role</param>
+            <param name="processGroup">Sebuah integer yang merupakan id dari process group</param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.GetIsAccessPA(System.Nullable{System.Int32})">
+            <summary>
+            Berfungsi untuk mengecek apakah role yang dipilih mempunyai akses powerapps atau tidak
+            </summary>
+            <param name="role">Sebuah integer yang merupakan id dari role</param>
+            <returns>Jika mempunyai akses powerapps makan return nya true</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.CheckUserToAD(System.String)">
+            <summary>
+            berfungsi untuk mengambil data user dari ad
+            </summary>
+            <param name="username">Sebuah string yang berisikan username user yang di input oleh user</param>
+            <returns>Menampilkan data user dari ad</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.SignOut">
+            <summary>
+            Berfungsi untuk sign out
+            </summary>
+            <returns>Muncul pop up untuk login</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.UploadImages(System.String,System.Web.HttpPostedFileBase[])">
+            <summary>
+            Berfungsi untuk mengupload gambar
+            </summary>
+            <param name="pegawiID">Sebuag string yang berisikan id dari user</param>
+            <param name="photos">Sebuah array yang berisi kumpulan beberapa gambar yang di upload</param>
+            <returns>Gambar berhasil di upload ke blob storage dan database</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.UserController.DeleteImages(PowerAppsCMS.Models.UserImage)">
+            <summary>
+            Berfungsi untuk menghapus gambar
+            </summary>
+            <param name="userImage">Sebuah object yang merupakan model dari user image</param>
+        </member>
+        <member name="T:PowerAppsCMS.Controllers.InMemoryMultipartFormDataStreamProvider">
+            <summary>
+            Merupakan class MultipartStreamProvider yang digunakan untuk fungsi upload multiple
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Controllers.InMemoryMultipartFormDataStreamProvider.FormData">
+            <summary>
+            Gets a <see cref="T:System.Collections.Specialized.NameValueCollection"/> of form data passed as part of the multipart form data.
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Controllers.InMemoryMultipartFormDataStreamProvider.Files">
+            <summary>
+            Gets list of <see cref="T:System.Net.Http.HttpContent"/>s which contain uploaded files as in-memory representation.
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.InMemoryMultipartFormDataStreamProvider.ExecutePostProcessingAsync">
+            <summary>
+            Read the non-file contents as form data.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.InMemoryMultipartFormDataStreamProvider.UnquoteToken(System.String)">
+            <summary>
+            Remove bounding quotes on a token if present
+            </summary>
+            <param name="token">Token to unquote.</param>
+            <returns>Unquoted token.</returns>
+        </member>
+        <member name="T:PowerAppsCMS.CustomAuthentication.CustomAuthorizeAttribute">
+            <summary>
+            Atribut otorisasi user untuk keamanan User yang diakses pada Controller
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.CustomAuthentication.CustomAuthorizeAttribute.CurrentUser">
+            <summary>
+            Mengembalikan data User yang sedang menggnakan aplikasi/login
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomAuthorizeAttribute.AuthorizeCore(System.Web.HttpContextBase)">
+            <summary>
+            Method AuthorizeCore, method inti dari otorisasi terhadap User untuk pengecekan apakah sebuah Username termasuk ke dalam salah satu Role
+            </summary>
+            <param name="httpContext">Parameter httpContext yang didapat dari browser</param>
+            <returns>Return 'True' jika sebuah Username termasuk ke dalam sebuah Role, 'False' jika tidak</returns>
+        </member>
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomAuthorizeAttribute.HandleUnauthorizedRequest(System.Web.Mvc.AuthorizationContext)">
+            <summary>
+            Method HandleUnauthorizedRequest, method handling untuk mengembalikan Login Error
+            </summary>
+            <param name="filterContext">Parameter filterContext yang didapat dari browser</param>
+        </member>
+        <member name="T:PowerAppsCMS.CustomAuthentication.CustomMembership">
+            <summary>
+            Custom membership Provider untuk layanan membership keamanan User
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:PowerAppsCMS.CustomAuthentication.CustomMembership.ValidateUser(System.String,System.String)" -->
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomMembership.CreateUser(System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Object,System.Web.Security.MembershipCreateStatus@)">
+            <summary>
+            
+            </summary>
+            <param name="username"></param>
+            <param name="password"></param>
+            <param name="email"></param>
+            <param name="passwordQuestion"></param>
+            <param name="passwordAnswer"></param>
+            <param name="isApproved"></param>
+            <param name="providerUserKey"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomMembership.GetUser(System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="username"></param>
+            <param name="userIsOnline"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomMembership.GetUserNameByEmail(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PowerAppsCMS.CustomAuthentication.CustomMembershipUser">
+            <summary>
+            Propertis membership yang digunakan pada kemananan User
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.CustomAuthentication.CustomMembershipUser.UserId">
+            <summary>
+            Propertis yang digunakan dalam identitas login User
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomMembershipUser.#ctor(PowerAppsCMS.Models.User)">
+            <summary>
+            
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="T:PowerAppsCMS.CustomAuthentication.CustomPrincipal">
+            <summary>
+            Objek-objek prinsip pada fungsional dasar keamanan login
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.CustomAuthentication.CustomPrincipal.UserId">
+            <summary>
+            Propertis yang digunakan dalam identitas login User
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.CustomAuthentication.CustomPrincipal.Identity">
+            <summary>
+            Method Identity, definisi dari fungsi dasar identitas objek User
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomPrincipal.IsInRole(System.String)">
+            <summary>
+            Method IsInRole, fungsi dasar pengecekan apakah User memiliki Role tertentu
+            </summary>
+            <param name="role"></param>
+            <returns>Return 'True' jika sebuah Username termasuk ke dalam sebuah Role, 'False' jika tidak</returns>
+        </member>
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomPrincipal.#ctor(System.String)">
+            <summary>
+            Inisialisasi identitas baru yang merepresentasikan pengguna tertentu
+            </summary>
+            <param name="username"></param>
+        </member>
+        <member name="T:PowerAppsCMS.CustomAuthentication.CustomRole">
+            <summary>
+            Custom role Provider untuk security login User
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomRole.IsUserInRole(System.String,System.String)">
+            <summary>
+            Method IsUserInRole, method untuk pengecekan apakah sebuah Username termasuk ke dalam sebuah Role
+            </summary>
+            <param name="username">Parameter username dengan tipe data string</param>
+            <param name="roleName">Parameter roleName dengan tipe data string</param>
+            <returns>Return 'True' jika sebuah Username termasuk ke dalam sebuah Role, 'False' jika tidak</returns>
+        </member>
+        <member name="M:PowerAppsCMS.CustomAuthentication.CustomRole.GetRolesForUser(System.String)">
+            <summary>
+            Method GetRolesForUser, method untuk mengambil rangkaian/beberapa Role yang dimiliki oleh sebuah Username
+            </summary>
+            <param name="username">Parameter username dengan tipe data string</param>
+            <returns>Array/rangakaian string Role</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Models.Component">
+            <summary>
+            Partial class Component berfungsi sebagai partial class dari model Component
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Component.LongDisplayText">
+            <summary>
+            Menampilkan data long dengan tambahan satuan milimeter
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Component.WidthDisplayText">
+            <summary>
+            Menampilkan data width dengan tambahan satuan milimeter
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Component.ThicknessDisplayText">
+            <summary>
+            Menampilkan data thickness dengan tambahan satuan milimeter
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ComponentMaterialPreparationProcessModel">
+            <summary>
+            Model yang digunakan pada halaman Memo Jobcard
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ComponentMaterialPreparationProcessModel.PBProcessID">
+            <summary>
+            ID proses komponen
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ComponentMaterialPreparationProcessModel.ProcessName">
+            <summary>
+            Nama proses komponen
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.DataZemesFail">
+            <summary>
+            merupakan class yang berfungsi untuk menambahkan kolom baru yang mana merepresentasikan kesuatu tabels 
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.Holiday">
+            <summary>
+            Partial class model holiday
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ListAddedOperator">
+            <summary>
+            Model yang digunakan untuk menyimpan data List Operator pada halaman assign operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListAddedOperator.ID">
+            <summary>
+            ID Process Assign
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListAddedOperator.UserID">
+            <summary>
+            user ID operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListAddedOperator.StatusID">
+            <summary>
+            ID status aktivitas operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListAddedOperator.Name">
+            <summary>
+            Nama operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListAddedOperator.StatusName">
+            <summary>
+            Nama status aktivitas operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListAddedOperator.Type">
+            <summary>
+            Tipe pekerjaan operator
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ListProcessIssue">
+            <summary>
+            Model yang digunakan untuk menyimpan daftar isu proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListProcessIssue.ProcessIssueID">
+            <summary>
+            ID Process Issue
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListProcessIssue.ReasonIssueID">
+            <summary>
+            ID alasan issue
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListProcessIssue.IssueName">
+            <summary>
+            Nama issue
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListProcessIssue.Status">
+            <summary>
+            Status issue
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListProcessIssue.StartDate">
+            <summary>
+            Tanggal issu dibuat
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ListProcessIssue.FinishDate">
+            <summary>
+            Tanggal issue selesai
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MasterPlanSchedule">
+            <summary>
+            merupakan partial class dari model MasterPlanSchedule
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MasterPlanSchedule.AssignedPlanCount">
+            <summary>
+            Merupakan atribut yang mengembalikan sebuah bilangan bulat yang menandakan jumlah plan yang sudah di assign pada sebuah MPS
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MasterPlanSchedule.CurrentPlannedQuantity">
+            <summary>
+            Merupakan atribut bertipe integer yang mengembalikan nilai jumlah quantity MPS yang tidak di hold
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MasterPlanSchedule.HoldUnitQuantity">
+            <summary>
+            merupakan atribut yang menampilkan jumlah Quantity dari MPS yang dihold
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MasterProcess">
+            <summary>
+            Merupakan partial class model dari MasterProcess yang berisikan atribut-atribut tambahan yang tidak ada dalam database tetapi bisa diperoleh dari hasil perhitungan dari atribut lainya yang ada
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MasterProcess.CanDeleted">
+            <summary>
+            Merupakan atribut yang menandakan apakah sebuah MasterProcess boleh didelete
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MasterProcess.MaxDayUsed">
+            <summary>
+            Atribut bertipe decimal yang menampilkan jumlah MaxDay yang digunaan dalam sabuah master proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MasterProcess.CycleTimeDisplayText">
+            <summary>
+            atribut yang menampilkan jumlah cycletime + satuannya sebuah master process
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.Material">
+            <summary>
+            Partial class model material
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.Memo">
+            <summary>
+            Partial class model memo
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MemoComponentModel">
+            <summary>
+            Model yang digunakan untuk menyimpan data memo component pada halaman PB
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.MemoComponentID">
+            <summary>
+            ID memo komponen
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.MemoID">
+            <summary>
+            ID memo
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.ComponentID">
+            <summary>
+            ID komponen
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.StatusID">
+            <summary>
+            ID status memo
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.StatusName">
+            <summary>
+            Nama status memo
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.PartNumber">
+            <summary>
+            Part number
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.PartName">
+            <summary>
+            Part name
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.TotalComponentQuantity">
+            <summary>
+            Total jumlah komponen
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.PRONumberDisplayText">
+            <summary>
+            Daftar PRO
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoComponentModel.MemoDateCreated">
+            <summary>
+            Tanggal memo dibuat
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MemoJobCardModel">
+            <summary>
+            Model yang digunakan untuk menyimpan data actual Memo Jobcard
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoJobCardModel.JobCardID">
+            <summary>
+            ID memo jobcard
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoJobCardModel.PBProcessID">
+            <summary>
+            ID proses komponen
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoJobCardModel.PBProcessName">
+            <summary>
+            Nama proses komponen
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoJobCardModel.Quantity">
+            <summary>
+            jumlah yang dibutuhkan
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoJobCardModel.UserName">
+            <summary>
+            username 
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MemoJobCardModel.Date">
+            <summary>
+            Tanggal jobcard dibuat
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MemoPRO">
+            <summary>
+            Partial class model memo pro
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MonthRange">
+            <summary>
+            Model Class yang digunakan untuk menyimpan informasi range data bulan yang ditampilkan pada MPS
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MonthRange.MonthDisplayText">
+            <summary>
+            atribut untuk menyimpan data nama bulan
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MonthRange.Month">
+            <summary>
+            atribut untuk menyimpan data nomor bulan
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MonthRange.Year">
+            <summary>
+            atribut untuk menyimpan tahun 
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MonthRange.Capacity">
+            <summary>
+            atribut menyimpan capacity mps pada sebuah bulan
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MonthRange.WeekNumberList">
+            <summary>
+            atribut menyimpan daftar weeknumber sebuah bulan
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Models.MonthRange.#ctor">
+            <summary>
+            fungsi yang dijalankan ketika class monthrange diinisiasi lalu membuat sebuah objek weeknumberlist
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.tempImage.ImageDataUrl">
+            <summary>
+            Menampilkan data long dengan tambahan satuan milimeter
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ComponentDataAnotation">
+            <summary>
+            Data anotation untuk model component
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.HolidayDataAnotation">
+            <summary>
+            Data anotaion untuk model holiday
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MasterProcessDataAnotation">
+            <summary>
+            Data anotation untuk model component
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MaterialDataAnotation">
+            <summary>
+            Data anotation untuk model material
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MemoDataAnotation">
+            <summary>
+            Data anotation untuk model memo
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.PRO">
+            <summary>
+            Merupakan partial class model PRO
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.DueDateDisplayText">
+            <summary>
+            Menampilkan data tanggal DueDate dari sebuah PRO
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.SONumberListDisplayText">
+            <summary>
+            Atribut yang menampilkan daftar nama SONumber yang dimapping pada PRO
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.CustomerListInSODisplayText">
+            <summary>
+            Atribut yang menampilkan daftar nama customer dari PRO
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.UnHoldUnitCount">
+            <summary>
+            Atribut yang menampilkan jumlah unit yang tidak dihold dalam pro tersebut
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.ItCanEdit">
+            <summary>
+            atribute yang menyimpan informasi apakah sebuah pro boleh di edit atau tidak
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.HaveWarningMPSDuedate">
+            <summary>
+            atribut yang menyimpan informasi apakah PRO tersebut memiliki warning terhadap mps due date atau tidak
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.PROCategoryCSSClass">
+            <summary>
+            atribut yang menyimpan informasi css class yang akan ditampilkan dihalaman MPS untuk PRO tersebut
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.MinimumDueDate">
+            <summary>
+            atribut tambahan yang akan digunakan untuk menyimpan nilai minimum due date yang bisa dimiliki sebuah PRO
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.MPSActualList">
+            <summary>
+            atribut yang akan digunakan untuk menyimpan data daftar MPS Actual dari PRO tersebut
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.CurrentMonthCarryOver">
+            <summary>
+            atribut yang akan digunakan untuk menyimpan informasi nilai carryover untuk current month dari pro 
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.LastMonthCarryOver">
+            <summary>
+            atribut yang akan digunakan untuk menyimpan informasi nilai carryover untuk satu bulan sebalun current month dari pro 
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.PRO.MaximumPlanQuantity">
+            <summary>
+            atribut yang akan digunakan untuk menyimpan informasi nilai Maximal dari Plan Quantity yang dimiliki PRO 
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.Process">
+            <summary>
+            Merupakan partial class dari model Process
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Process.IsHaveProcessAssign">
+            <summary>
+            atribut yang menyimpan informasi apakah prosess sudah di assign atau belum
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Process.IsHaveProcessIssue">
+            <summary>
+            atribut yang menyimpan informasi apakah prosess memiliki issue atau tidak
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Process.StatusDisplayText">
+            <summary>
+            atribut yang menampilkan informasi status
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProcessGroup">
+            <summary>
+            Partial class model process group
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProcessGroupDataAnotation">
+            <summary>
+            Data anotation process group
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.Products">
+            <summary>
+            Partial class model product
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Products.PartNumberName">
+            <summary>
+            atribut yang menampilkan partnumber dan nama dari Product
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Products.MaxDayUsed">
+            <summary>
+            atribut yang menampilkan nilai maksimal day yang digunakan oleh sebuah produk
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Products.MaxDayUsedDisplayText">
+            <summary>
+            atribut yang menampilkan nilai maxdayused + satuannya
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductDataAnotation">
+            <summary>
+            Data anotation model product
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductComposition">
+            <summary>
+            Partial class model product composition
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductComposition.ComponentPartNumber">
+            <summary>
+            Menampilkan data part number component dengan part name component
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductGroup">
+            <summary>
+            Partial class model product group
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductGroupDataAnotation">
+            <summary>
+            Data anotation product group
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductGroupCapacity">
+            <summary>
+            Partial class product group capacity
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.urlmetadata">
+            <summary>
+            Data anotation product group capacity
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductSubGroup">
+            <summary>
+            Partial class model product sub group
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductSubGroupDataAnotation">
+            <summary>
+            Data anotation product sub group
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.Role">
+            <summary>
+            Partial class model role
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.RoleDataAnotation">
+            <summary>
+            Data anotaion role
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.SalesOrder">
+            <summary>
+            Partial class model sales order
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.SalesOrderDataAnotation">
+            <summary>
+            Data anotation sales order
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.Unit">
+            <summary>
+            Merupakan partial class dari model Unit yang menyimpan informasi atribut tambahan yang dibutuhkan
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Unit.IsHaveProcessAssign">
+            <summary>
+            atribut yang menyimpan informasi apakah sebuah unit sudah memelik process assign atau belum
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Unit.IsHaveSFS">
+            <summary>
+            atribut yang menyimpan informasi apakah sebuah unit sudah memiliki tanggal sfs
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Unit.SFSCategoryCSSClass">
+            <summary>
+            atribut yang menyimpan informasi css class yang akan digunakan pada halaman sfs untuk unit tersebut
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Unit.MPSCategoryCSSClass">
+            <summary>
+            atribut  yang menyimpan informasi css class yang dibutuhkan sebuah unit dihalaman MPS
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.Unit.IsHaveProcessIssue">
+            <summary>
+            atribut yang menyimpan informasi apakah adah prosess issue yang ada pada prosses diunit tersebut
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.User">
+            <summary>
+            Partial class model user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.User.UserDetail">
+            <summary>
+            Menampilkan data nama user beserta employee number
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.UserDataAnotation">
+            <summary>
+            Data anotation user
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductionPlanning">
+            <summary>
+            Model yang digunakan untuk meyimpan daftar unit pada halaman group leaders
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.UnitID">
+            <summary>
+            ID unit
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.StatusID">
+            <summary>
+            status unit
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.StatusName">
+            <summary>
+            Nama status unit
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.SerialNumber">
+            <summary>
+            Serial number
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.PRO">
+            <summary>
+            daftar PRO
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.Product">
+            <summary>
+            ID produk
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.Customer">
+            <summary>
+            Daftar pelanggan
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.ProductID">
+            <summary>
+            ID produk
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductionPlanningUnitDetail">
+            <summary>
+            Model yang digunakan untuk menyimpan daftar proses dari unit yang dipilih pada halaman group leaders
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.ProcessID">
+            <summary>
+            ID proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.ProcessGroupID">
+            <summary>
+            ID grup proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.IsCanAccess">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.StatusID">
+            <summary>
+            ID status proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.StatusName">
+            <summary>
+            Nama status proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.ProcessName">
+            <summary>
+            Nama proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.ManHour">
+            <summary>
+            Jumlah jam kerja operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.ManPower">
+            <summary>
+            Jumlah operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.MasterProcessID">
+            <summary>
+            ID master proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanningUnitDetail.ManHourActual">
+            <summary>
+            Total jumlah jam kerja operator
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProSP">
+            <summary>
+            Merupakan class yang digunakan untuk menampung data PRO List dari SP 
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Models.ProSP.GetProByProductGroupID(System.Int32)">
+            <summary>
+            Method GetProByProductGroupID, method yang mengambil data PRO berdasarkan ID Produk Group
+            </summary>
+            <param name="productGroupID">Parameter productGroupID dengan tipe data integer</param>
+            <returns>List/daftar PRO</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Models.SFSDailyActivity">
+            <summary>
+            Model class untuk menampung data yang sudah dimanipulasi pada class DailyActivity
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.DailyActivity">
+            <summary>
+            Model class untuk menampung data yang diambil dari SP GetSfsDailyActivity
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.SFSProcess">
+            <summary>
+            Model class untuk menampung data yang diambil dari SP GetSfsProcess
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.TaskListOperator">
+            <summary>
+            Class yang digunakan untuk menyimpan data daftar yang sudag di assign keoperator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.ProcessAssignID">
+            <summary>
+            ID process assign
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.UserID">
+            <summary>
+            ID user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.SerialNumber">
+            <summary>
+            Serial number
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.ProcessID">
+            <summary>
+            ID proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.ProcessName">
+            <summary>
+            Nama proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.PRO">
+            <summary>
+            PRO
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.ProductName">
+            <summary>
+            Nama produk
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.Customer">
+            <summary>
+            Nama pelanggan
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.StatusID">
+            <summary>
+            ID status operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.ProcessStatus">
+            <summary>
+            ID status proses
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.TaskListOperator.Type">
+            <summary>
+            Tipe pekerjaan operator
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.UploadedFileInfo">
+            <summary>
+            Informasi untuk file yang diupload
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UploadedFileInfo.FileName">
+            <summary>
+            Nama file
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UploadedFileInfo.FileExtension">
+            <summary>
+            Extensi file
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UploadedFileInfo.FileURL">
+            <summary>
+            URL file
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UploadedFileInfo.ContentType">
+            <summary>
+            Tipe content file
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.UserModel">
+            <summary>
+            Class model yang menyimpan informasi user powerapps
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.ID">
+            <summary>
+            ID user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.Name">
+            <summary>
+            Nama user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.EmployeeNumber">
+            <summary>
+            NRP user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.RoleID">
+            <summary>
+            ID Role user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.ProcessGroupID">
+            <summary>
+            ID grup proses dari group leader
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.ParentUserID">
+            <summary>
+            ID parent dari user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.Email">
+            <summary>
+            Email user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.IsActive">
+            <summary>
+            Status user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.IsAssign">
+            <summary>
+            status operator apakah sudah ditugaskan atau belum
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.PersonID">
+            <summary>
+            Person ID user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.ProcessGroupName">
+            <summary>
+            Nama grup proses user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.RoleName">
+            <summary>
+            Nama role
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.PIN">
+            <summary>
+            PIN user
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.UserName">
+            <summary>
+            username user
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.WeekNumber">
+            <summary>
+            Class model yang menyimpan informasi data yang digunakan untuk week number sebuah bulan pada MPS
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.WeekNumber.Number">
+            <summary>
+            bilangan dari minggu 
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.WeekNumber.EndsWorkingDate">
+            <summary>
+            tanggal akhir yang berlaku pada hari kerja pada minggu tersebut
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.WeekNumber.StartsWorkingDate">
+            <summary>
+            tanggal awal yang berlaku pada hari kerja pada minggu tersebut
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.WeekNumber.EndsDateWeek">
+            <summary>
+            tanggal akhir yang berlaku pada minggu tersebut
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.WeekNumber.StartsDateWeek">
+            <summary>
+            tanggal awal yang berlaku pada minggu tersebut
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.MPSActual">
+            <summary>
+            class yang menyimpan informasi actual dari sebuah MPS
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MPSActual.Total">
+            <summary>
+            total unit yang sudah memiliki actual
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MPSActual.Week">
+            <summary>
+            bilangan minggu dari mps actual
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MPSActual.Month">
+            <summary>
+            bilangan bulan dari mps actual
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MPSActual.Year">
+            <summary>
+            tahun dari mps actual
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MPSActual.EndsDateWeek">
+            <summary>
+            tanggal akhir yang berlaku pada minggu tersebut
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MPSActual.StartsDateWeek">
+            <summary>
+            tanggal awal yang berlaku pada minggu tersebut
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.MPSActual.UnitList">
+            <summary>
+            daftar unit yag sudah finis/selesai pada minggu tersebut
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.WorkingLog">
+            <summary>
+            Class model yang menyimpan informasi aktivitas pekerjaan operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.WorkingLog.Remark">
+            <summary>
+            Nama aktivitas operator atau alasan pause operator
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.WorkingLog.ActivityDateTime">
+            <summary>
+            waktu aktivitas operator
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Services.FaceAPIService">
+            <summary>
+            Kumpulan service untuk 
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Services.ImageServices">
+            <summary>
+            Berfungsi untuk mengupload gambar ke blob storage, berisikan fungsi UploadImage, dan DeleteImage
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Services.ImageServices.UploadImage(System.Web.HttpPostedFileBase)">
+            <summary>
+            Berfungsi untuk mengupload gambar ke dalam blob storage
+            </summary>
+            <param name="imageUpload">Object yang berisikan file gambar</param>
+            <returns>Gambar berhasil di upload ke blob storage</returns>
+        </member>
+        <member name="M:PowerAppsCMS.Services.ImageServices.DeleteImage(System.String)">
+            <summary>
+            Berfungsi untuk menghapus gambar di dalam blob storage
+            </summary>
+            <param name="url">Sebuah string yang berisikan url dari gambar</param>
+        </member>
+        <member name="M:PowerAppsCMS.Services.ImageServices.ImageToByte(System.Drawing.Image)">
+            <summary>
+            Image to byte
+            </summary>
+            <param name="img">Image</param>
+            <returns>byte array</returns>
+        </member>
+        <member name="T:PowerAppsCMS.Services.NewMemoServices">
+            <summary>
+            Berfungsi sebagai class untuk menyimpan data sementara dari session
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.ComponentViewModel">
+            <summary>
+            view model dari component yang berisi beberapa data seperti Object component, integer MaterialID, Object list ComponentmaterialPreparationProcess,
+            array integer SelectedMaterialPreparationProcess, IEnumberable object MaterialPreparationProcessesCollections,
+            object list ComponentCollections, dan method ComponentViewModel
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.GroupProductViewModel">
+            <summary>
+            View model dari product group yang berisi object ProductGroup, object list ProductSubGroups, dan object list ProductGroupCapacities
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.MasterProcessViewModel">
+            <summary>
+            Merupakan Class View Model Master Process yang digunakan untuk menampilkan dan mengelola data master process di modul CRUD. 
+            Atribut yang digunakan hampir mirip dengan atribut model master process
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.MemoViewModel">
+            <summary>
+            View model dari memo yang berisikan object Memo, MemoPRO, Product, Feedback, MemoType, SelectedPRO
+            integer ProductID, FeedbackID, MemoTypeID, list object ListofMemoPRO, ProductCompositions, ListofMemos, ListofMemoComponents, PROCollections
+            integer array selectedProID, selectedPROComponentID, List integer SelectedComponent, dan method MemoViewModel
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.MPSMappingViewModel">
+            <summary>
+            View model dari MPSMapping yang berisikan object SalesOrder, Product, List object ProCollections, ListOfPROSalesOrder,
+            dan integer array SelectedPROID
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.MPSViewModel">
+            <summary>
+            Merupakan class model yang digunakan untuk menyimpan beberapa class atau object yang dibutuhkan pada halaman detail MPS
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.ViewModel.MPSViewModel.PROList">
+            <summary>
+            Atribut PROList yang merupakan list of PRO yang berisikan daftar PRO yang akan ditampilkan
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.ViewModel.MPSViewModel.MonthRangeList">
+            <summary>
+            Atribut MonthRangeList yang merupakan list of MonthRange yang berisikan daftar MonthRange yang akan ditampilkan
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.ViewModel.MPSViewModel.#ctor">
+            <summary>
+            Fungsi yang dijalankan ketika Class MPSViewModel diinisiasi.
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.ProductSubGroupViewModel">
+            <summary>
+            View model ProductSubGroup yang berisikan object ProductSubGroup, Pager, List object Products, dan IEnumerable object ListOfProducts
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.Pager">
+            <summary>
+            Berfunsgi sebagai model class untuk pagination di halaman product sub group
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.ProductViewModel">
+            <summary>
+            View model dari product yang berisikan object Product, list object MasterProcesses, Components ProcessDependencies, ProductCompositions,
+            ComponentMaterialPreparationProcesses, integer array SelectedComponentID, dan IEnumberable object ComponentCollections
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.SFSViewModel">
+            <summary>
+            Model class untuk menampung data pada modul SFS yang terdiri dari ::
+            List PRO
+            List PRO Sales Order
+            List Hari Libur
+            List Skedul Harian
+            List Aktifitas Harian
+            List Proses SFS
+            List Header Tanggal
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.ViewModel.UserViewModel">
+            <summary>
+            View model dari user yang berisikan object User, ProcessGroup, dan list object UserImages
+            </summary>
+        </member>
+    </members>
+</doc>

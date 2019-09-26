@@ -1,0 +1,119 @@
+﻿@model IEnumerable<PowerAppsCMS.Models.ProductGroupCapacity>
+
+@{
+    ViewBag.Title = "Capacity Design";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<h1 class="page-title mt-5">Capacity Design</h1>
+<table class="table table-bordered custom-table">
+    <thead class="thead-dark">
+        <tr>
+            <th class="number-column">No</th>
+            <th>Product Category</th>
+            <th>Capacity per Month</th>
+            <th>Start Month</th>
+            <th class="text-right">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var index = 0;
+        }
+        @foreach (var item in Model)
+        {
+            index++;
+            <tr class="capacity-setting">
+                <td>@index</td>
+                <td>@item.ProductGroup.Name</td>
+                <td class="capacity-label">@item.Capacity</td>
+                <td class="input-form-capacity hide">
+                    <input type="number" class="form-control" value="@item.Capacity" name="capacityValue" />
+                    <input type="number" value="@item.ID" class="capacitySettingId hide" name="capacitySettingId" />
+                </td>
+                <td class="start-month-label">@item.StartMonth.ToString("MMMM") - @item.StartMonth.Year</td>
+                <td class="input-form-start-month hide">
+                    @Html.EditorFor(model => item.StartMonth, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td class="edit-capacity text-right">
+                    <a class="btn btn-primary btn-sm edit-capacity-btn" href="#"  data-toggle="tooltip" data-placement="top" title="Edit"><i data-feather="edit"></i></a>
+                    <a class="btn btn-danger btn-sm delete-capacity-btn" href="#"  data-toggle="tooltip" data-placement="top" title="Delete"><i data-feather="trash"></i></a>
+                </td>
+                <td class="action-capacity hide text-right">
+                    <a class="btn btn-danger btn-sm cancel-capacity-btn" href="#"  data-toggle="tooltip" data-placement="top" title="Cancel"><i data-feather="x"></i></a>
+                    <button class="btn btn-success btn-sm success-capacity-btn save-capacity-btn" type="submit"  data-toggle="tooltip" data-placement="top" title="Save"><i data-feather="save"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var capacityID = 0;
+
+            $('.edit-capacity-btn').click(function () {
+                $(this).closest(".capacity-setting").find('.action-capacity').removeClass('hide');
+                $(this).closest(".capacity-setting").find('.edit-capacity').addClass('hide');
+                $(this).closest(".capacity-setting").find('.input-form-capacity').removeClass('hide');
+                $(this).closest(".capacity-setting").find('.input-form-start-month').removeClass('hide');
+                $(this).closest(".capacity-setting").find('.capacity-label').addClass('hide');
+                $(this).closest(".capacity-setting").find('.start-month-label').addClass('hide');
+            })
+
+            $('.cancel-capacity-btn').click(function () {
+                $(this).closest(".capacity-setting").find('.action-capacity').addClass('hide');
+                $(this).closest(".capacity-setting").find('.edit-capacity').removeClass('hide');
+                $(this).closest(".capacity-setting").find('.input-form-capacity').addClass('hide');
+                $(this).closest(".capacity-setting").find('.input-form-start-month').addClass('hide');
+                $(this).closest(".capacity-setting").find('.capacity-label').removeClass('hide');
+                $(this).closest(".capacity-setting").find('.start-month-label').removeClass('hide');
+            });
+
+            $('.save-capacity-btn').click(function (e) {
+                $('.loading').removeClass('hide');
+
+                var data = {
+                    ID: $(this).closest(".capacity-setting").find("input[name='capacitySettingId']").val(),
+                    Capacity: $(this).closest(".capacity-setting").find("input[name='capacityValue']").val(),
+                    StartMonth: $(this).closest(".capacity-setting").find("input[name='item.StartMonth']").val()
+                };
+                console.log(data);
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Edit", "CapacitySetting")",
+                    data: data,
+                    success: function (response) {
+                        $('.loading').addClass('hide');
+                        if (response.success) {
+                            alert(response.responseText);
+                            window.location.href = "@Url.Action("Index", "CapacitySetting")";
+                        }
+                        else {
+                            alert(response.responseText);
+                            window.location.href = "@Url.Action("Index", "CapacitySetting")";
+                        }
+                    }
+                });
+
+            });
+
+            $(".delete-capacity-btn").click(function () {
+                capacitySettingID = $(this).closest(".capacity-setting").find("input[name='capacitySettingId']").val();
+                if (confirm("Are you sure want to delete this capacity?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "CapacitySetting")?id=" +capacitySettingID;
+                };
+                return false;
+            });
+        });
+    </script>
+}

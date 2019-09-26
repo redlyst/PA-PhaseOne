@@ -1,0 +1,252 @@
+﻿body {
+    font-size: 1rem;
+}
+
+.feather {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+    z-index: 100; /* Behind the navbar */
+    padding: 70px 0 0; /* Height of navbar */
+    border-right: 1px solid #e3ebf6;
+}
+
+.sidebar-sticky {
+    position: fixed !important;
+    top: 0;
+    height: calc(100vh);
+    padding-top: 70px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    width: 275px;
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+    .sidebar-sticky {
+        position: -webkit-sticky;
+        position: sticky;
+    }
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+}
+
+    .sidebar .nav-link .feather {
+        margin-right: 4px;
+        color: #999;
+    }
+
+    .sidebar .nav-link.active,
+    .sidebar .nav-link.active .feather {
+        color: #fff;
+        background-color: #c7081b;
+        border-radius: 5px;
+    }
+
+    .sidebar .nav-link:hover .feather,
+    .sidebar .nav-link:hover {
+        color: #333;
+    }
+
+    .sidebar .nav-link.active:hover,
+    .sidebar .nav-link.active:hover .feather {
+        color: #fff;
+    }
+
+.sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
+}
+
+/*
+ * Content
+ */
+
+[role="main"] {
+    padding-top: 100px; /* Space for fixed navbar */
+    background-color: #f9fbfd;
+    min-height: calc(100vh);
+}
+
+/*
+ * Navbar
+ */
+
+.navbar {
+    background-color: #c7081b;
+}
+
+.navbar-brand {
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+.navbar .form-control {
+    padding: .75rem 1rem;
+    border-width: 0;
+    border-radius: 0;
+}
+
+.form-control-dark {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+
+    .form-control-dark:focus {
+        border-color: transparent;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+    }
+
+/*
+ * Utilities
+ */
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.sidebar-column {
+    -ms-flex: 0 0 275px;
+    flex: 0 0 275px;
+}
+
+.site-logo {
+    width: 140px;
+    margin: auto;
+    display: block;
+}
+
+.shadow {
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03) !important;
+}
+
+.main-navigation {
+    margin: 40px 20px;
+}
+
+    .main-navigation .nav-link {
+        padding: 7px 15px 11px;
+        color: #6e84a3;
+        font-weight: 400;
+    }
+
+    .main-navigation > li > ul {
+        margin-bottom: 15px;
+        margin-left: 10px;
+    }
+
+    .main-navigation .nav-link .feather, .main-navigation .nav-link span {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .main-navigation .nav-link .feather {
+        color: #5a5a5a;
+    }
+
+.card {
+    border: none;
+    margin-bottom: 30px;
+}
+
+.breadcrumb {
+    padding: 0;
+    background: none;
+    margin-bottom: 0;
+}
+
+.breadcrumb-item a {
+    color: #c7081b;
+}
+
+.page-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #ececec;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.table.card-table thead th {
+    border-bottom: 1px solid #3f3f3f;
+    background-color: #464646;
+    color: #d1d1d1;
+    border-top: 1px solid #3f3f3f;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.table.card-table .btn,
+.table .btn {
+    line-height: 1;
+}
+
+.card .table.card-table {
+    font-size: 0.9rem;
+}
+
+.filter-table-row {
+    padding: 20px;
+}
+
+.card .table.card-table th:first-child,
+.card .table.card-table td:first-child {
+    padding-left: 20px;
+}
+
+.card .table.card-table th:last-child,
+.card .table.card-table td:last-child {
+    padding-right: 20px;
+}
+
+.menu-divider {
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+    .menu-divider:first-child {
+        margin-top: 0;
+    }
+
+    .menu-divider > span {
+        font-size: 0.9rem;
+        font-weight: 600;
+        background-color: #fff;
+        display: inline-block;
+        padding: 5px 5px;
+        margin-left: 5px;
+        color: #979797;
+    }
+
+    .menu-divider::after {
+        content: '';
+        width: 100%;
+        height: 1px;
+        background-color: #979797;
+        display: block;
+        position: absolute;
+        top: 17px;
+        z-index: -1;
+    }

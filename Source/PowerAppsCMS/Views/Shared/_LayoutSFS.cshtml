@@ -1,0 +1,122 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title - SFS</title>
+
+    @Styles.Render("~/Content/MPScss")
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/cms/chosen/chosen.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+    <header class="d-flex flex-column flex-md-row align-items-center main-cointainer border-bottom box-shadow sfs-header mb-0">
+        <div class="my-0 mr-md-auto font-weight-normal">
+            <a href="@Url.Action("Index", "Home")"><img src="~/Content/images/patria-logo-black.png" alt="logo-patria" class="page-logo-link sfs" /></a>
+            <a href="@Url.Action("Index", "SFS")" class="text-decoration-none">
+                <span class="web-title"><span>Shop</span> Floor Schedule</span>
+            </a>
+        </div>
+        @Html.Partial("_LoginPartial")
+    </header>
+
+    <div class="nav-scroller bg-white box-shadow">
+        <ul class="list-unstyled main-menu">
+            <li class="main-menu-item">
+                <a href="@Url.Action("Index", "SFS")" class="main-menu__link">SFS Planning</a>
+            </li>
+            <li class="main-menu-item">
+                <a href="@Url.Action("Index", "SFSMapping")" class="main-menu__link">Mapping</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-cointainer">
+        @RenderBody()
+    </div>
+
+    <footer class="border-top text-center">
+        <img src="~/Content/images/patria.png" alt="logo" class="footer-logo" />
+        <p>PATRIA © 2018 . All rights reserved</p>
+    </footer>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/core")
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            feather.replace();
+            var currentLocation = window.location.pathname;
+            $(".main-menu__link").each(function () {
+                if (currentLocation.indexOf("SFSMapping") > 0) {
+                    if ($(this).attr("href").indexOf("SFSMapping") > 0) {
+                        $(this).addClass("active");
+                    }
+                } else {
+                    if (currentLocation.match($(this).attr("href"))) {
+                        $(this).addClass("active");
+                    }
+                }
+            });
+
+            $(".custom-pagination .pagination").addClass("pagination-sm");
+            $(".custom-pagination .pagination li").addClass("page-item");
+            $(".custom-pagination .pagination li a").addClass("page-link");
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //$(".grab").mousedown(function (e) {
+            //    //var tr = $(e.target).closest("TR"), si = tr.index(), sy = e.pageY, b = $(document.body), drag;
+            //    var tr = $(e.target).closest("td"), si = tr.index(), sy = e.pageX, b = $(document.body), drag;
+            //    //if (si == 0) return;
+            //    b.addClass("grabCursor").css("userSelect", "none");
+            //    tr.addClass("grabbed");
+            //    function move(e) {
+            //        if (!drag && Math.abs(e.pageX - sy) < 10) return;
+            //        drag = true;
+            //        tr.siblings().each(function () {
+            //            var s = $(this), i = s.index(), y = s.offset().top;
+            //            if (i > 0 && e.pageY >= y && e.pageY < y + s.outerHeight()) {
+            //                if (i < tr.index())
+            //                    s.insertAfter(tr);
+            //                else
+            //                    s.insertBefore(tr);
+            //                return false;
+            //            }
+            //        });
+            //    }
+            //    function up(e) {
+            //        if (drag && si != tr.index()) {
+            //            drag = false;
+            //            alert("moved!");
+            //        }
+            //        $(document).unbind("mousemove", move).unbind("mouseup", up);
+            //        b.removeClass("grabCursor").css("userSelect", "none");
+            //        tr.removeClass("grabbed");
+            //    }
+            //    $(document).mousemove(move).mouseup(up);
+            //});
+        });
+    </script>
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

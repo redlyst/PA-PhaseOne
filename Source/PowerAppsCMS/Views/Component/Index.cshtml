@@ -1,0 +1,166 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.Component>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Components";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Product Management</li>
+        <li class="breadcrumb-item">Manage Component</li>
+        <li class="breadcrumb-item active" aria-current="page">Components</li>
+    </ol>
+</nav>
+<h1 class="page-title">Components</h1>
+<div class="card shadow">
+    <div class="card-header">
+        List of Components
+    </div>
+    <div class="form-row align-items-center justify-content-between filter-table-row">
+        <div class="col-auto">
+            @using (Html.BeginForm("Index", "Component", FormMethod.Get))
+            {
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Find by Part Number</label>
+                        @Html.TextBox("searchName", ViewBag.CurrentFilter as string, new { @class = "form-control mx-sm-3", placeholder = "Enter Name" })
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+        <div class="col-auto">
+            <a href="@Url.Action("Create", "Component")" class="btn btn-primary"><i data-feather="plus-circle"></i> &nbsp; Add Component</a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table card-table">
+            <thead>
+                <tr>
+                    <th>
+                        No
+                    </th>
+                    <th>
+                        Part Number
+                    </th>
+                    <th>
+                        Part
+                    </th>
+                    <th>
+                        Material
+                    </th>
+                    <th class="text-right">
+                        Long (mm)
+                    </th>
+                    <th class="text-right">
+                        Width (mm)
+                    </th>
+                    <th class="text-right">
+                        Thickness (mm)
+                    </th>
+                    <th class="text-right">
+                        Outer Diameter
+                    </th>
+                    <th class="text-right">
+                        Inner Diameter
+                    </th>
+                    <th>
+                        MP Process
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+                    var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+                    var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr class="component">
+                        <td>
+                            @currentNumber
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PartNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PartName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Material.Name)
+                        </td>
+                        <td align="right">
+                            @Html.DisplayFor(modelItem => item.Long)
+                        </td>
+                        <td align="right">
+                            @Html.DisplayFor(modelItem => item.Width)
+                        </td>
+                        <td align="right">
+                            @Html.DisplayFor(modelItem => item.Thickness)
+                        </td>
+                        <td align="right">
+                            @Html.DisplayFor(modelItem => item.OuterDiameter)
+                        </td>
+                        <td align="right">
+                            @Html.DisplayFor(modelItem => item.InnerDiameter)
+                        </td>
+                        <td align="center">
+                            @if (item.ComponentMaterialPreparationProcesses.Count > 0)
+                            {
+                                <i data-feather="check"></i>
+                            }
+                            else
+                            {
+                                <p class="text-danger">N/A</p>
+                            }
+                        </td>
+                        <td>
+                            <input type="text" value="@item.ID" class="componentId hide" name="componentId" />
+                            <a href="@Url.Action("Details", "Component", new { id = item.ID, page = ViewBag.Page})" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Detail"><i data-feather="zoom-in"></i></a>
+                            <a href="@Url.Action("Edit", "Component", new { id = item.ID, page = ViewBag.Page})" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"><i data-feather="edit-2"></i></a>
+                            <a class="btn btn-danger btn-sm deleteComponent" role="button" data-toggle="tooltip" data-placement="top" title="Delete"><i data-feather="trash-2"></i></a>
+                        </td>
+                    </tr>
+                    currentNumber++;
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="p-3">
+        <div class="row justify-content-md-center custom-pagination align-items-center">
+            <div class="col-auto">
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+                    new { page, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var componentId = 0;
+
+            $(".deleteComponent").click(function () {
+                componentId = $(this).closest(".component").find("input[name='componentId']").val();
+                if (confirm("Are you sure want to delete this component?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "Component")?id=" +componentId;
+                };
+                return false;
+            });
+        });
+    </script>
+}

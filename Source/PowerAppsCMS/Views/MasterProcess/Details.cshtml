@@ -1,0 +1,152 @@
+﻿@model PowerAppsCMS.Models.MasterProcess
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Product Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Product")">Products</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Details", "Product", new { id = ViewBag.ProductID})">Product Details</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Master Process Details</li>
+    </ol>
+</nav>
+<h1 class="page-title">Master Process Details</h1>
+
+@using (Html.BeginForm())
+{
+    @*@Html.AntiForgeryToken()*@
+    <div class="row">
+        <div class="col-xl-9 col-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    Master Process Details
+                </div>
+                <div class="custom-form-container">
+                    <div class="row">
+                        <div class="col-xl-6  col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                Process Name
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.Name)
+                            </p>
+                        </div>
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                Product Name
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.Products.Name)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                Process Group Name
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.ProcessGroup.Name)
+                            </p>
+                        </div>
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                @Html.DisplayNameFor(model => model.ProcessOrder)
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.ProcessOrder)
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-4 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                @Html.DisplayNameFor(model => model.ManHour)
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.ManHour)
+                            </p>
+                        </div>
+                        <div class="col-xl-4 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                @Html.DisplayNameFor(model => model.ManPower)
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.ManPower)
+                            </p>
+                        </div>
+                        <div class="col-xl-4 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                @Html.DisplayNameFor(model => model.CycleTime) (Days)
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.CycleTime)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                @Html.DisplayNameFor(model => model.CreatedBy)
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.CreatedBy)
+                            </p>
+                        </div>
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                @Html.DisplayNameFor(model => model.Created)
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.Created)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                @Html.DisplayNameFor(model => model.LastModifiedBy)
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.LastModifiedBy)
+                            </p>
+                        </div>
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                @Html.DisplayNameFor(model => model.LastModified)
+                            </label>
+                            <p class="view-data__content">
+                                @Html.DisplayFor(model => model.LastModified)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 custom-form-field">
+                            <label class="view-data__label form-custom-label">
+                                Predecessor Process
+                            </label>
+                            @foreach (var item in Model.ProcessDependencies)
+                            {
+                                <div class="custom-control custom-checkbox mr-sm-2">
+                                    <label class="custom-control-label" for="@item.ID">@item.MasterProcessPredecessor.Name</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="row justify-content-between mt-5">
+                        <div class="col-auto">
+                            <a href="@Url.Action("Details", "Product", new { id = ViewBag.ProductID})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Product</a>
+                        </div>
+                        <div class="col-auto">
+                            <a href="@Url.Action("Edit", "MasterProcess", new {  id = Model.ID})" class="btn btn-dark mb-3"><i data-feather="edit"></i> &nbsp; Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,336 @@
+﻿@model PowerAppsCMS.ViewModel.ProductReferenceViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Product Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "ProductReference")">Product References</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Product Reference Details</li>
+    </ol>
+</nav>
+<h1 class="page-title">Product Reference Details</h1>
+
+<div class="card shadow">
+    <div class="card-header">
+        Product Reference Detail
+    </div>
+    <div class="view-data-container">
+        <input type="text" value="@Model.ProductReferences.ID" class="product-reference-id hide" name="productReferenceID" />
+        <div class="row">
+            <div class="col-md-4 ">
+                <label class="view-data__label form-custom-label">Product Reference</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductReferences.Name)</p>
+            </div>
+            <div class="col-md-4 col-12">
+                <label class="view-data__label form-custom-label">Man Hour PB In House</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductReferences.MHPBIH)</p>
+            </div>
+            <div class="col-md-4 col-12">
+                <label class="view-data__label form-custom-label">Man Hour PB Out House</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductReferences.MHPBOH)</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 ">
+                <label class="view-data__label form-custom-label">Product Group</label>
+                <p class="view-data__content" id="productReferenceName" data-productReferenceName="@Model.ProductReferences.Name">@Html.DisplayFor(model => model.ProductReferences.ProductGroups.Name)</p>
+            </div>
+            <div class="col-md-4 col-12">
+                <label class="view-data__label form-custom-label">Man Hour Fab In House</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductReferences.MHFabIH)</p>
+            </div>
+            <div class="col-md-4 col-12">
+                <label class="view-data__label form-custom-label">Man Hour Fab Out House</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductReferences.MHFabOH)</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 ">
+                <label class="view-data__label form-custom-label">Man Hour Painting In House</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductReferences.MHPaintingIH)</p>
+            </div>
+            <div class="col-md-4 col-12">
+                <label class="view-data__label form-custom-label">Man Hour Fab In House</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductReferences.MHPaintingOH)</p>
+            </div>
+            <div class="col-md-4 col-12">
+                <label class="view-data__label form-custom-label">Factor</label>
+                <p class="view-data__content">@Html.DisplayFor(model => model.ProductReferences.Factor)</p>
+            </div>
+        </div>
+        <div class="row justify-content-between mt-0">
+            <div class="col-auto">
+                <a href="@Url.Action("Edit", "ProductReference", new { id = Model.ProductReferences.ID, page = ViewBag.Page})" class="btn btn-primary mb-3 detail-btn-edit"><i data-feather="edit-2"></i> &nbsp; Edit</a>
+                @if (Model.ProductReferences.Products.Count() == 0)
+                {
+                    <a class="btn btn-danger mb-3 delete-product-reference" role="button"><i data-feather="trash-2"></i> &nbsp; Delete</a>
+                }
+            </div>
+        </div>
+
+        <nav class="mt-5">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-product-tab" data-toggle="tab" href="#nav-product" role="tab" aria-controls="nav-product" aria-selected="true">Products</a>
+            </div>
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-product" role="tabpanel" aria-labelledby="nav-product-tab">
+                <div class="form-row align-items-center justify-content-between mt-3 mb-3">
+                    <div class="col-auto">
+                        <h3 class="sub-title mb-0">List of Product</h3>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#nav-tabContent" class="btn btn-primary add-product"><i data-feather="plus-circle"></i> &nbsp; Add Product</a>
+                    </div>
+                </div>
+                @using (Html.BeginForm("AddProduct", "ProductReference"))
+                {
+                    <div class="form hide">
+                        <div class="row">
+                            @Html.HiddenFor(model => model.ProductReferences.ID)
+                            <input type="text" class="hide" name="productReferenceID" id="productReferenceID" value="@Model.ProductReferences.ID" />
+                            <input type="text" class="currentPage hide" id="currentPage" name="currentPage" value="@ViewBag.Page" />
+
+                            <div class="col-xl-6 col-12 custom-form-field">
+                                <p class="form-custom-label">Select Products</p>
+                                @Html.ListBoxFor(model => model.SelectedProducts, new MultiSelectList(Model.ProductList, "ID", "Name"), new { @class = "product", id = "product", multiple = "multiple" })
+                                <p class="product-validation text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between mt-3">
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-success add-product-reference mr-0 mb-3"><i data-feather="save"></i> &nbsp; Save</button>
+                                <a class="btn btn-danger cancel-add-product-reference mr-0 mb-3"><i data-feather="x-circle"></i> &nbsp; Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="table-responsive">
+                    <table class="table card-table bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No
+                                </th>
+                                <th>
+                                    Product
+                                </th>
+                                <th>
+                                    Product Sub Group
+                                </th>
+                                <th>
+                                    Part Number
+                                </th>
+                                <th>
+                                    Default
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var indexNumber = 1;
+                            }
+                            @foreach (var item in Model.ProductReferences.Products)
+                            {
+                                <tr class="product-list">
+                                    <td>
+                                        @indexNumber
+                                    </td>
+                                    <td class="product-name" data-productName="@item.Name">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ProductSubGroups.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PartNumberName)
+                                    </td>
+                                    <td class="default-reference-product-label">
+                                        @if (item.IsDefaultProductReference == true)
+                                        {
+                                            <label for="defaultReferenceProduct" class="text-success">Yes</label>
+                                        }
+                                        else
+                                        {
+                                            <label for="defaultReferenceProduct" class="text-danger">No</label>
+                                        }
+                                    </td>
+                                    <td class="default-reference-product-form hide">
+                                        @Html.EditorFor(model => item.IsDefaultProductReference)
+                                        <p>Thick checbox if the product is default</p>
+                                    </td>
+                                    <td class="edit-action">
+                                        <input type="text" value="@item.ID" class="product-id hide" name="productID" />
+                                        <button class="btn btn-dark btn-sm edit-product" role="button" data-toggle="tooltip" data-placement="top" title="Edit"><i data-feather="edit-2"></i></button>
+                                        <button class="btn btn-danger btn-sm delete-product" role="button" data-toggle="tooltip" data-placement="top" title="Delete"><i data-feather="trash-2"></i></button>
+                                    </td>
+                                    <td class="cancel-action hide">
+                                        <button class="btn btn-danger btn-sm cancel-edit-product" role="button" data-toggle="tooltip" data-placement="top" title="Cancel"><i data-feather="x-circle"></i></button>
+                                        <button class="btn btn-success btn-sm save-product" role="button" data-toggle="tooltip" data-placement="top" title="Save"><i data-feather="save"></i></button>
+                                    </td>
+                                </tr>
+                                indexNumber++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row justify-content-between mt-3">
+                    <div class="col-auto">
+                        <a href="@Url.Action("Index", "ProductReference", new { page = ViewBag.Page})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Product Reference</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script>
+        $(document).ready(function () {
+
+            $('#product').chosen({
+                width: "300px",
+                search_contains: true
+            });
+
+            $('.add-product').click(function () {
+                $('.form').removeClass('hide');
+            });
+
+            $('.cancel-add-product-reference').click(function () {
+                $('.product-validation').text("");
+                $('.form').addClass('hide');
+            })
+
+
+            $('.add-product-reference').click(function (e) {
+                $('.product-validation').text("");
+                var product = $('#product').val();
+
+                if (product == null || product == '') {
+                    e.preventDefault();
+                    $('.product-validation').text("Product can't be empty");
+                }
+                else {
+                    $('.product-validation').text("");
+                    $('.loading').removeClass('hide');
+                    $(this).prop("disabled", true);
+                    $('form').submit();
+                }
+            });
+
+            
+            $('.edit-product').click(function () {
+                $(this).closest(".product-list").find('.default-reference-product-label').addClass('hide');
+                $(this).closest(".product-list").find('.edit-action').addClass('hide');
+                $(this).closest(".product-list").find('.cancel-action').removeClass('hide');
+                $(this).closest(".product-list").find('.default-reference-product-form').removeClass('hide');
+            });
+
+            $('.cancel-edit-product').click(function () {
+                $(this).closest(".product-list").find('.default-reference-product-label').removeClass('hide');
+                $(this).closest(".product-list").find('.edit-action').removeClass('hide');
+                $(this).closest(".product-list").find('.cancel-action').addClass('hide');
+                $(this).closest(".product-list").find('.default-reference-product-form').addClass('hide');
+            });
+
+          
+            $('.save-product').click(".product-list",function () {
+                $('.loading').removeClass('hide');
+                var productID = $(this).closest(".product-list").find("input[name='productID']").val();
+                var productReferenceID = $("#productReferenceID").val();
+                var defaultProductReference = false;
+                $(this).closest(".product-list").find("input[name='item.IsDefaultProductReference']").each(function () {
+                    if ($(this).prop("checked") == true) {
+                        defaultProductReference = true
+                    }
+                });
+
+                var data = {
+                    ID: productID,
+                    ProductReferenceID: productReferenceID,
+                    IsDefaultProductReference: defaultProductReference
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UpdateProduct", "ProductReference")",
+                    context: this,
+                    data: data,
+                    success: function (response) {
+                        $('.loading').addClass('hide');
+                        if (response.success) {
+                            alert(response.responseText);
+                            $(this).closest(".product-list").find('.default-reference-product-form').addClass('hide');
+                            $(this).closest(".product-list").find('.default-reference-product-label').removeClass('hide');
+                            $(this).closest(".product-list").find('.edit-action').removeClass('hide');
+                            $(this).closest(".product-list").find('.cancel-action').addClass('hide');
+                            if (defaultProductReference == true) {
+                                $(this).closest(".product-list").find("label[for='defaultReferenceProduct']").addClass('text-success').text("yes");
+                                $(this).closest(".product-list").find("label[for='defaultReferenceProduct']").removeClass('text-danger');
+                            }
+                            else {
+                                $(this).closest(".product-list").find("label[for='defaultReferenceProduct']").addClass('text-danger').text("No");
+                                $(this).closest(".product-list").find("label[for='defaultReferenceProduct']").removeClass('text-success');
+                            }
+                        }
+                        else {
+                            alert(response.responseText);
+                            $(this).closest(".product-list").find('.default-reference-product-form').addClass('hide');
+                            $(this).closest(".product-list").find('.default-reference-product-label').removeClass('hide');
+                            $(this).closest(".product-list").find('.edit-action').removeClass('hide');
+                            $(this).closest(".product-list").find('.cancel-action').addClass('hide');
+                            $(this).closest(".product-list").find("input[name='item.IsDefaultProductReference']").prop('checked', false);
+                        }
+                    }
+                });
+
+            });
+
+            $('.delete-product').click(function () {
+                var productID = $(this).closest(".product-list").find("input[name='productID']").val();
+                var productName = $(this).closest(".product-list").find('.product-name').attr('data-productName');
+                var productReferenceName = $("#productReferenceName").attr('data-productReferenceName');
+                var currentPage = $('.currentPage').val();
+                console.log("Product Name:" + productName);
+                console.log("Product Reference Name : " + productReferenceName);
+                console.log("Page : " + currentPage);
+
+                if (confirm("Are you sure want to delete " + productName + " from " + productReferenceName + " ?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("DeleteProduct", "ProductReference")?id=" + productID + "&page=" + currentPage;
+                };
+                return false;
+            });
+
+            $('.delete-product-reference').click(function () {
+                var productReferenceID = $('.product-reference-id').val();
+                var productReferenceName = $("#productReferenceName").attr('data-productReferenceName');
+                var currentPage = $('.currentPage').val();
+
+                if (confirm("Are you sure want to delete " + productReferenceName + " ?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "ProductReference")?id=" + productReferenceID;
+                };
+                return false;
+            });
+        });
+
+
+    </script>
+}

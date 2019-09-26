@@ -1,0 +1,70 @@
+﻿
+.landing-page-background
+{
+    background-color: #a70919;
+    background-image: url('images/landing-page-background.png');
+    background-position: top right;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding: 90px;
+    height: 350px;
+}
+
+    .landing-page-background h1
+    {
+        color: #fff;
+        font-weight: 100;
+        margin-top: 15px;
+        font-size: 2rem;
+    }
+
+.app-link-list-item
+{
+    background-color: #fff;
+    display: inline-block;
+    padding: 30px 40px 10px;
+    border-radius: 5px;
+    margin: 10px;
+    position: relative;
+    box-shadow: 0 0 13px 1px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    top: 0;
+}
+
+    .app-link-list-item:hover
+    {
+        top: -15px;
+    }
+
+.app-link-list_title
+{
+    font-size: 1rem;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 20px 0 10px 0;
+}
+
+.overlay-link
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.app-link-list
+{
+    text-align: center;
+    margin-top: -105px;
+}
+
+.footer-text
+{
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}

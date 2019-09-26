@@ -1,0 +1,114 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.ReasonIssue>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Reason Issue";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Reason Issue Management</li>
+        <li class="breadcrumb-item active" aria-current="page">Reason Issue</li>
+    </ol>
+</nav>
+
+<h1 class="page-title">Reason Issue</h1>
+<div class="card shadow">
+
+    <div class="card-header">
+        List of Reason Issue
+    </div>
+    <div class="form-row align-items-center justify-content-between filter-table-row">
+        <div class="col-auto">
+            @using (Html.BeginForm("Index", "ReasonIssue", FormMethod.Get))
+            {
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Find by name</label>
+                        @Html.TextBox("searchName", ViewBag.CurrentFilter as string, new { @class = "form-control mx-sm-3", placeholder = "Enter Name" })
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+        <div class="col-auto">
+            <a href="@Url.Action("Create", "ReasonIssue")" class="btn btn-primary"><i data-feather="plus-circle"></i> &nbsp; Add ReasonIssue</a>
+        </div>
+    </div>
+    <table class="table card-table">
+        <thead>
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>
+                    Reason Issue Name
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+                var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+                var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+            }
+            @foreach (var item in Model)
+            {
+                <tr class="reasonissue">
+                    <td>
+                        @currentNumber
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+                    @*<input type="text" value="@item.ID" class="reasonissueId hide" name="reasonissueId" />*@
+
+                    <td>
+                        <a href="@Url.Action("Edit", "ReasonIssue", new { id = item.ID})" class="btn btn-dark btn-sm"><i data-feather="edit-2"></i></a>
+                        <a id="@item.ID" class="btn btn-danger btn-sm deleteReasonIssue" role="button"><i data-feather="trash-2"></i></a>
+                    </td>
+
+                </tr>
+                currentNumber++;
+            }
+        </tbody>
+
+    </table>
+    <div class="p-3">
+        <div class="row justify-content-md-center custom-pagination align-items-center">
+            @*<div class="col-auto">
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                </div>*@
+            <div class="col-auto">
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+                    new { page, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <img src="~/Content/images/preloader.gif" />
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var reasonissueId = 0;
+
+            $(".deleteReasonIssue").click(function () {
+                //reasonissueId = $(this).closest(".ReasonIssue").find("input[name='reasonissueId']").val();
+                if (confirm("Are you sure want to delete this Reason Issue?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "ReasonIssue")?id=" +this.id;
+                };
+                return false;
+            });
+        });
+    </script>
+}

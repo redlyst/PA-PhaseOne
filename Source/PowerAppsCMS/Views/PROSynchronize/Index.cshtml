@@ -1,0 +1,133 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.DataZemesFail>
+
+@using PagedList.Mvc
+@using PowerAppsCMS.Models
+
+@{
+    /**/
+
+    ViewBag.Title = "Data PRO Fails ";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<h1 class="page-title mt-5">
+    Data PRO Fails
+</h1>
+
+@using (Html.BeginForm("Index", "PROSynchronize", FormMethod.Get))
+{
+    <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label class="mb-3">PRO Number</label>
+                    @Html.TextBox("proNumber", ViewBag.CurrentFilter as string, new { @class = "form-control mx-sm-3 mb-3", placeholder = "Enter PRO Number" })
+                </div>
+                <input type="submit" value="Search" class="btn btn-primary mb-3">
+            </div>
+        </div>
+        <div class="col-auto">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary btn-sm" id="SyncronizePRO" onclick="location.href='@Url.Action("SynchronizePRO", "PROSynchronize")'">
+                    <span class="refresh-cw"><i data-feather="refresh-cw"></i>  Synchronize Data PRO</span>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+
+<table class="table table-bordered custom-table">
+    <thead class="thead-dark">
+        <tr>
+            <th class="number-column">
+                No
+            </th>
+            <th>
+                PRO
+            </th>
+            <th>
+                Material
+            </th>
+            <th>
+                Material Group
+            </th>
+            <th>
+                Material Description
+            </th>
+            <th>
+                Serial Number
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Delivery Date
+            </th>
+            <th>
+                Fail Status
+            </th>
+            <th>
+                Created Date
+            </th>
+            <th>
+                Last Modified Date
+            </th>
+        </tr>
+    <tbody>
+        @{
+            PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+            var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+            var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+            var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+        }
+
+        @foreach (var item in Model)
+        {
+            <tr class="sales-order">
+                <td>
+                    @currentNumber
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Material)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MATGROUP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MATDESC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SerialNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FailStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastModified)
+                </td>
+            </tr>
+            currentNumber++;
+        }
+    </tbody>
+</table>
+<div class="p-3">
+    <div class="row justify-content-md-center custom-pagination align-items-center">
+        <div class="col-auto">
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+</div>

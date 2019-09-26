@@ -1,0 +1,28 @@
+﻿@model PowerAppsCMS.Models.User
+@*@using (Html.BeginForm("Create", "User"))
+{*@
+    <hr class="mb-4" />
+    <h2 class="form-sub-header">
+        CMS User
+    </h2>
+    <div class="row">
+        <div class="col-lg-6 col-12 custom-form-field">
+            <p class="form-custom-label">Email</p>
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter email" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-lg-6 col-12 custom-form-field">
+            <p class="form-custom-label">Role</p>
+            @Html.DropDownList("RoleID", null, "Select Role", htmlAttributes: new { @class = "form-control full-width", @id = "RoleID" })
+            @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="row justify-content-between mt-5">
+        <div class="col-auto">
+            <a href="@Url.Action("Index", "User")" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to User</a>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-success submit mr-0 mb-3"><i data-feather="save"></i> &nbsp; Create</button>
+        </div>
+    </div>
+@*}*@

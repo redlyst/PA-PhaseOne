@@ -1,0 +1,70 @@
+﻿body
+{
+    background-image: url('images/login-background.jpg');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: left bottom;
+}
+
+.login-conatainer
+{
+    display: flex;
+    position: absolute;
+    width: 400px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    padding: 50px;
+    box-shadow: -6px -1px 20px 6px rgba(0, 0, 0, 0.03);
+    background-color: #fff;
+}
+
+    .login-conatainer > form
+    {
+        width: 100%;
+        margin-top: -75px;
+    }
+
+.login-logo
+{
+    width: 200px;
+    margin: 0 auto 30px;
+    display: block;
+}
+
+.login-button
+{
+    background-color: #31628f;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+    -webkit-transition: all 500ms ease-out;
+    -moz-transition: all 500ms ease-out;
+    -o-transition: all 500ms ease-out;
+    transition: all 500ms ease-out;
+}
+
+    .login-button:hover
+    {
+        background-color: #4f91ce;
+    }
+
+.form-control
+{
+    padding: 0.675rem .75rem;
+}
+
+.password-input
+{
+    position: relative;
+}
+
+.show-hide-password
+{
+    position: absolute;
+    bottom: 7px;
+    right: 11px;
+    cursor: pointer;
+}

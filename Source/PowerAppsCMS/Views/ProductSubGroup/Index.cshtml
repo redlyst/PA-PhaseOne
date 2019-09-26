@@ -1,0 +1,124 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.ProductSubGroup>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Product Sub Group";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Product Management</li>
+        <li class="breadcrumb-item active" aria-current="page">Product Sub Groups</li>
+    </ol>
+</nav>
+<h1 class="page-title">Product Sub Groups</h1>
+<div class="card shadow">
+    <div class="card-header">
+        List of Product Sub Group
+    </div>
+    <div class="form-row align-items-center justify-content-between filter-table-row">
+        <div class="col-auto">
+            @using (Html.BeginForm("Index", "ProductSubGroup", FormMethod.Get))
+            {
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Find by name</label>
+                        @Html.TextBox("searchName", ViewBag.CurrentFilter as string, new { @class = "form-control mx-sm-3", placeholder="Enter Name" })
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+    </div>
+    <table class="table card-table">
+        <thead>
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>
+                    Product Sub Group
+                </th>
+                <th>
+                    Product Group
+                </th>
+                <th>
+                    SAP Code
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ 
+                var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+                var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+                var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+            }
+            @foreach (var item in Model)
+            {
+                <tr class="productSubGroup">
+                    <td>
+                        @currentNumber
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductGroup.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SAPCode)
+                    </td>
+                    <td>
+                        <input type="text" value="@item.ID" class="productSubGroupID hide" name="productSubGroupID" />
+                        <a href="@Url.Action("Details", "ProductSubGroup", new { id = item.ID, currentPage = ViewBag.CurrentPage})" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Detail"><i data-feather="zoom-in"></i></a>
+                        <a href="@Url.Action("Edit", "ProductSubGroup", new { id = item.ID, currentPage = ViewBag.CurrentPage})" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"><i data-feather="edit-2"></i></a>
+                        <a class="btn btn-danger btn-sm deleteProductSubGroup" data-toggle="tooltip" data-placement="top" title="Delete" role="button"><i data-feather="trash-2"></i></a>
+                        
+                    </td>
+                </tr>
+                currentNumber++;
+            }
+        </tbody>
+
+    </table>
+    <div class="p-3">
+        <div class="row justify-content-md-center custom-pagination align-items-center">
+            @*<div class="col-auto">
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                </div>*@
+            <div class="col-auto">
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+                    new { page, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var productSubGroupId = 0;
+
+            $(".deleteProductSubGroup").click(function () {
+                productSubGroupId = $(this).closest(".productSubGroup").find("input[name='productSubGroupID']").val();
+                if (confirm("Are you sure want to delete this product sub group?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "ProductSubGroup")?id=" +productSubGroupId;
+                };
+                return false;
+            });
+        });
+    </script>
+}
+

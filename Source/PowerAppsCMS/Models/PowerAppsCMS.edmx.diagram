@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b8e684b109c0432f9dcd1b73035b41d1" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Holiday" Width="1.875" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Material" Width="1.5" PointX="6" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Part" Width="1.5" PointX="6" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProcessGroup" Width="1.5" PointX="5.25" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProcessIssue" Width="1.5" PointX="20.25" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProductGroupCapacity" Width="1.5" PointX="3" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProductGroup" Width="1.5" PointX="0.75" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProductSubGroup" Width="1.5" PointX="3" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ReasonIssue" Width="1.5" PointX="10.5" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ReasonPause" Width="1.5" PointX="20.25" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ShopFloorSchedule" Width="1.5" PointX="12" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.UserImage" Width="1.5" PointX="17.25" PointY="16.75" IsExpanded="true" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProcessIssue_ReasonIssue" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProductGroupCapacity_ProductGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProductSubGroups_ProductGroups" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProcessDependency" Width="1.5" PointX="9.75" PointY="30.625" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Role" Width="1.5" PointX="11.25" PointY="5.375" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Roles_ParentRoles_ParentID" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.PROSalesOrder" Width="1.5" PointX="12.75" PointY="31.875" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.PRO" Width="1.5" PointX="7" PointY="23.75" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_PROSalesOrder_PRO_PROID" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.MaterialPreparationProcess" Width="1.5" PointX="11.25" PointY="1" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.MaterialPreparationProcessCategory" Width="1.5" PointX="9" PointY="1.25" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MaterialPreparationProcess_MaterialPreparationProcessCategory_MaterialPreparationProcessCategoryID" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ComponentMaterialPreparationProcess" Width="1.5" PointX="13.5" PointY="5.625" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.MasterProcess" Width="1.5" PointX="7.5" PointY="28.625" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ComponentMaterialPreparationProcess_MaterialPreparationProcess_MaterialPreparationProcessID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MasterProcess_ProcessGroups" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProcessDependency_MasterProcess" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProcessDependency_MasterProcessPredecessor" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProcessDailySchedule" Width="1.5" PointX="9.75" PointY="43.5" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProcessDailySchedule_MasterProcess" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Feedback" Width="1.5" PointX="5.25" PointY="37.375" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.MemoPRO" Width="1.5" PointX="9.25" PointY="22.375" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.MemoType" Width="1.5" PointX="5.25" PointY="34.25" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MemoPRO_PRO" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Memo" Width="1.5" PointX="7.5" PointY="34" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Memo_MemoType_MemoTypeID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MemoPRO_Memo" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.SalesOrder" Width="1.5" PointX="5.375" PointY="1" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_PROSalesOrder_SalesOrders_SalesOrderID" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.MemoJobCard" Width="1.5" PointX="16.75" PointY="12.625" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MemoJobCard_MaterialPreparationProcess" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.HolidayDetail" Width="1.5" PointX="3" PointY="6.875" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Process" Width="1.5" PointX="17" PointY="24.125" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_HolidayDetails_Holidays_HolidayID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Process_MasterProcess" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProcessIssue_Process" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProcessActivity" Width="1.5" PointX="25.5" PointY="17.125" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProcessAssign" Width="1.5" PointX="23.25" PointY="17.125" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProcessAssign_Process" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProcessActivity_ProcessAssign" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProcessActivity_ReasonPause" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.User" Width="1.5" PointX="13.5" PointY="9.5" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MemoJobCard_Users" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProcessAssign_Users" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Users_ProcessGroups" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Users_Roles" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_UserImages_Users" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Users_ParentUsers_ParentID" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.MasterPlanSchedule" Width="1.5" PointX="9.25" PointY="38.875" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MasterPlanSchedules_PRO" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ShopFloorSchedule_MasterPlanSchedules" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.DataZemesFail" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.MemoComponent" Width="1.5" PointX="11.5" PointY="22.125" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MemoComponent_Memo_MemoID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MemoJobCard_MemoComponent" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Component" Width="1.5" PointX="8.25" PointY="8.25" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ComponentMaterialPreparationProcess_Components_ComponentID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Components_Materials" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MemoComponent_Components_ComponentID" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ViewProductProcessDailySchedule" Width="1.5" PointX="8.375" PointY="4.75" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ComponentsTemp" Width="1.5" PointX="16.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.tempImage" Width="1.5" PointX="2.625" PointY="0.5" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.UserProcessGroup" Width="1.5" PointX="18.75" PointY="9.125" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_UserProcessGroups_ProcessGroups_ProcessGroupID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_UserProcessGroups_Users_UserID" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProductComposition" Width="1.5" PointX="10.5" PointY="18" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProductComposition_Components" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ChangeQCStatusLog" Width="1.5" PointX="19.25" PointY="25.125" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ChangeQCStatusLog_Process" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProcessStatusLogs" Width="1.5" PointX="7.375" PointY="13.75" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.ProductReferences" Width="1.5" PointX="3" PointY="23.25" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProductReferences_ProductGroups" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Products" Width="1.5" PointX="5.25" PointY="18.125" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_MasterProcess_Products" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Memo_Products_ProductID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_PRO_Products" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ProductComposition_Products" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Products_ProductReferences" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Products_ProductSubGroups" />
+        <EntityTypeShape EntityType="PowerAppsCMSModel.Unit" Width="1.5" PointX="13.75" PointY="17.875" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Units_MasterPlanSchedules" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Units_PRO_PROID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Process_Units" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Units_Products_ProductID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Units_ReasonIssue" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_Units_Units_SalesOrderID" />
+        <AssociationConnector Association="PowerAppsCMSModel.FK_ShopFloorSchedule_Units" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

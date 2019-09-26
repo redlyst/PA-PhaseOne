@@ -1,0 +1,494 @@
+﻿@model PowerAppsCMS.ViewModel.MemoViewModel
+@using PowerAppsCMS.Models
+
+@{
+    ViewBag.Title = "Edit Memo";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<nav aria-label="breadcrumb mt-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Memo")">Memo</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Edit
+        </li>
+    </ol>
+</nav>
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <h1 class="page-title mt-0">
+            Edit Memo
+        </h1>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            <div class="custom-form-container pt-0">
+                <br />
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { @id="edit-form"}))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="text" class="memoID hide" value="@Model.Memo.ID" name="memoID" />
+                    <div class="row">
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <p class="form-custom-label">Product</p>
+                            @Html.DropDownList("ProductID", null, "Select Product", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <p class="form-custom-label">Select Type</p>
+                            @Html.DropDownList("MemoTypeID", null, "Select Type", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MemoTypeID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <p class="form-custom-label">Description</p>
+                            @Html.TextAreaFor(model => model.Memo.Description, new { @class = "form-control full-width desc-form", placeholder = "Enter Description" })
+                            @Html.ValidationMessageFor(model => model.Memo.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row justify-content-between mt-5 add-component-action">
+                        <div class="col-auto">
+                            @*<a href="@Url.Action("Index", "Memo")" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Memo</a>*@
+                            <button type="button" class="btn btn-success save-edit-memo mr-0 mb-3"><i data-feather="save"></i> &nbsp; Save</button>
+                        </div>
+                    </div>
+                }
+                <br />
+                <br />
+                <div class="form-row align-items-center justify-content-between mt-3 mb-3">
+                    <div class="col-auto">
+                        <p class="mt-3 mb-2"><strong>List of PRO</strong></p>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#add-pro-form" class="btn btn-primary add-memo-pro" role="button"><i data-feather="plus-circle"></i> &nbsp; Add PRO</a>
+                    </div>
+                </div>
+                @using (Html.BeginForm("AddPRO", "Memo",  FormMethod.Post, new { id = "add-memo-pro-form" }))
+                {
+                    <div class="form hide" id="add-pro-form">
+                        <div class="row">
+                            @Html.HiddenFor(model => model.Memo.ID)
+
+                            <div class="col-xl-6 col-12 custom-form-field">
+                                <p class="form-custom-label">Select PRO</p>
+                                @Html.ListBoxFor(model => model.selectedProID, new MultiSelectList(Model.PROCollections, "ID", "Number"), new { @class = "pro", id = "pro", multiple = "multiple" })
+                                <p class="pro-validation text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between mt-3">
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-success add-pro mr-0 mb-3" data-toggle="tooltip" data-placement="top" title="Save"><i data-feather="save"></i> &nbsp; Save</button>
+                                <a class="btn btn-danger cancel-add-pro mr-0 mb-3" data-toggle="tooltip" data-placement="top" title="Cancel"><i data-feather="x-circle"></i> &nbsp; Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm" id="memo-pro">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th>PRO</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int quantity = Model.ListofMemoPRO.Sum(x => x.Quantity);
+                                int listOfPROIndex = 0;
+                                var listOfPROListCount = Model.ListofMemoPRO.Count();
+                                var number = 1;
+
+                            }
+                            @foreach (var item in Model.ListofMemoPRO)
+                            {
+                                <tr class="memo-pro">
+                                    <td>@number</td>
+                                    <td>@item.PRO.Number</td>
+                                    <td class="quantity-label" align="right">
+                                        @*@item.Quantity*@
+                                        <label for="quantityLabel">@item.Quantity</label>
+
+                                    </td>
+                                    <td class="quantity-form hide">
+                                        <input type="number" class="form-control" value="@item.Quantity" name="quantityValue" />
+                                        <input type="number" class="hide" value="@item.Quantity" name="oldQuantityValue" />
+                                        @*<p class="text-danger hide quantity-validation">Quantity form can't be 0 or empty</p>*@
+                                        <label for="quantity-validation" class="text-danger"></label>
+                                    </td>
+
+                                    @if (listOfPROIndex == 0)
+                                    {
+                                        <td rowspan=@listOfPROListCount align="right">
+                                            <label for="totalQuantityLabel">@quantity</label>
+                                            <input type="text" class="hide" value="@quantity" name="totalQuantity" />
+                                        </td>
+
+                                    }
+                                    <td class="edit-action" align="right">
+                                        <input type="text" value="@item.ID" class="memoPROID hide" name="memoPROID" />
+                                        <button class="btn btn-dark btn-sm edit-memo-pro" role="button" data-toggle="tooltip" data-placement="top" title="Edit"><i data-feather="edit-2"></i></button>
+                                        <button class="btn btn-danger btn-sm deleteMemoPRO" role="button" data-toggle="tooltip" data-placement="top" title="Delete"><i data-feather="trash-2"></i></button>
+                                    </td>
+                                    <td class="cancel-action hide" align="right">
+                                        <button class="btn btn-danger btn-sm cancel-edit-memo-pro" role="button" data-toggle="tooltip" data-placement="top" title="Cancel"><i data-feather="x-circle"></i></button>
+                                        <button class="btn btn-success btn-sm save-memo-pro" role="button" data-toggle="tooltip" data-placement="top" title="Save"><i data-feather="save"></i></button>
+                                    </td>
+                                </tr>
+                                listOfPROIndex++;
+                                number++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <br />
+                <br />
+                <div class="form-row align-items-center justify-content-between mt-3 mb-3">
+                    <div class="col-auto">
+                        <p class="mt-3 mb-2"><strong>List of Component</strong></p>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#add-pro-component-form" class="btn btn-primary add-memo-pro-component"><i data-feather="plus-circle"></i> &nbsp; Add Component</a>
+                    </div>
+                </div>
+                @using (Html.BeginForm("AddMemoComponent", "Memo", new { memoID = Model.Memo.ID }))
+                {
+                    <div class="form add-pro-component-form hide" id="add-pro-component-form">
+                        <div class="row">
+                            @Html.HiddenFor(model => model.Memo.ID)
+
+                            <div class="col-xl-6 col-12 custom-form-field">
+                                <p class="form-custom-label">Select Component</p>
+                                @Html.ListBoxFor(model => model.selectedPROComponentID, new MultiSelectList(Model.ProductCompositions, "ComponentID", "ComponentPartNumber"), new { @class = "pro-component", id = "pro-component", multiple = "multiple" })
+                                <p class="component-validation text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between mt-3">
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-success add-component mr-0 mb-3" data-toggle="tooltip" data-placement="top" title="Save"><i data-feather="save"></i> &nbsp; Save</button>
+                                <a class="btn btn-danger cancel-add-pro-component mr-0 mb-3" data-toggle="tooltip" data-placement="top" title="Cancel"><i data-feather="x-circle"></i> &nbsp; Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm" id="memo-component">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>
+                                    No
+                                </th>
+                                <th>
+                                    Part Number
+                                </th>
+                                <th>
+                                    Part Name
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th>
+                                    Unit Quantity
+                                </th>
+                                <th>
+                                    Total Quantity
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+                                var indexNumber = 1;
+                                var listOfMemoComponents = Model.ListofMemoComponents.OrderByDescending(x => x.Component.IsInHouse);
+                            }
+                            @foreach (var item in listOfMemoComponents)
+                            {
+                                var memoData = db.Memos.Find(item.MemoID);
+                                var productCompositionData = db.ProductCompositions.Where(x => x.ProductID == memoData.ProductID && x.ComponentID == item.ComponentID).FirstOrDefault();
+                                int totalQuantity;
+
+                                totalQuantity = quantity * productCompositionData.Quantity;
+
+                                <tr class="memo-pro-component">
+                                    <td>@indexNumber</td>
+                                    <td>
+                                        @item.Component.PartNumber
+                                    </td>
+                                    <td>@item.Component.PartName</td>
+                                    <td>
+                                        @if (item.Component.IsInHouse == true)
+                                        {
+                                            <p class="text-success">IN HOUSE</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-danger">OUT HOUSE</p>
+                                        }
+                                    </td>
+                                    <td align="right">
+                                        @productCompositionData.Quantity
+                                        <input type="text" class="hide" value="@productCompositionData.Quantity" name="unitQuantity" />
+                                    </td>
+                                    <td align="right">
+                                        <label for="totalUnitQuantity">@totalQuantity</label>
+                                    </td>
+                                    <td align="right">
+                                        <input type="text" value="@item.ID" class="memoPROComponentID hide" name="memoPROComponentID" />
+                                        <button class="btn btn-danger btn-sm deleteMemoPROComponent" role="button" data-toggle="tooltip" data-placement="top" title="Delete"><i data-feather="trash-2"></i></button>
+                                    </td>
+                                </tr>
+                                indexNumber++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row justify-content-between mt-5">
+                    <div class="col-auto">
+                        <a href="@Url.Action("Details", "Memo",  new { id = Model.Memo.ID})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Memo Detail</a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="@Url.Action("Details", "Memo", new { id = Model.Memo.ID})" class="btn btn-success  mr-0 mb-3"><i data-feather="save"></i> &nbsp; Confirm Edit Memo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p class="message hide">@Session["message"]</p>
+
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+
+            var memoID = $('.memoID').val();
+            if ('@ViewBag.Success' != "") {
+                $('.loading').addClass('hide');
+                alert("Memo successfully updated");
+                window.location.href = "@Url.Action("Edit", "Memo")?id=" + memoID;
+            }
+
+            $('.save-edit-memo').click(function (e) {
+                var memotypeID = $('#MemoTypeID').val();
+
+                if (memotypeID == null || memotypeID == '') {
+                    $("[data-valmsg-for='MemoTypeID']").text("MemoType must be selected");
+                    e.preventDefault();
+                }
+                else {
+                    $("[data-valmsg-for='MemoTypeID']").text("");
+                    $('.loading').removeClass('hide');
+                    $('.save-edit-memo').attr('disabled', 'disabled');
+                    $('#edit-form').submit();
+                }
+            })
+
+            var memoPROID = 0;
+            var memoPROQuantity = 0;
+            var currentTotalQuantity = 0;
+
+            $('#pro').chosen({
+                width: "300px",
+                search_contains: true
+            });
+
+            $('.add-memo-pro').click(function () {
+
+                $('#add-pro-form').removeClass('hide');
+
+            });
+
+            $('.cancel-add-pro').click(function () {
+                $('#add-pro-form').addClass('hide');
+
+            });
+
+            $('.add-pro').click(function (e) {
+                var pro = $('.pro').val();
+                $('.pro-validation').text("");
+                if (pro == null || pro == '') {
+                    $('.pro-validation').text("PRO can't be empty");
+                    e.preventDefault();
+                }
+                else {
+
+                    $('.loading').removeClass('hide');
+                    $('.add-pro').attr('disabled', 'disabled');
+                    $('.pro-validation').text("");
+                    $('#add-memo-pro-form').submit();
+                }
+            });
+
+            if ($('.message').text() == "pro added") {
+                $('html, body').animate({ scrollTop: $('#memo-pro').offset().top }, 'slow');
+            }
+
+            $('.edit-memo-pro').click(function () {
+                $(this).closest(".memo-pro").find('.quantity-label').addClass('hide');
+                $(this).closest(".memo-pro").find('.edit-action').addClass('hide');
+                $(this).closest(".memo-pro").find('.cancel-action').removeClass('hide');
+                $(this).closest(".memo-pro").find('.quantity-form').removeClass('hide');
+                $(this).closest(".memo-pro").find("label[for='quantity-validation']").text("");
+
+            });
+
+            $('.cancel-edit-memo-pro').click(function () {
+                $(this).closest(".memo-pro").find('.quantity-label').removeClass('hide');
+                $(this).closest(".memo-pro").find('.edit-action').removeClass('hide');
+                $(this).closest(".memo-pro").find('.cancel-action').addClass('hide');
+                $(this).closest(".memo-pro").find('.quantity-form').addClass('hide');
+            });
+
+            $('.save-memo-pro').click(".memo-pro .memo-pro-component", function () {
+                $('.loading').removeClass('hide');
+                memoPROID = $(this).closest(".memo-pro").find("input[name='memoPROID']").val();
+                memoPROQuantity = $(this).closest(".memo-pro").find("input[name='quantityValue']").val();
+                var oldQuantityValue = $(this).closest('.memo-pro').find("input[name='oldQuantityValue']").val();
+                var totalQuantity = $('.memo-pro').find("input[name='totalQuantity']").val();
+                oldTotalQuantity = totalQuantity - oldQuantityValue;
+                currentTotalQuantity = parseInt(oldTotalQuantity) + parseInt(memoPROQuantity);
+
+                if (memoPROQuantity == null || memoPROQuantity == '') {
+                    $('.loading').addClass('hide');
+                    $(".memo-pro").find("label[for='quantity-validation']").text("Quantity form can't be empty");
+                }
+                else if (memoPROQuantity == 0)
+                {
+                    $('.loading').addClass('hide');
+                    $(".memo-pro").find("label[for='quantity-validation']").text("Quantity value can't be 0");
+                }
+                else {
+                    $(this).closest('.memo-pro').find('.quantity-validation').addClass('hide');
+                    $(".memo-pro").find("label[for='quantity-validation']").text("");
+
+                    var data = {
+                        ID: memoPROID,
+                        Quantity: memoPROQuantity
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("EditMemoPRO", "Memo")",
+                        context: this,
+                        data: data,
+                        success: function (response) {
+                        $('.loading').addClass('hide');
+                        if (response.success) {
+                            alert(response.responseText);
+                            $(this).closest(".memo-pro").find('.quantity-form').addClass('hide');
+                            $(this).closest(".memo-pro").find('.quantity-label').removeClass('hide');
+                            $(this).closest(".memo-pro").find('.edit-action').removeClass('hide');
+                            $(this).closest(".memo-pro").find('.cancel-action').addClass('hide');
+                            $(this).closest(".memo-pro").find("input[name='quantityValue']").val(memoPROQuantity);
+                            $(this).closest(".memo-pro").find("label[for='quantityLabel']").text(memoPROQuantity);
+                            $(this).closest(".memo-pro").find("input[name='oldQuantityValue']").val(memoPROQuantity)
+                            $('.memo-pro').find("input[name='totalQuantity']").val(currentTotalQuantity);
+                            $(".memo-pro").find("label[for='totalQuantityLabel']").text(currentTotalQuantity);
+
+
+
+                            $('.memo-pro-component').each(function (index) {
+                                var unitQuantity = $(this).find("input[name='unitQuantity']").val();
+                                var currentTotalUnitQuantity = currentTotalQuantity * unitQuantity;
+                                $(this).find("label[for='totalUnitQuantity']").text(currentTotalUnitQuantity);
+                            })
+                        }
+                        else {
+                            alert(response.responseText);
+                            $(this).closest(".memo-pro").find('.quantity-form').addClass('hide');
+                            $(this).closest(".memo-pro").find('.quantity-label').removeClass('hide');
+                            $(this).closest(".memo-pro").find('.edit-action').removeClass('hide');
+                            $(this).closest(".memo-pro").find('.cancel-action').addClass('hide');
+                        }
+
+                    }
+                    });
+                }
+            });
+
+            $('.deleteMemoPRO').click(function () {
+                memoPROID = $(this).closest(".memo-pro").find("input[name='memoPROID']").val();
+                if (confirm("Are you sure want to delete this memo?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("DeleteMemoPRO", "Memo")?id=" + memoPROID;
+                };
+                return false;
+            });
+
+            if ($('.message').text() == 'pro deleted') {
+                $('html, body').animate({ scrollTop: $('#memo-pro').offset().top }, 'slow');
+            }
+
+
+            $('#pro-component').chosen({
+                width: "350px",
+                search_contains: true
+            });
+
+            $('.add-component').click(function (e) {
+                var component = $('.pro-component').val();
+                $('.component-validation').text("");
+                e.preventDefault();
+                if (component == null || component == '') {
+                    $('.component-validation').text("Component can't be empty");
+                    e.preventDefault();
+                }
+                else {
+
+                    $('.loading').removeClass('hide');
+                    $('.add-component').attr('disabled', 'disabled');
+                    $('.component-validation').text("");
+                    $('form').submit();
+                }
+            });
+
+            if ($('.message').text() == 'component added') {
+                $('html, body').animate({ scrollTop: $('#memo-component').offset().top }, 'slow');
+            }
+
+            $('.add-memo-pro-component').click(function () {
+
+                $('.add-pro-component-form').removeClass('hide');
+
+            });
+
+            $('.cancel-add-pro-component').click(function () {
+                $('.add-pro-component-form').addClass('hide');
+            });
+
+
+            $('.deleteMemoPROComponent').click(function () {
+                memoPROComponentID = $(this).closest(".memo-pro-component").find("input[name='memoPROComponentID']").val();
+                if (confirm("Are you sure want to delete this memo pro component?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("DeleteMemoPROComponent", "Memo")?id=" + memoPROComponentID;
+                };
+                return false;
+            });
+
+            if ($('.message').text() == 'component deleted') {
+                $('html, body').animate({ scrollTop: $('#memo-component').offset().top }, 'slow');
+            }
+
+        });
+    </script>
+}

@@ -1,0 +1,116 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.ComponentsTemp>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Component Synchronizer";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<h1 class="page-title mt-5">
+    List of Component
+</h1>
+
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+
+    </div>
+    <div class="col-auto">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a class="btn btn-primary btn-sm" id="SyncronizePRO" href='@Url.Action("SynchronizeComponent", "ComponentSynchronizer")' ">
+                <span class="refresh-cw"><i data-feather="refresh-cw"></i>  Synchronize Data Component</span>
+            </a>
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a class="btn btn-success btn-sm" id="SyncronizePRO" href='@Url.Action("SynchronizeProductComposition", "ComponentSynchronizer")' ">
+                <span class="refresh-cw"><i data-feather="refresh-cw"></i>  Synchronize Product Composition</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<br />
+<table class="table table-bordered custom-table">
+    <thead class="thead-dark">
+        <tr>
+            <th class="number-column">
+                No
+            </th>
+            <th>Product Part Number</th>
+            <th>Component Part Number</th>
+            <th>Part Name</th>
+            <th>Quantity</th>
+            <th>Bahan</th>
+            <th>Long</th>
+            <th>Width</th>
+            <th>Thickness</th>
+            <th>OD</th>
+            <th>ID</th>
+            <th>Component Exist</th>
+            <th>Product Exist</th>
+            <th>InsertPC</th>
+            <th>InsertCMPP</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+            var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+            var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+        }
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @currentNumber
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.ProductPartNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.ComponentPartNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.PartName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Qty)</td>
+                <td>@Html.DisplayFor(modelItem => item.Bahan)</td>
+                <td>@Html.DisplayFor(modelItem => item.Long)</td>
+                <td>@Html.DisplayFor(modelItem => item.Width)</td>
+                <td>@Html.DisplayFor(modelItem => item.Thickness)</td>
+                <td>@Html.DisplayFor(modelItem => item.OuterDiameter)</td>
+                <td>@Html.DisplayFor(modelItem => item.InnerDiameter)</td>
+                <td>
+                    @if (item.IsComponentExist == true)
+                    {
+                        <p class="text-danger">Component Exist</p>
+                    }
+                </td>
+                <td>
+                    @if (item.IsProductExist == true)
+                    {
+                        <p class="text-danger">Product Exist</p>
+                    }
+                </td>
+                <td>
+                    @if (item.IsInsertToPCom == true)
+                    {
+                        <p class="text-danger">Yes</p>
+                    }
+                    else
+                    { <p class="text-danger">No</p>}
+                </td>
+                <td>
+                    @if (item.IsInsertToCMPP == true)
+                    {
+                        <p class="text-danger">Yes</p>
+                    }
+                    else
+                    { <p class="text-danger">No</p>}
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="p-3">
+    <div class="row justify-content-md-center custom-pagination align-items-center">
+        <div class="col-auto">
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page}))
+        </div>
+    </div>
+</div>

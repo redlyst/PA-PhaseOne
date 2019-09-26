@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Error";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "User")">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Error</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            <div class="card-header text-danger">
+                Error
+            </div>
+            <div class="custom-form-container">
+                <div class="row">
+                    <div class="col-xl-6  col-12 custom-form-field">
+                        <p class="text-danger">@ViewBag.ErrorMessage</p>
+                        <p class="text-danger hide">@ViewBag.Exception</p>
+                    </div>
+                </div>
+                <div class="row justify-content-between mt-5">
+                    <div class="col-auto">
+                        <a href="@Url.Action("Index", "User")" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to User</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" class="exception" value="@ViewBag.Exception" />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            var exception = $('.exception').val();
+            console.log(exception);
+        });
+    </script>
+}
+
+

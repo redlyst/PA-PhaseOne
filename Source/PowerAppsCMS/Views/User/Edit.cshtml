@@ -1,0 +1,230 @@
+﻿@model PowerAppsCMS.Models.User
+@using PowerAppsCMS.Models
+
+@{
+    ViewBag.Title = "Edit User";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "User")">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit User</li>
+    </ol>
+</nav>
+<h1 class="page-title">Edit User</h1>
+
+
+
+@*@Html.AntiForgeryToken()*@
+<div class="row">
+
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            @{
+                PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+                var roleData = db.Roles.Where(x => x.ID == Model.RoleID).FirstOrDefault();
+
+                if (roleData.HaveAccessPowerApps == true)
+                {
+                    @Html.Partial("EditUserPowerApps")
+                }
+                else
+                {
+                    @Html.Partial("EditUserAD")
+                }
+            }
+        </div>
+    </div>
+
+
+    @*<div class="col-xl-9 col-12">
+
+        </div>*@
+
+</div>
+
+<div>
+    <p class="text-danger">@ViewBag.Exception</p>
+</div>
+
+<div class="loading">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            $('.loading').hide();
+            
+            $('.edit-user-ad').click(function (e) {
+                
+                var powerAppsAccess = $(".powerAppsAccess").val();
+                var processGroup = $('#ProcessGroupID').val();
+                var pin = $('#PIN').val();
+                
+
+                $("[data-valmsg-for='ProcessGroupID']").text("");
+                $("[data-valmsg-for='PIN']").text("");
+
+                if (powerAppsAccess == 1) {
+                    if (processGroup == null || processGroup == '') {
+                        $("[data-valmsg-for='ProcessGroupID']").text("Process Group must be selected ");
+                        e.preventDefault();
+                    }
+                    else if (pin == null || pin == '') {
+                        $("[data-valmsg-for='PIN']").text("PIN is required ");
+                        e.preventDefault();
+                    }
+                    else if (pin.length < 7) {
+                        $("[data-valmsg-for='PIN']").text("PIN digit can't be less than 7 digits ");
+                        e.preventDefault();
+                    }
+                    else {
+                        $('.loading').show();
+                        $('.edit-user-ad').attr('disabled', 'disabled');
+                        $("[data-valmsg-for='ProcessGroupID']").text("");
+                        $("[data-valmsg-for='PIN']").text("");
+                        $('form').submit();
+                    }
+                }
+                else {
+                    if (!$('form').valid()) {
+                        $(this).prop("disabled", false);
+                        $('.loading').hide();
+                        return false;
+                    }
+                    $('.loading').show();
+                    $('.edit-user-ad').attr('disabled', 'disabled');
+                    $('form').submit();
+                }
+            });
+
+            $('.edit-user-powerapps').click(function (e) {
+                var name = $('#Name').val();
+                var processGroup = $('#ProcessGroupID').val();
+
+                $("[data-valmsg-for='Name']").text("");
+                $("[data-valmsg-for='ProcessGroupID']").text("");
+                if (name == null || name == '')
+                {
+                    $("[data-valmsg-for='Name']").text("Name is required");
+                    e.preventDefault();
+                }
+                else if (processGroup == null || processGroup == '') {
+                    $("[data-valmsg-for='ProcessGroupID']").text("Process Group must be selected");
+                    e.preventDefault();
+                }
+                else {
+                    $('.loading').show();
+                    $("[data-valmsg-for='Name']").text("");
+                    $("[data-valmsg-for='ProcessGroupID']").text("");
+                    $('form').submit(function () {
+                        $('.edit-user-powerapps').attr('disabled', 'disabled');
+                    });
+                } 
+            });
+
+            if ('@ViewBag.Message' != "") {
+                $('.loading').addClass('hide');
+                alert("Employee successfully updated");
+                window.location.href = "@Url.Action("Index", "User")";
+            }
+        });
+
+        $(document).ready(function () {
+            var powerAppsAccess = $(".powerAppsAccess").val();
+            if (powerAppsAccess == 1) {
+                $('.process-group').removeClass('hide');
+            }
+
+            $('#RoleID').change(function () {
+                var selectedRole = $("#RoleID").val();
+                var parentSelect = $('#ParentUserID');
+                var employeeNumber = $('#EmployeeNumber').val();
+                parentSelect.empty();
+
+                  $.getJSON('@Url.Action("GetIsAccessPA")', { role: selectedRole }, function (isHave) {
+                    if (isHave != null) {
+                        if (isHave == true)
+                        {
+                            $('.process-group').removeClass('hide');
+                            $(".powerAppsAccess").val("1");
+                            $('#PIN').val(employeeNumber);
+                        }
+                        else
+                        {
+                            $('.process-group').addClass('hide');
+                            $(".powerAppsAccess").val("0");
+                            $('#PIN').val("0000000");
+                        }
+                    }
+                  });
+            });
+
+            //$("#ParentUserID").prop("disabled", true);
+            $('#ProcessGroupID').change(function () {
+                var selectedRole = $("#RoleID").val();
+                var selectedProcessGroup = $("#ProcessGroupID").val();
+                var parentSelect = $('#ParentUserID');
+                parentSelect.empty();
+                if (selectedRole != null && selectedRole != '') {
+                    $.getJSON('@Url.Action("GetParent")', { role: selectedRole, processGroup: selectedProcessGroup }, function (parents) {
+                        if (parents != null && !jQuery.isEmptyObject(parents)) {
+                            $("#ParentUserID").prop("disabled", false);
+                            parentSelect.append($('<option/>', {
+                                value: null,
+                                text: "Select Parent Employee"
+                            }));
+                            $.each(parents, function (index, parent) {
+                                parentSelect.append($('<option/>', {
+                                    value: parent.Value,
+                                    text: parent.Text
+                                }));
+                            });
+                        }
+                        else {
+                            parentSelect.append($('<option/>', {
+                                value: null,
+                                text: "Parent Employee Not Existing"
+                            }));
+                            $("#ParentUserID").prop("disabled", true);
+                        }
+                    });
+                }
+                 
+            });
+
+            $('.add-new-photo').click(function () {
+                $('#update-photo').removeClass('hide');
+                $('.retrain-photo').removeClass('hide');
+            });
+
+            $('.cancel-add-new-photo').click(function () {
+                $('#update-photo').addClass('hide');
+            })
+
+            $('.upload-photo-btn').click(function () {
+                $('.loading').show();
+            })
+
+            $('.retrain-photo').click(function () {
+                $('.loading').show();
+            })
+
+            $(".deleteImageUser").click(function () {
+                userImageID = $(this).closest("#uploadedImage").find("input[name='imageID']").val();
+                var page = $('.currentPage').val();
+                if (confirm("Are you sure want to delete this image?")) {
+                    $('.loading').show();
+                    window.location.href = "@Url.Action("DeleteImage", "User")?id=" + userImageID + "&page=" +page;
+                };
+                return false;
+            });
+        });
+    </script>
+}

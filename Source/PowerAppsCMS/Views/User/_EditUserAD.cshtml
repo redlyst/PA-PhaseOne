@@ -1,0 +1,99 @@
+﻿@model PowerAppsCMS.ViewModel.UserViewModel
+@using PowerAppsCMS.Models
+
+@using (Html.BeginForm("EditUser", "User", FormMethod.Post))
+{
+    <div class="card-header">
+        Edit User AD
+    </div>
+
+    <div class="custom-form-container">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.User.ID)
+        <input type="text" name="currentPage" id="currentPage" class="currentPage hide" value="@ViewBag.Page" />
+        <div class="row">
+            <div class="col-lg-6 col-12 custom-form-field">
+                <p class="form-custom-label">Username</p>
+                @Html.EditorFor(model => model.User.Username, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter Username", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.User.Username, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-lg-6 col-12 custom-form-field">
+                <p class="form-custom-label">Employee Number</p>
+                @Html.EditorFor(model => model.User.EmployeeNumber, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter Employee Number", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.User.EmployeeNumber, "", new { @class = "text-danger input-form" })
+                <p class="text-danger">@ViewBag.ExistEmployeeNumber</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-12 custom-form-field">
+                <p class="form-custom-label">Name</p>
+                @Html.EditorFor(model => model.User.Name, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter Name" } })
+                @Html.ValidationMessageFor(model => model.User.Name, "", new { @class = "text-danger input-form" })
+            </div>
+            <div class="col-xl-6 col-12 custom-form-field">
+                <p class="form-custom-label">Email</p>
+                @Html.EditorFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter Email", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.User.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-12 custom-form-field">
+                <p class="form-custom-label">Select Role</p>
+                @Html.DropDownList("RoleID", null, htmlAttributes: new { @class = "form-control full-width" })
+                @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @{
+            PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+            var roleData = db.Roles.Where(x => x.ID == Model.RoleID).FirstOrDefault();
+            var roleValue = 0;
+
+            if (roleData.HaveAccessPowerApps == true)
+            {
+                roleValue = 1;
+            }
+            else
+            {
+                roleValue = 0;
+            }
+            <input type="text" class="powerAppsAccess hide" name="powerAppsAccess" value="@roleValue" />
+        }
+            <div class="row process-group-section hide">
+                <div class="col-lg-6 col-12 custom-form-field process-group-dropdown">
+                    <p class="form-custom-label">Select Process Group</p>
+                    @Html.DropDownList("ProcessGroupID", null, htmlAttributes: new { @class = "form-control full-width " })
+                    @Html.ValidationMessageFor(model => model.ProcessGroupID, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-6 col-12 custom-form-field process-group-checkbox hide">
+                    <p class="form-custom-label">Select Process Group</p>
+                    @foreach (var item in Model.ProcessGroupList)
+                    {
+                        string checkedString = Model.UserProcessGroupList.Select(x => x.ProcessGroupID).Contains(item.ID) ? "checked=checked" : string.Empty;
+                        <div class="custom-control custom-checkbox mr-sm-2">
+                            <input type="checkbox" class="custom-control-input process-group" name="SelectedProcessGroup" value="@item.ID" id="@item.ID" @checkedString>
+                            <label class="custom-control-label" for="@item.ID">@item.Name</label>
+                        </div>
+                    }
+                </div>
+                <div class="col-lg-6 col-12 custom-form-field" id="parent-user">
+                    <p class="form-custom-label">Select Parent User</p>
+                    @Html.DropDownList("ParentUserID", null, htmlAttributes: new { @class = "form-control full-width" })
+                    @Html.ValidationMessageFor(model => model.ParentUserID, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-lg-6 col-12 custom-form-field">
+                    <p class="form-custom-label">PIN</p>
+                    @Html.EditorFor(model => model.User.PIN, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "7 Digits Number", @type = "password", maxlength = 7 } })
+                    @Html.ValidationMessageFor(model => model.User.PIN, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        <div class="row justify-content-between mt-5">
+            <div class="col-auto">
+                <a href="@Url.Action("Details", "User", new { id = Model.User.ID, page = ViewBag.Page})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to User Details</a>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-success edit-user-ad mr-0 mb-3"><i data-feather="save"></i> &nbsp; Save</button>
+            </div>
+        </div>
+    </div>
+}

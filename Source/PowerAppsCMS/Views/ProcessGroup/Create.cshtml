@@ -1,0 +1,82 @@
+﻿@model PowerAppsCMS.Models.ProcessGroup
+
+@{
+    ViewBag.Title = "Create Group Process";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "ProcessGroup")">Process Groups</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Process Group</li>
+    </ol>
+</nav>
+<h1 class="page-title">Add Process Group</h1>
+
+
+@using (Html.BeginForm())
+{
+    @*@Html.AntiForgeryToken()*@
+    <div class="row">
+        <div class="col-xl-9 col-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    Create new process group
+                </div>
+                <div class="custom-form-container">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-xl-6 col-12 custom-form-field">
+                            <p class="form-custom-label">Process Group</p>
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control full-width", placeholder="Enter Process Group Name" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger validation-error" })
+                            <p class="text-danger">@ViewBag.ProcessGroupExist</p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between mt-5">
+                        <div class="col-auto">
+                            <a href="@Url.Action("Index", "ProcessGroup")" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Process Group</a>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-success submit mr-0 mb-3"><i data-feather="save"></i> &nbsp; Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    <p class="text-danger">@ViewBag.Exception</p>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            $('.submit').click(function () {
+                $(this).prop("disabled", true);
+                $('.loading').removeClass('hide');
+                if (!$('form').valid()) {
+                    $(this).prop("disabled", false);
+                    $('.loading').addClass('hide');
+                    return false;
+                }
+                $('form').submit();
+            });
+
+            if ('@ViewBag.Message' != "") {
+                $('.loading').addClass('hide');
+                alert("Process group successfully added");
+                window.location.href = "@Url.Action("Index", "ProcessGroup")";
+            }
+        });
+    </script>
+}

@@ -1,0 +1,108 @@
+﻿@model PowerAppsCMS.ViewModel.UserViewModel
+
+@{
+    ViewBag.Title = "User Details";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "User")">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">User Details</li>
+    </ol>
+</nav>
+<h1 class="page-title">User Details</h1>
+<div class="row">
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            <div class="card-header">
+                User Details
+            </div>
+            <div class="view-data-container">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.User.Name)</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.User.Name)</p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.User.EmployeeNumber)</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.User.EmployeeNumber)</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.User.Username)</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.User.Username)</p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayName("Role")</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.User.Role.Name)</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayName("Process Group")</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.ProcessGroup.Name)</p>
+                    </div>
+                    @*<div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayName("New Process Group")</label>
+                        <ul class="view-data__content process-group-list">
+                            @foreach (var item in Model.UserProcessGroupList)
+                            {
+                                <li>@item.ProcessGroup.Name</li>
+                            }
+                        </ul> 
+                    </div>*@
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">Parent Employee</label>
+                        <p class="view-data__content">@ViewBag.ParentUser - @ViewBag.ParentUserRole</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.User.Email)</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.User.Email)</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label class="view-data__label form-custom-label">Images</label>
+                        <div class="masonry-container">
+                            @foreach (var image in Model.UserImages)
+                            {
+                                <div class="masonry-item" id="uploadedImage">
+                                    <img src="@image.BlobImage" class="masonry-thumbnail" />
+                                    <input type="text" class="hide" value="@image.ID" name="imageID" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-between mt-5 detail-btn">
+                <div class="col-auto">
+                    <a href="@Url.Action("Index", "User", new { page = ViewBag.Page})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to User</a>
+                </div>
+                <div class="col-auto">
+                    <a href="@Url.Action("Edit", "User", new { id = Model.User.ID, page = ViewBag.Page})" class="btn btn-primary mb-3 detail-btn-edit"><i data-feather="edit-2"></i> &nbsp; Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <img src="~/Content/images/preloader.gif" />
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            if ($(".masonry-item").length == 0) {
+                $(".masonry-container").text("No Images");
+                $(".masonry-container").addClass("view-data__content");
+                $(".masonry-container").removeClass("masonry-container");
+            }
+        })
+    </script>
+}

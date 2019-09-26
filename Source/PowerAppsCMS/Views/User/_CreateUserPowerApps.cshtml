@@ -1,0 +1,244 @@
+﻿@model PowerAppsCMS.ViewModel.UserViewModel
+
+<hr class="mb-4" />
+<h2 class="form-sub-header">
+    New PowerApps User
+</h2>
+
+<div class="row">
+
+    @*</div>
+        <div class="row">*@
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">Employee Number</p>
+        @Html.EditorFor(model => model.User.EmployeeNumber, new { htmlAttributes = new { @class = "form-control full-width employee-number", placeholder = "Enter Employee Number" } })
+        @Html.ValidationMessageFor(model => model.User.EmployeeNumber, "", new { @class = "text-danger" })
+        <p class="text-danger">@ViewBag.ExistEmployeeNumber</p>
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">Username</p>
+        @Html.EditorFor(model => model.User.Username, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter Username" } })
+        @Html.ValidationMessageFor(model => model.User.Username, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">Name</p>
+        @Html.EditorFor(model => model.User.Name, new { htmlAttributes = new { @class = "form-control full-width", placeholder = "Enter Name" } })
+        @Html.ValidationMessageFor(model => model.User.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">PIN</p>
+        @Html.EditorFor(model => model.User.PIN, new { htmlAttributes = new { @class = "form-control small-form", placeholder = "7 Digits Number", @type = "password", maxlength = 7 } })
+        @Html.ValidationMessageFor(model => model.User.PIN, "", new { @class = "text-danger" })
+        <p class="text-danger">@ViewBag.MaxPin</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-12 custom-form-field">
+        <p class="form-custom-label">Select Role</p>
+        @Html.DropDownList("RoleID", null, "Select Role", htmlAttributes: new { @class = "form-control full-width", @id = "RoleID" })
+        @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field" id="process-group-dropdown">
+        <p class="form-custom-label">Select Process Groups</p>
+        @Html.DropDownList("ProcessGroupID", null, "Select Process Group", htmlAttributes: new { @class = "form-control full-width" })
+        @Html.ValidationMessageFor(model => model.ProcessGroupID, "", new { @class = "text-danger" })
+    </div>
+    <div class="col-lg-6 col-12 custom-form-field hide" id="process-group-checkbox">
+        <p class="form-custom-label">Select Process Groups</p>
+        @foreach (var item in ViewBag.ProcessGroupList)
+        {
+            <div class="custom-control custom-checkbox mr-sm-2">
+                <input type="checkbox" class="custom-control-input process-group" name="SelectedProcessGroup" value="@item.ID" id="@item.ID">
+                <label class="custom-control-label" for="@item.ID">@item.Name</label>
+            </div>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-12 custom-form-field" id="parent-user">
+        <p class="form-custom-label">Select Parent User</p>
+        @Html.DropDownList("ParentUserID", null, "Select Parent Employee", htmlAttributes: new { @class = "form-control full-width" })
+        @Html.ValidationMessageFor(model => model.ParentUserID, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="row justify-content-between mt-5">
+    <div class="col-auto">
+        <a href="@Url.Action("Index", "User")" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to User</a>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-success create-powerapps-user mr-0 mb-3"><i data-feather="save"></i> &nbsp; Create</button>
+    </div>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+<script type="text/javascript">
+
+    feather.replace();
+
+    $('#User_EmployeeNumber').keyup(function (e) {
+        var employeeNumber = $('#User_EmployeeNumber').val();
+        $('#User_Username').val(employeeNumber);
+        $('#User_PIN').val(employeeNumber);
+    });
+
+    $('#ParentUserID').prop('disabled', true);
+
+    $('#RoleID').change(function () {
+        var role = $('#RoleID option:selected').text();
+        console.log(role);
+        $('#ParentUserID').empty();
+
+        if (role == 'Group Leader PB' || role == 'Group Leader Produksi') {
+            $('#process-group-checkbox').removeClass('hide');
+            $('#process-group-dropdown').addClass('hide');
+            $('#parent-user').addClass('hide');
+        }
+        else {
+            $('#process-group-checkbox').addClass('hide');
+            $('#process-group-dropdown').removeClass('hide');
+            $('#parent-user').removeClass('hide');
+        }
+    });
+
+    $('#ProcessGroupID').change(function () {
+        var selectedRole = $('#RoleID').val();
+        var selectedProcessGroup = $('#ProcessGroupID').val();
+        var selectedParentUser = $('#ParentUserID')
+        selectedParentUser.empty();
+
+        if (selectedProcessGroup != null && selectedProcessGroup != '') {
+            $.getJSON('@Url.Action("GetParent")', { role: selectedRole, processGroup: selectedProcessGroup }, function (parents) {
+                if (parents != null && !jQuery.isEmptyObject(parents)) {
+                    $("#ParentUserID").prop("disabled", false);
+                    selectedParentUser.append($('<option/>', {
+                        value: null,
+                        text: "Select Parent Employee"
+                    }));
+                    $.each(parents, function (index, parent) {
+                        selectedParentUser.append($('<option/>', {
+                            value: parent.Value,
+                            text: parent.Text
+                        }));
+                    });
+                }
+                else {
+                    selectedParentUser.append($('<option/>', {
+                        value: null,
+                        text: "Parent Employee Not Existing"
+                    }));
+                    $("#ParentUserID").prop("disabled", true);
+                }
+            });
+        }
+    });
+
+    $('.create-powerapps-user').click(function (e) {
+
+        var employeeNumber = $('#User_EmployeeNumber').val();
+        var username = $('#User_Username').val();
+        var name = $('#User_Name').val();
+        var pin = $('#User_PIN').val();
+        var roleID = $('#RoleID').val();
+        var processGroup = $('#ProcessGroupID').val();
+        var role = $('#RoleID option:selected').text();
+
+        $("[data-valmsg-for='User.EmployeeNumber']").text("");
+        $("[data-valmsg-for='User.Username']").text("");
+        $("[data-valmsg-for='User.Name']").text("");
+        $("[data-valmsg-for='User.PIN']").text("");
+        $("[data-valmsg-for='RoleID']").text("");
+        $("[data-valmsg-for='ProcessGroupID']").text("");
+
+        if (role == 'Group Leader PB' || role == 'Group Leader Produksi') {
+            if (employeeNumber == null || employeeNumber == '') {
+                $("[data-valmsg-for='User.EmployeeNumber']").text("Employee Number is required");
+                e.preventDefault();
+            }
+            else if (username == null || username == '') {
+                $("[data-valmsg-for='User.Username']").text("Username is required");
+                e.preventDefault();
+            }
+            else if (name == null || name == '') {
+                $("[data-valmsg-for='User.Name']").text("Name is required ");
+                e.preventDefault();
+            }
+            else if (pin == null || pin == '') {
+                $("[data-valmsg-for='User.PIN']").text("PIN is required");
+                e.preventDefault();
+            }
+            else if (pin.length < 7) {
+                $("[data-valmsg-for='User.PIN']").text("Pin digit can't be less than 7 digits");
+                e.preventDefault();
+            }
+            else if (pin.length > 7) {
+                $("[data-valmsg-for='User.PIN']").text("Pin digit can't be more than 7 digits");
+                e.preventDefault();
+            }
+            else if (roleID == null || roleID == '') {
+                $("[data-valmsg-for='RoleID']").text("Role must be selected");
+                e.preventDefault();
+            }
+            else {
+                $('.loading').removeClass('hide');
+                $("[data-valmsg-for='User.EmployeeNumber']").text("");
+                $("[data-valmsg-for='User.Username']").text("");
+                $("[data-valmsg-for='User.Name']").text("");
+                $("[data-valmsg-for='User.PIN']").text("");
+                $("[data-valmsg-for='RoleID']").text("");
+                $('.create-powerapps-user').attr('disabled', 'disabled');
+                $('form').submit()
+            }
+        }
+        else {
+            if (employeeNumber == null || employeeNumber == '') {
+                $("[data-valmsg-for='User.EmployeeNumber']").text("Employee Number is required");
+                e.preventDefault();
+            }
+            else if (username == null || username == '') {
+                $("[data-valmsg-for='User.Username']").text("Username is required");
+                e.preventDefault();
+            }
+            else if (name == null || name == '') {
+                $("[data-valmsg-for='User.Name']").text("Name is required ");
+                e.preventDefault();
+            }
+            else if (pin == null || pin == '') {
+                $("[data-valmsg-for='User.PIN']").text("PIN is required");
+                e.preventDefault();
+            }
+            else if (pin.length < 7) {
+                $("[data-valmsg-for='User.PIN']").text("Pin digit can't be less than 7 digits");
+                e.preventDefault();
+            }
+            else if (pin.length > 7) {
+                $("[data-valmsg-for='User.PIN']").text("Pin digit can't be more than 7 digits");
+                e.preventDefault();
+            }
+            else if (roleID == null || roleID == '') {
+                $("[data-valmsg-for='RoleID']").text("Role must be selected");
+                e.preventDefault();
+            }
+            else if (processGroup == null || processGroup == '') {
+                $("[data-valmsg-for='ProcessGroupID']").text("Process Group must be selected");
+                e.preventDefault();
+            }
+            else {
+                $('.loading').removeClass('hide');
+                $("[data-valmsg-for='User.EmployeeNumber']").text("");
+                $("[data-valmsg-for='User.Username']").text("");
+                $("[data-valmsg-for='User.Name']").text("");
+                $("[data-valmsg-for='User.PIN']").text("");
+                $("[data-valmsg-for='RoleID']").text("");
+                $("[data-valmsg-for='ProcessGroupID']").text("");
+                $('.create-powerapps-user').attr('disabled', 'disabled');
+                $('form').submit()
+            }
+        }
+
+    });
+
+</script>

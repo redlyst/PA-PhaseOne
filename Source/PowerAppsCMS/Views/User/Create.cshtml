@@ -1,0 +1,103 @@
+﻿@model PowerAppsCMS.Models.User
+
+@{
+    ViewBag.Title = "Create User";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "User")">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add User</li>
+    </ol>
+</nav>
+<h1 class="page-title">Add User</h1>
+@using (Html.BeginForm("Create", "User"))
+{
+    @*@Html.AntiForgeryToken()*@
+    <div class="row">
+        <div class="col-xl-9 col-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    Create new user
+                </div>
+
+                <div class="custom-form-container">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <p class="form-custom-label">Select User Type</p>
+                    <ul class="list-unstyled radio-button-custom-list mb-0">
+                        @*<li class="custom-control custom-radio">
+                                <input type="radio" id="radioCMSUser" name="radioUser" value="cms-user-section" class="custom-control-input form-tab-radio">
+                                <label class="custom-control-label" for="radioCMSUser">CMS User</label>
+                            </li>*@
+                        <li class="custom-control custom-radio">
+                            <input type="radio" id="radioPowerAppsFromAD" name="radioUser" value="powerapps-user-from-ad-section" class="custom-control-input form-tab-radio">
+                            <label class="custom-control-label" for="radioPowerAppsFromAD">User From AD</label>
+                        </li>
+                        <li class="custom-control custom-radio">
+                            <input type="radio" id="radioNewPowerAppsUser" name="radioUser" value="new-powerapps-user-section" class="custom-control-input form-tab-radio">
+                            <label class="custom-control-label" for="radioNewPowerAppsUser">New PowerApps User</label>
+                        </li>
+
+                    </ul>
+                    <small class="form-text text-muted">
+                        Select user type you want to create.
+                    </small>
+                    <div>
+                        <p class="text-danger">@ViewBag.ErrorMessage</p>
+                    </div>
+                    @*<div class="cms-user-section form-tab">
+                        </div>*@
+                    <div class="new-powerapps-user-section form-tab" id="divPowerApps">
+                    </div>
+                    <div class="powerapps-user-from-ad-section form-tab" id="divAD">
+
+                    </div>
+                    @*<div class="row justify-content-between mt-5">
+                            <div class="col-auto">
+                                <a href="@Url.Action("Index", "User")" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to User</a>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-success submit mr-0 mb-3"><i data-feather="save"></i> &nbsp; Create</button>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $('.submit').click(function () {
+                $('.loading').removeClass('hide');
+                var roleID = $('#RoleID').val();
+            });
+
+            $(".form-tab-radio").change(function () {
+                var target = $(this).val();
+
+                $(".form-tab").removeClass("show");
+                $("." + target).addClass("show");
+
+                LoadPartial(target);
+            });
+
+        });
+
+        function LoadPartial(target) {
+            $("." + target).load('@Url.Action("LoadPartialView", "User")', { target: target });
+        }
+
+    </script>
+
+
+}

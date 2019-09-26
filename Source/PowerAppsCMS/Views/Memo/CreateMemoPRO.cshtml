@@ -1,0 +1,195 @@
+﻿@model PowerAppsCMS.ViewModel.MemoViewModel
+@using PowerAppsCMS.Services
+@using PowerAppsCMS.Models
+
+@{
+    ViewBag.Title = "Create Memo";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+<nav aria-label="breadcrumb mt-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Memo")">Memo</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Create
+        </li>
+    </ol>
+</nav>
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <h1 class="page-title mt-0">
+            Create Memo
+        </h1>
+    </div>
+</div>
+@Html.AntiForgeryToken()
+
+<div class="row">
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            <ul class="list-unstyled text-center stage-gate-list">
+                <li class="stage-gate-item">
+                    <a href="@Url.Action("Create", "Memo")" class="stage-gate-link passed">
+                        <span class="stage-gate-number">1</span>
+                        <span class="stage-gate-title">Select Product</span>
+                    </a>
+                </li>
+                <li class="stage-gate-item">
+                    <a href="#" class="stage-gate-link active">
+                        <span class="stage-gate-number">2</span>
+                        <span class="stage-gate-title">Select PRO</span>
+                    </a>
+                </li>
+                <li class="stage-gate-item">
+                    <a href="@Url.Action("CreateMemoComponent", "Memo")" class="stage-gate-link">
+                        <span class="stage-gate-number">3</span>
+                        <span class="stage-gate-title">Select Component</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="custom-form-container pt-0">
+                <h2 class="stage-title">Select PRO</h2>
+                @using (Html.BeginForm("CreateMemoPRO", "Memo", FormMethod.Post))
+                {
+                <div class="row">
+                    <div class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                            @Html.ListBoxFor(model => model.selectedProID, new MultiSelectList(Model.PROCollections, "ID", "Number"), new { @class = "pro", id = "pro", multiple = "multiple" })
+                        </div>
+                        <button type="submit" class="btn btn-success generate-memo-pro mr-0 mb-2"><i data-feather="refresh-cw"></i> &nbsp; Generate PRO</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-auto">
+                        <p class="pro-validation text-danger"></p>
+                    </div>
+                </div>
+                }
+                @using (Html.BeginForm("UpdateMemoPRO", "Memo", FormMethod.Post))
+                {
+                    @*@{*@
+                    List<NewMemoServices> memo = (List<NewMemoServices>)Session["newMemo"];
+                    @*}*@
+                    <div class="update-pro hide">
+                        <p class="mt-3 mb-2"><strong>List of PRO</strong></p>
+                        <table class="table table-bordered table-sm">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">PRO Number</th>
+                                    <th scope="col" style="width: 100px">Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+                                    var index = 0;
+                                }
+                                @if (memo[0].ListOfMemoPROs == null)
+                                {
+                                   <tr>
+                                       <td>No PRO</td>
+                                   </tr>
+                                }
+                                else
+                                {
+                                    foreach (var item in memo[0].ListOfMemoPROs)
+                                    {
+                                        int proID = Convert.ToInt32(item.PROID);
+                                        var currentPRO = db.Pros.Where(x => x.ID == proID).FirstOrDefault();
+                                        index++;
+                                        <tr class="list-pro">
+                                            <td scope="row">@index</td>
+                                            <td>
+                                                @item.Number
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control full-width" name="quantityPRO" value="@currentPRO.Quantity" />
+                                                <input type="text" value="@item.PROID" name="proID" class="hide" />
+                                                @Html.ValidationMessageFor(model => item.Quantity, "", new { @class = "text-danger" })
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <input type="text" class="error-validation hide" name="error-validation" value="@memo[0].Message" />
+                    </div>
+                    <div class="row justify-content-between mt-5 add-component-action">
+                        <div class="col-auto">
+                            <a href="@Url.Action("Create", "Memo")" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Select Product</a>
+                        </div>
+                        <div class="col-auto">
+                            @*<a href="@Url.Action("CreateMemoComponent", "Memo")" class="btn btn-success submit mr-0 mb-3"><i data-feather="arrow-right"></i> &nbsp; Next</a>*@
+                            <button type="submit" class="btn btn-success create-memo-pro mr-0 mb-3"><i data-feather="arrow-up-circle"></i> &nbsp; Next</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@*<div>
+        <p class="text-danger">@ViewBag.Exception</p>
+    </div>*@
+
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            $('.generate-memo-pro').click(function (e) {
+                $('.loading').removeClass('hide')
+            });
+
+            $('.create-memo-pro').click(function (e) {
+                if ($('.list-pro').length == 0) {
+                    $('.pro-validation').text("PRO can't be empty");
+                    e.preventDefault();
+                }
+                else {
+                    $('.pro-validation').text("");
+                    e.preventDefault.remove();
+                    if (!$('form').valid()) {
+                        $(this).prop("disabled", false);
+                        $('.loading').addClass('hide');
+                        return false;
+                    };
+                    $(this).prop("disabled", true);
+                    $('.loading').removeClass('hide');
+                    $('form').submit();
+                }
+            });
+
+            $("#pro").attr("data-placeholder", "Choose PRO...");
+            $('#pro').chosen({
+                width: "300px",
+                search_contains: true
+            });
+
+            var listPro = $('.list-pro');
+            var errorMessage = $('.error-message');
+
+            if (listPro.length > 0) {
+                $('.update-pro').removeClass('hide');
+            }
+            else {
+                $('.update').addClass('hide');
+            }
+
+            var errorMessage = $('.error-validation').val();
+
+            if (errorMessage.length > 0) {
+                alert(errorMessage);
+            }
+        });
+
+
+    </script>
+}

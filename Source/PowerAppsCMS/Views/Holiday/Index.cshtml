@@ -1,0 +1,123 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.Holiday>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Holiday";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Holiday Management</li>
+        <li class="breadcrumb-item active" aria-current="page">Holidays</li>
+    </ol>
+</nav>
+<h1 class="page-title">Holidays</h1>
+<div class="card shadow">
+    
+    <div class="card-header">
+        List of Holidays
+    </div>
+    <div class="form-row align-items-center justify-content-between filter-table-row">
+        <div class="col-auto">
+            @using (Html.BeginForm("Index", "Holiday", FormMethod.Get))
+            {
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Find by name</label>
+                        @Html.TextBox("searchName", ViewBag.CurrentFilter as string, new { @class = "form-control mx-sm-3", placeholder = "Enter Name" })
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+        <div class="col-auto">
+            <a href="@Url.Action("Create", "Holiday")" class="btn btn-primary"><i data-feather="plus-circle"></i> &nbsp; Add Holiday</a>
+        </div>
+    </div>
+    <table class="table card-table">
+        <thead>
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>
+                    Holiday Name
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    End Date
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ 
+                var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+                var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+                var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+            }
+            @foreach (var item in Model)
+            {
+                <tr class="Holiday">
+                    <td>
+                        @currentNumber
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @item.StartDate.Day-@item.StartDate.Month-@item.StartDate.Year
+                    </td>
+                    <td>
+                        @item.EndDate.Day-@item.EndDate.Month-@item.EndDate.Year
+                    </td>
+                    <td>
+                        <input type="text" value="@item.ID" class="holidayId hide" name="holidayId" />
+                        <a href="@Url.Action("Edit", "Holiday", new { id = item.ID, page = ViewBag.Page})" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"><i data-feather="edit-2"></i></a>
+                        <a class="btn btn-danger btn-sm deleteHoliday" role="button" data-toggle="tooltip" data-placement="top" title="Delete"><i data-feather="trash-2"></i></a>
+                    </td>
+                </tr>
+                currentNumber++;
+            }
+        </tbody>
+
+    </table>
+    <div class="p-3">
+        <div class="row justify-content-md-center custom-pagination align-items-center">
+            @*<div class="col-auto">
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                </div>*@
+            <div class="col-auto">
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+                    new { page, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var holidayId = 0;
+
+            $(".deleteHoliday").click(function () {
+                holidayId = $(this).closest(".Holiday").find("input[name='holidayId']").val();
+                if (confirm("Are you sure want to delete this holiday?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "Holiday")?id=" +holidayId;
+                };
+                return false;
+            });
+        });
+    </script>
+}

@@ -1,0 +1,256 @@
+﻿@model PowerAppsCMS.ViewModel.UserViewModel
+@using PowerAppsCMS.Models
+
+@{
+    ViewBag.Title = "Edit User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "User")">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit User</li>
+    </ol>
+</nav>
+<h1 class="page-title">Edit User</h1>
+
+
+@using (Html.BeginForm("EditUser", "User", FormMethod.Post))
+{
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            @{
+                PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+                var roleData = db.Roles.Where(x => x.ID == Model.User.RoleID).FirstOrDefault();
+
+                if (roleData.HaveAccessPowerApps == true)
+                {
+                    @Html.Partial("_EditPowerAppsUser")
+                }
+                else
+                {
+                    @Html.Partial("_EditUserAD")
+                }
+            }
+        </div>
+    </div>
+}
+
+<div class="loading">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('.loading').hide();
+
+            if (@Model.UserProcessGroupList.Count() > 1) {
+                $('.process-group-checkbox').removeClass('hide');
+                $('.process-group-dropdown').addClass('hide');
+                $('#parent-user').addClass('hide');
+            }
+            else {
+                $('.process-group-checkbox').addClass('hide');
+                $('.process-group-dropdown').removeClass('hide');
+                $('#parent-user').removeClass('hide');
+            }
+
+            $('#RoleID').change(function () {
+                var selectedRole = $('#RoleID').val();
+                var role = $('#RoleID option:selected').text();
+                var employeeNumber = $('#User_EmployeeNumber').val();
+                var selectProcessGroup = $('#ProcessGroupID');
+
+                $('#ParentUserID').empty();
+
+                $.getJSON('@Url.Action("GetIsAccessPA")', { role: selectedRole }, function (isHave) {
+                    if (isHave != null) {
+                        if (isHave == true)
+                        {
+                            $('.process-group-section').removeClass('hide');
+                            $(".powerAppsAccess").val("1");
+                            $('#User_PIN').val(employeeNumber);
+
+                            if (role == 'Group Leader PB' || role == 'Group Leader Produksi') {
+                                $('.process-group-checkbox').removeClass('hide');
+                                $('.process-group-dropdown').addClass('hide');
+                                $('#parent-user').addClass('hide');
+                                selectProcessGroup.val(null);
+                                $('.process-group').prop('checked', false);
+                            }
+                            else {
+                                $('.process-group-checkbox').addClass('hide');
+                                $('.process-group-dropdown').removeClass('hide');
+                                $('#parent-user').removeClass('hide');
+                                selectProcessGroup.val(null);
+                                $('.process-group').prop('checked', false);
+                            }
+                        }
+                        else
+                        {
+                            $('.process-group-section').addClass('hide');
+                            $('.process-group-checkbox').addClass('hide');
+                            $('.process-group-dropdown').addClass('hide');
+                            $(".powerAppsAccess").val("0");
+                            $('#User_PIN').val("0000000");
+                        }
+                    }
+                });
+            });
+
+            $('#ProcessGroupID').change(function () {
+                var selectedRole = $("#RoleID").val();
+                var selectedProcessGroup = $("#ProcessGroupID").val();
+                var parentSelect = $('#ParentUserID');
+                parentSelect.empty();
+                if (selectedRole != null && selectedRole != '') {
+                    $.getJSON('@Url.Action("GetParent")', { role: selectedRole, processGroup: selectedProcessGroup }, function (parents) {
+                        if (parents != null && !jQuery.isEmptyObject(parents)) {
+                            $("#ParentUserID").prop("disabled", false);
+                            parentSelect.append($('<option/>', {
+                                value: null,
+                                text: "Select Parent Employee"
+                            }));
+                            $.each(parents, function (index, parent) {
+                                parentSelect.append($('<option/>', {
+                                    value: parent.Value,
+                                    text: parent.Text
+                                }));
+                            });
+                        }
+                        else {
+                            parentSelect.append($('<option/>', {
+                                value: null,
+                                text: "Parent Employee Not Existing"
+                            }));
+                            $("#ParentUserID").prop("disabled", true);
+                        }
+                    });
+                }
+            });
+
+            $('.edit-user-powerapps').click(function (e) {
+                var name = $('#User_Name').val();
+                var processGroup = $('#ProcessGroupID').val();
+                var roleName = $('#RoleID option:selected').text();
+
+                $("[data-valmsg-for='User.Name']").text("");
+                $("[data-valmsg-for='ProcessGroupID']").text("");
+
+                if (roleName == 'Group Leader PB' || roleName == 'Group Leader Produksi') {
+                    if (name == null || name == '') {
+                        $("[data-valmsg-for='User.Name']").text("Name is required");
+                        e.preventDefault();
+                    }
+                    else {
+                        $('.loading').show();
+                        $("[data-valmsg-for='Name']").text("");
+                        $("[data-valmsg-for='ProcessGroupID']").text("");
+                        $('form').submit(function () {
+                            $('.edit-user-powerapps').attr('disabled', 'disabled');
+                        });
+                    }
+                }
+                else {
+                    if (name == null || name == '') {
+                        $("[data-valmsg-for='User.Name']").text("Name is required");
+                        e.preventDefault();
+                    }
+                    else if (processGroup == null || processGroup == '') {
+                        $("[data-valmsg-for='ProcessGroupID']").text("Process Group must be selected");
+                        e.preventDefault();
+                    }
+                    else {
+                        $('.loading').show();
+                        $("[data-valmsg-for='Name']").text("");
+                        $("[data-valmsg-for='ProcessGroupID']").text("");
+                        $('form').submit(function () {
+                            $('.edit-user-powerapps').attr('disabled', 'disabled');
+                        });
+                    } 
+                }
+            });
+
+            $('.edit-user-ad').click(function (e) {
+
+                var powerAppsAccess = $(".powerAppsAccess").val();
+                var processGroup = $('#ProcessGroupID').val();
+                var pin = $('#User_PIN').val();
+                var roleName = $('#RoleID option:selected').text();
+
+                var username = $('#User_Name').val();
+                console.log(username);
+                //e.preventDefault();
+
+                $("[data-valmsg-for='ProcessGroupID']").text("");
+                $("[data-valmsg-for='User.PIN']").text("");
+
+                if (powerAppsAccess == 1) {
+                    if (roleName == 'Group Leader PB' || roleName == 'Group Leader Produksi') {
+                        if (pin == null || pin == '') {
+                            $("[data-valmsg-for='User.PIN']").text("PIN is required ");
+                            e.preventDefault();
+                        }
+                        else if (pin.length < 7) {
+                            $("[data-valmsg-for='User.PIN']").text("PIN digit can't be less than 7 digits ");
+                            e.preventDefault();
+                        }
+                        else if (pin.length > 7) {
+                            $("[data-valmsg-for='User.PIN']").text("PIN digit can't be more than 7 digits ");
+                            e.preventDefault();
+                        }
+                        else {
+                            $('.loading').show();
+                            $('.edit-user-ad').attr('disabled', 'disabled');
+                            $("[data-valmsg-for='ProcessGroupID']").text("");
+                            $("[data-valmsg-for='PIN']").text("");
+                            $('form').submit();
+                        }
+                    }
+                    else {
+                        if (processGroup == null || processGroup == '') {
+                            $("[data-valmsg-for='ProcessGroupID']").text("Process Group must be selected ");
+                            e.preventDefault();
+                        }
+                        else if (pin == null || pin == '') {
+                            $("[data-valmsg-for='User.PIN']").text("PIN is required ");
+                            e.preventDefault();
+                        }
+                        else if (pin.length < 7) {
+                            $("[data-valmsg-for='User.PIN']").text("PIN digit can't be less than 7 digits ");
+                            e.preventDefault();
+                        }
+                        else if (pin.length > 7) {
+                            $("[data-valmsg-for='User.PIN']").text("PIN digit can't be more than 7 digits ");
+                            e.preventDefault();
+                        }
+                        else {
+                            $('.loading').show();
+                            $('.edit-user-ad').attr('disabled', 'disabled');
+                            $("[data-valmsg-for='ProcessGroupID']").text("");
+                            $("[data-valmsg-for='PIN']").text("");
+                            $('form').submit();
+                        }
+                    }
+                }
+                else {
+                    if (!$('form').valid()) {
+                        $(this).prop("disabled", false);
+                        $('.loading').hide();
+                        return false;
+                    }
+                    $('.loading').show();
+                    $('.edit-user-ad').attr('disabled', 'disabled');
+                    $('form').submit();
+                }
+            });
+        });
+    </script>
+}

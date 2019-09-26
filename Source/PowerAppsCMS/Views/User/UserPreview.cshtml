@@ -1,0 +1,132 @@
+﻿@model PowerAppsCMS.ViewModel.UserViewModel
+
+@{
+    ViewBag.Title = "Employee Preview";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "User")">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">User Preview</li>
+    </ol>
+</nav>
+<h1 class="page-title">User Preview</h1>
+
+<div class="row">
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            <div class="card-header">
+                User Preview
+            </div>
+
+            <div class="view-data-container">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.User.Name)</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.User.Name)</p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.User.EmployeeNumber)</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.User.EmployeeNumber)</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayName("Role")</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.User.Role.Name)</p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">Parent Employee</label>
+                        <p class="view-data__content">@ViewBag.ParentUser - @ViewBag.ParentUserRole</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayName("Process Group")</label>
+                        <p class="view-data__content">@Html.DisplayFor(model => model.ProcessGroup.Name)</p>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label class="view-data__label form-custom-label">@Html.DisplayNameFor(model => model.User.Email)</label>
+                        <p class="view-data__content"> @Html.DisplayFor(model => model.User.Email)</p>
+                    </div>
+                </div>
+                @using (Html.BeginForm("UploadPhotos", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <label class="view-data__label form-custom-label">Upload Photo</label>
+                            <input type="text" id="personId" class="hide" name="pegawaiID" value="@Model.User.ID" />
+                            <input type="file" name="photos" id="photos" multiple />
+                            <br />
+                            <input type="submit" value="Upload" class="btn btn-primary upload-photo-btn" />
+                            <br />
+                        </div>
+                    </div>
+                }
+                <div class="row detail">
+                    <div class="row thumbnail-container">
+                        <div class="col-md-9 col-12 thumbnail-container-list">
+                            <p class="text-danger image-info">
+                                Please upload minimum 3 photos for better accuracy when login using your face on your mobile. After that
+                                click "Save"  button to finish the process"
+                            </p>
+                            @foreach (var image in Model.UserImages)
+                            {
+                                <div class="thumbnail-container-item images" id="uploadedImage">
+                                    <div class="thumbnail-container-item-wrapper">
+                                        <img src="@image.BlobImage" class="image-thumbnail" />
+                                        <a href="@Url.Action("DeletePreviewImage","User", new { id = image.ID})" class="btn btn-danger btn-sm deleteImageUser"><i data-feather="trash-2"></i></a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="row justify-content-between mt-5 detail-btn">
+                <div class="col-auto">
+                    <a href="@Url.Action("Index", "FaceAPI", new { id = Model.User.ID })" class="btn btn-success train-btn mr-0"><i data-feather="save"></i> &nbsp; Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            if ('@ViewBag.Message' != "") {
+                $('#myModal').modal('toggle');
+            }
+
+            if ('@ViewBag.UserImages' != "") {
+                $('.image-info').addClass('hide');
+            }
+
+            $('.upload-photo-btn').click(function () {
+                $('.loading').removeClass('hide');
+            });
+
+            $('.train-btn').click(function () {
+                $('.loading').removeClass('hide');
+            });
+
+            $('.deleteImageUser').click(function () {
+                $('.loading').removeClass('hide');
+            });
+        });
+
+    </script>
+}

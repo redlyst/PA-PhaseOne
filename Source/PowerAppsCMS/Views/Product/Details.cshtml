@@ -1,0 +1,537 @@
+﻿@model PowerAppsCMS.ViewModel.ProductViewModel
+
+@Styles.Render("~/bundles/jqueryuicss")
+
+@{
+    ViewBag.Title = " Product Details";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Product Management</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Product")">Products</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Product Details</li>
+    </ol>
+</nav>
+<h1 class="page-title">Product Details</h1>
+
+<div class="card shadow">
+    <div class="card-header">
+        Product Details
+    </div>
+    <div class="view-data-container">
+        @using (Html.BeginForm("CalculateTotalDay", "Product", new { productId = Model.Product.ID }))
+        {
+            <div class="row">
+                <div class="col-md-4 ">
+                    <label class="view-data__label form-custom-label">Product Name</label>
+                    <p class="view-data__content">@Html.DisplayFor(model => model.Product.Name)</p>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label class="view-data__label form-custom-label">Product Sub Group</label>
+                    <p class="view-data__content">@Html.DisplayFor(model => model.Product.ProductSubGroups.Name)</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <label class="view-data__label form-custom-label">Part Number</label>
+                    <p class="view-data__content">@Html.DisplayFor(model => model.Product.PN)</p>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label class="view-data__label form-custom-label">Total Days</label>
+                    @{
+                        if (Model.Product.TotalDay == null)
+                        {
+                            <p class="view-data__content text-danger">Total day not calculated yet and need to add product process</p>
+                        }
+                        else if (Model.Product.IsTotalDayCalculated == false)
+                        {
+                            <p class="view-data__content text-danger">Total day not calculated yet </p>
+
+                            <button type="submit" class="btn btn-success submit mr-0 mb-3"><i data-feather="refresh-cw"></i> &nbsp; Calculate Day</button>
+                        }
+                        else
+                        {
+                            @*<p class="view-data__content">@Html.DisplayFor(model => model.Product.TotalDay)</p>*@
+                            <p class="view-data__content">@Html.DisplayFor(model => model.Product.MaxDayUsed)</p>
+                            <span hidden>@Html.DisplayFor(model => model.Product.TotalDay)</span>
+                        }
+                    }
+                </div>
+            </div>
+        }
+        <div class="row justify-content-between mt-0">
+            <div class="col-auto">
+                <input type="text" class="hide productID" name="productID" value="@Model.Product.ID" />
+                <a href="@Url.Action("Edit", "Product", new { id = Model.Product.ID, page = ViewBag.Page})" class="btn btn-primary mb-3 detail-btn-edit"><i data-feather="edit-2"></i> &nbsp; Edit</a>
+                @if (Model.Product.PRO.Count() == 0)
+                {
+                    <a class="btn btn-danger mb-3 delete-product" role="button"><i data-feather="trash-2"></i> &nbsp; Delete</a>
+                }
+            </div>
+        </div>
+        <nav class="mt-5">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-process-tab" data-toggle="tab" href="#nav-process" role="tab" aria-controls="nav-process" aria-selected="true">Process</a>
+                <a class="nav-item nav-link" id="nav-component-tab" data-toggle="tab" href="#nav-component" role="tab" aria-controls="nav-component" aria-selected="false">Component</a>
+            </div>
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-process" role="tabpanel" aria-labelledby="nav-process-tab">
+                <div class="form-row align-items-center justify-content-between mt-3 mb-3">
+                    <div class="col-auto">
+                        <h3 class="sub-title mb-0">List of Process</h3>
+                    </div>
+                    <div class="col-auto">
+                        <a href="@Url.Action("Create", "MasterProcess" , new { productID=Model.Product.ID})" class="btn btn-primary"><i data-feather="plus-circle"></i> &nbsp; Create New</a>
+                        @*<a href="#" class="btn btn-primary" data-toggle="modal" data-target=".addProccessModal"><i data-feather="plus-circle"></i> &nbsp; Create New</a>*@
+                    </div>
+                </div>
+                <ul class="list-unstyled list-sortable" id="tes">
+                    <li class="list-sortable-header">
+                        <div class="list-sortbale__column list-sortable__order column-1">Order</div>
+                        <div class="list-sortbale__column column-2">Process Type</div>
+                        <div class="list-sortbale__column column-3">Master Process</div>
+                        <div class="list-sortbale__column column-4">Cycle Time (Days)</div>
+                        <div class="list-sortbale__column column-5">Dependency</div>
+                        <div class="list-sortbale__column column-6">Action</div>
+                    </li>
+                    @foreach (var item in Model.MasterProcesses)
+                    {
+                        <li class="list-sortable-item" item-id="@item.ID">
+                            <div class="list-sortbale__column list-sortable__order column-1"><span class="item-order"></span></div>
+                            <div class="list-sortbale__column column-2">@Html.DisplayFor(modelItem => item.ProcessGroup.Name)</div>
+                            <div class="list-sortbale__column column-3">@Html.DisplayFor(modelItem => item.Name)</div>
+                            <div class="list-sortbale__column column-4">@Html.DisplayFor(modelItem => item.CycleTime)</div>
+                            <div class="list-sortbale__column column-5">
+                                @{
+                                    var processDependencies = Model.ProcessDependencies.Where(x => x.MasterProcessID == item.ID).ToList();
+                                    foreach (var processDependency in processDependencies)
+                                    {
+                                        <span class="process-dependencies"><span id="order-dependen-@processDependency.MasterProcessPredecessor.ID">@processDependency.MasterProcessPredecessor.ProcessOrder</span> - @processDependency.MasterProcessPredecessor.Name</span>
+                                        <br />
+                                    }
+                                }
+                            </div>
+                            <div class="masterProcess list-sortbale__column column-6">
+                                <input type="text" value="@item.ID" class="masterProcessId hide" name="masterProcessId" />
+                                <a href="@Url.Action("Details", "MasterProcess", new { id = item.ID})" class="btn btn-primary btn-sm" data-toggle="tooltop" data-placement="top" title="Details"><i data-feather="zoom-in"></i></a>
+                                <a href="@Url.Action("Edit", "MasterProcess", new { id = item.ID})" class="btn btn-dark btn-sm" data-toggle="tooltop" data-placement="top" title="Edit"><i data-feather="edit-2"></i></a>
+                                <a class="btn btn-danger btn-sm deleteMasterProcess" role="button" @(item.CanDeleted ? "" : "hidden") data-toggle="tooltop" data-placement="top" title="Delete"><i data-feather="trash-2"></i></a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="tab-pane fade show" id="nav-component" role="tabpanel" aria-labelledby="nav-component-tab">
+                <div class="form-row align-items-center justify-content-between mt-3 mb-3">
+                    <div class="col-auto">
+                        <h3 class="sub-title mb-0">List of Components</h3>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#nav-tabContent" class="btn btn-primary add-component"><i data-feather="plus-circle"></i> &nbsp; Add Component</a>
+                    </div>
+                </div>
+                @using (Html.BeginForm("Create", "ProductComposition", new { productId = Model.Product.ID }))
+                {
+                    <div class="form hide">
+                        <div class="row">
+                            @Html.HiddenFor(model => model.Product.ID)
+                            <input type="text" class="currentPage hide" name="currentPage" id="currentPage" value="@ViewBag.Page" />
+
+                            <div class="col-xl-6 col-12 custom-form-field">
+                                <p class="form-custom-label">Select Component</p>
+                                @Html.ListBoxFor(model => model.SelectedComponentID, new MultiSelectList(Model.ComponentCollections, "ID", "PartNumber"), new { id = "productComponent", multiple = "multiple" })
+                                <p class="product-composition-validation text-danger"></p>
+                            </div>
+                            
+                        </div>
+                        <div class="row justify-content-between mt-3">
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-success add-product-composition mr-0 mb-3"><i data-feather="save"></i> &nbsp; Save</button>
+                                <a class="btn btn-danger cancel-add-component mr-0 mb-3"><i data-feather="x-circle"></i> &nbsp; Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="table-responsive">
+                    <table class="table card-table bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    No
+                                </th>
+                                <th>
+                                    Part Number
+                                </th>
+                                <th>
+                                    Part
+                                </th>
+                                <th>
+                                    Material
+                                </th>
+                                <th class="text-right">
+                                    Long (mm)
+                                </th>
+                                <th class="text-right">
+                                    Width (mm)
+                                </th>
+                                <th class="text-right">
+                                    Thickness (mm)
+                                </th>
+                                <th class="text-right">
+                                    Outer Diameter
+                                </th>
+                                <th class="text-right">
+                                    Inner Diameter
+                                </th>
+                                <th class="text-right">
+                                    Quantity
+                                </th>
+                                <th class="text-right">
+                                    Default Component
+                                </th>
+                                <th>
+                                    Material Preparation Process
+                                </th>
+                                <th>
+                                    Material Preparation Value
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var indexNumber = 0;
+                            }
+                            @foreach (var item in Model.ProductCompositions)
+                            {
+                                indexNumber++;
+                                var materialPreparationProcessList = Model.ComponentMaterialPreparationProcesses.Where(x => x.ComponentID == item.Component.ID).ToList();
+                                var materialPreparationProcessListCount = materialPreparationProcessList.Count;
+                                int materialPreperationIndex = 0;
+                                foreach (var materialProcessPreparation in materialPreparationProcessList)
+                                {
+                            <tr class="component">
+                                @if (materialPreperationIndex == 0)
+                                {
+                                    <td rowspan=@materialPreparationProcessListCount>
+                                        @indexNumber
+                                    </td>
+                                    <td rowspan=@materialPreparationProcessListCount>
+                                        @Html.DisplayFor(modelItem => item.Component.PartNumber)
+                                    </td>
+                                    <td rowspan=@materialPreparationProcessListCount>
+                                        @Html.DisplayFor(modelItem => item.Component.PartName)
+                                    </td>
+                                    <td rowspan=@materialPreparationProcessListCount>
+                                        @Html.DisplayFor(modelItem => item.Component.Material.Name)
+                                    </td>
+                                    <td rowspan=@materialPreparationProcessListCount align="right">
+                                        @Html.DisplayFor(modelItem => item.Component.Long)
+                                    </td>
+                                    <td rowspan=@materialPreparationProcessListCount align="right">
+                                        @Html.DisplayFor(modelItem => item.Component.Width)
+                                    </td>
+                                    <td rowspan=@materialPreparationProcessListCount align="right">
+                                        @Html.DisplayFor(modelItem => item.Component.Thickness)
+                                    </td>
+                                    <td rowspan=@materialPreparationProcessListCount align="right">
+                                        @Html.DisplayFor(modelItem => item.Component.OuterDiameter)
+                                    </td>
+                                    <td rowspan=@materialPreparationProcessListCount align="right">
+                                        @Html.DisplayFor(modelItem => item.Component.InnerDiameter)
+                                    </td>
+                                    <td rowspan=@materialPreparationProcessListCount align="right" class="quantity-label">
+
+                                        <label for="valueLabel">@Html.DisplayFor(modelItem => item.Quantity)</label>
+                                    </td>
+                                    <td class="quantity-form hide" rowspan=@materialPreparationProcessListCount>
+                                        <input type="text" class="form-control" value="@item.Quantity" name="quantityValue" />
+                                    </td>
+                                    <td class="quantity-label" rowspan="@materialPreparationProcessListCount" align="right">
+                                        @if (item.IsDefaultComponent == true)
+                                        {
+                                            <label for="defaultComponentValue" class="text-success">Yes</label>
+                                        }
+                                        else
+                                        {
+                                            <label for="defaultComponentValue" class="text-danger">No</label>
+                                        }
+                                    </td>
+                                    <td class="quantity-form hide" rowspan="@materialPreparationProcessListCount">
+                                        @Html.EditorFor(model => item.IsDefaultComponent)
+                                        <p>Thick checbox if component default</p>
+                                    </td>
+                                }
+                                <td>
+                                    @materialProcessPreparation.MaterialPreparationProcess.Name
+                                </td>
+                                <td align="right">
+                                    @*@materialProcessPreparation.Value*@
+                                    @Html.DisplayFor(modelItem => materialProcessPreparation.Value)
+                                </td>
+
+                                @if (materialPreperationIndex == 0)
+                                {
+                                    <td rowspan=@materialPreparationProcessListCount class="edit-action">
+                                        <input type="text" value="@item.ID" class="componentId hide" name="componentId" />
+                                        <a href="@Url.Action("Details", "Component", new { id = item.ComponentID })" class="btn btn-primary btn-sm detail-product-composition" role="button" data-toggle="tooltop" data-placement="top" title="Details"><i data-feather="zoom-in"></i></a>
+                                        <button class="btn btn-dark btn-sm edit-product-composition" role="button" data-toggle="tooltop" data-placement="top" title="Edit"><i data-feather="edit-2"></i></button>
+                                        <button class="btn btn-danger btn-sm deleteComponent" role="button" data-toggle="tooltop" data-placement="top" title="Delete"><i data-feather="trash-2"></i></button>
+                                    </td>
+                                    <td class="cancel-action hide">
+                                        <button class="btn btn-danger btn-sm cancel-edit-product-composition" role="button" data-toggle="tooltop" data-placement="top" title="Cancel"><i data-feather="x-circle"></i></button>
+                                        <button class="btn btn-success btn-sm save-product-composition" role="button" data-toggle="tooltop" data-placement="top" title="Save"><i data-feather="save"></i></button>
+                                    </td>
+                                }
+                            </tr>
+                                    materialPreperationIndex++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-between mt-3">
+            <div class="col-auto">
+                <a href="@Url.Action("Index", "Product", new { page = ViewBag.Page})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Product</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script>
+        $(window).resize(function () {
+            if ($(document.activeElement).attr('type') != 'text') {
+                $(".column-1,.column-2,.column-3,.column-4,.column-5,.column-6").each(function () {
+                    $(this).width("auto");
+                })
+                $(".column-1,.column-2,.column-3,.column-4,.column-5,.column-6").each(function () {
+                    $(this).width($(this).width());
+                })
+            }
+        })
+
+        $(document).ready(function () {
+            $('.add-product-composition').click(function (e) {
+                $('.product-composition-validation').text("");
+                var component = $('#productComponent').val();
+                if (component == null || component == '') {
+                    $('.product-composition-validation').text("Component can't be empty");
+                    e.preventDefault()
+                }
+                else {
+                    $(this).prop("disabled", true);
+                    $('.loading').removeClass('hide');
+                    $('.product-composition-validation').text("");
+                    $('form').submit();
+                }
+            });
+
+            var selector = '@ViewBag.ActiveTab';
+            if(selector == "component")
+            {
+                $("#nav-" + selector).addClass('active');
+                $("#nav-component-tab").addClass('active');
+                $("#nav-process").removeClass('active');
+                $("#nav-process-tab").removeClass('active');
+            }
+
+            var newPosition = [];
+            var newPositionData = [];
+            $(".column-1,.column-2,.column-3,.column-4,.column-5,.column-6").each(function () {
+                $(this).width($(this).width());
+            });
+
+            regenerateOrder();
+
+            $(".list-sortable").sortable({
+                items: "li:not(.list-sortable-header)",
+                //start: function (event, ui) {
+                //    var start_pos = ui.item.index() - 1;
+                //    ui.item.data('start_pos', start_pos);
+                //},
+                update: function (event, ui) {
+                    //var start_pos = ui.item.data('start_pos');
+                    //var end_pos = ui.item.index() - 1;
+                    //alert(start_pos + ' - ' + end_pos);
+                    regenerateOrder();
+                    newPositionData = [];
+                    $(".list-sortable-item").each(function () {
+                        var tempArray = [];
+                        tempArray.push($(this).attr("item-id"));
+                        tempArray.push($.trim($(this).find(".item-order").text()));
+                        $("#order-dependen-" + tempArray[0]).text(tempArray[1]);
+                        //console.log(tempArray[0]);
+                        //console.log(tempArray[1]);
+                        newPositionData.push({
+                            ID: tempArray[0],
+                            ProcessOrder: tempArray[1]
+                        });
+                        newPosition.push(tempArray);
+                    });
+
+                    if (newPositionData.length > 0) {
+                        $.ajax({
+                            type: "POST",
+                            url: "@Url.Action("UpdateMasterProcessOrder", "MasterProcess")",
+                            data: JSON.stringify({ 'masterProcessList': newPositionData }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                                $('.loading').addClass('hide');
+                                if (response.success) {
+                                    alert(response.responseText);
+                                }
+                            }
+                        });
+                    }
+                    //var newDataPosition = [];
+
+                    //for
+
+                }
+            });
+
+
+            $(".list-sortable").disableSelection();
+
+            $('#productComponent').chosen({
+                width: "300px",
+                search_contains: true
+            });
+
+            $('.add-component').click(function () {
+                $('.form').removeClass('hide');
+            });
+
+            $('.cancel-add-component').click(function () {
+                $('.form').addClass('hide');
+            })
+
+            $('.submit').click(function () {
+                $('.loading').removeClass('hide');
+            });
+
+
+
+            var masterProcessId = 0;
+
+            $(".deleteMasterProcess").click(function () {
+                masterProcessId = $(this).closest(".masterProcess").find("input[name='masterProcessId']").val();
+                if (confirm("Are you sure want to delete this Process?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "MasterProcess")?id=" + masterProcessId;
+                };
+                return false;
+            });
+
+            var productCompositionId = 0
+            var currentPage = $('.currentPage').val();
+
+            $(".deleteComponent").click(function () {
+                productCompositionId = $(this).closest(".component").find("input[name='componentId']").val();
+                if (confirm("Are you sure want to delete this component?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "ProductComposition")?id=" + productCompositionId + "&page=" + currentPage;
+                };
+                return false;
+            });
+
+            $('.edit-product-composition').click(function () {
+                $(this).closest(".component").find('.quantity-label').addClass('hide');
+                $(this).closest(".component").find('.quantity-form').removeClass('hide');
+                $(this).closest(".component").find('.edit-action').addClass('hide');
+                $(this).closest(".component").find('.cancel-action').removeClass('hide');
+            });
+
+            $('.cancel-edit-product-composition').click(function () {
+                $(this).closest(".component").find('.quantity-label').removeClass('hide');
+                $(this).closest(".component").find('.quantity-form').addClass('hide');
+                $(this).closest(".component").find('.edit-action').removeClass('hide');
+                $(this).closest(".component").find('.cancel-action').addClass('hide');
+            });
+
+            $('.save-product-composition').click(".component", function () {
+                $('.loading').removeClass('hide');
+
+                var quantityValue = $(this).closest(".component").find("input[name='quantityValue']").val()
+                productCompositionId = $(this).closest(".component").find("input[name='componentId']").val();
+                var defaultComponent = false;
+
+                $(this).closest(".component").find("input[name='item.IsDefaultComponent']").each(function () {
+                    if ($(this).prop("checked") == true) {
+                        defaultComponent = true
+                    }
+                });
+                console.log(defaultComponent);
+                var data = {
+                    ID: productCompositionId,
+                    Quantity: quantityValue,
+                    IsDefaultComponent: defaultComponent
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Edit", "ProductComposition")",
+                    context: this,
+                    data: data,
+                    success: function (response) {
+                        $('.loading').addClass('hide');
+                        if (response.success) {
+                            alert(response.responseText);
+                            $(this).closest(".component").find('.quantity-form').addClass('hide');
+                            $(this).closest(".component").find('.quantity-label').removeClass('hide');
+                            $(this).closest(".component").find('.edit-action').removeClass('hide');
+                            $(this).closest(".component").find('.cancel-action').addClass('hide');
+                            $(this).closest(".component").find("input[name='quantityValue']").val(quantityValue);
+                            $(this).closest(".component").find("label[for='valueLabel']").text(quantityValue);
+                            if (defaultComponent == true) {
+                                $(this).closest(".component").find("label[for='defaultComponentValue']").addClass('text-success').text("yes");
+                                $(this).closest(".component").find("label[for='defaultComponentValue']").removeClass('text-danger');
+                            }
+                            else {
+                                $(this).closest(".component").find("label[for='defaultComponentValue']").addClass('text-danger').text("No");
+                                $(this).closest(".component").find("label[for='defaultComponentValue']").removeClass('text-success');
+                            }
+                        }
+                    }
+                });
+            });
+
+            $(".delete-product").click(function () {
+                productId = $('.productID').val();
+                if (confirm("Are you sure want to delete this product?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "Product")?id=" +productId;
+                };
+                return false;
+            });
+
+        });
+
+        function regenerateOrder() {
+            var count = 1;
+            $(".item-order").each(function () {
+                $(this).text(count);
+                count++;
+            });
+        }
+
+    </script>
+}
+

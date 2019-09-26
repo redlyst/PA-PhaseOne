@@ -1,0 +1,39 @@
+﻿@using PowerAppsCMS.CustomAuthentication
+
+@if (Request.IsAuthenticated)
+{
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            @{
+                //var name = User.Identity.Name;
+                //var name = username.Split('\\')[1];
+                var userData = ((CustomPrincipal)HttpContext.Current.User);
+                var name = userData.Name;
+            }
+            <span class="text-white">Hello, <strong>@name!</strong></span> &nbsp;
+            @Html.ActionLink("(Sign out)", "LogOut", "Account", null, new { @class = "text-white signout" })
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            @Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "text-white" });
+        </li>
+    </ul>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $('.signout').click(function () {
+                document.execCommand("ClearAuthenticationCache");
+            })
+        });
+    </script>
+
+
+}

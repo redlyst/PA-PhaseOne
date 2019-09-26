@@ -1,0 +1,138 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.SalesOrder>
+@using PagedList.Mvc
+@using PowerAppsCMS.Models
+
+@{
+    ViewBag.Title = "Mapping Sales Order";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<h1 class="page-title mt-5">
+    Mapping Sales Order
+</h1>
+
+@using (Html.BeginForm("Index", "MappingSalesOrder", FormMethod.Get))
+{
+    <div class="form-row justify-content-between align-items-center">
+        <div class="col-auto">
+            <form>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="mb-3">SO Number</label>
+                        @Html.TextBox("searchSONumber", ViewBag.currentFilterSearchSONumber as string, new { @class = "form-control mx-sm-3 mb-3", placeholder = "Enter SO Number" })
+                    </div>
+                    <div class="form-group">
+                        <label class="mb-3">Part Number</label>
+                        @Html.TextBox("searchPartNumber", ViewBag.currentFilterSearchPartNumber as string, new { @class = "form-control mx-sm-3 mb-3", placeholder = "Enter Part Number" })
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-primary mb-3">
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+<table class="table table-bordered custom-table">
+    <thead class="thead-dark">
+        <tr>
+            <th class="number-column">
+                No
+            </th>
+            <th>
+                SO Number
+            </th>
+            <th>
+                Line Item
+            </th>
+            <th>
+                Customer Name
+            </th>
+            <th>
+                Part Number
+            </th>
+            <th>
+                Product
+            </th>
+            <th>
+                Sales Order Quantity
+            </th>
+            <th>
+                Amount of Mapped Sales Number
+            </th>
+            <th class="text-right">
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+            var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+            var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+            var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+
+        }
+        @foreach (var item in Model)
+        {
+            var productData = db.Products.Where(x => x.PN == item.PartNumber).FirstOrDefault();
+            var amountOfUnits = item.Units.Count;
+            <tr class="sales-order">
+                <td>
+                    @currentNumber
+                </td>
+                <td>
+                    @item.Number
+                </td>
+                <td align="right">
+                    @item.LineItem
+                </td>
+                <td>
+                    @item.CustomerName
+                </td>
+                <td>
+                    @item.PartNumber
+                </td>
+                <td>
+                    @if (productData != null)
+                    {
+                        @productData.Name
+                    }
+                    else
+                    {
+                        <p>-</p>
+                    }
+                </td>
+                <td align="right">
+                    @item.Quantity
+                </td>
+                <td align="right">
+                    @if (amountOfUnits > 0)
+                    {
+                        <p>@amountOfUnits</p>
+                    }
+                    else
+                    {
+                        <p>-</p>
+                    }
+                </td>
+
+                <td class="text-right">
+                    <input type="text" class="hide" value="@item.PartNumber" name="partNumber" />
+                    <a class="btn btn-primary btn-sm edit-sales-order" href="@Url.Action("Details", "MappingSalesOrder", new { id = item.ID, page = ViewBag.Page})" data-toggle="tooltip" data-placement="top" title="Detail"><i data-feather="zoom-in"></i></a>
+                </td>
+
+            </tr>
+
+            currentNumber++;
+        }
+    </tbody>
+</table>
+
+<div class="p-3">
+    <div class="row justify-content-md-center custom-pagination align-items-center">
+        <div class="col-auto">
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, currentFilterSearchSONumber = ViewBag.CurrentFilterSearchSONumber, currentFilterSearchPartNumber = ViewBag.CurrentFilterSearchPartNumber }))
+        </div>
+    </div>
+</div>

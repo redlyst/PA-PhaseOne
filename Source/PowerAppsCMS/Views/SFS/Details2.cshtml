@@ -1,0 +1,616 @@
+﻿@model List<PowerAppsCMS.ViewModel.SFSViewModel>
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutSFS.cshtml";
+}
+
+<nav aria-label="breadcrumb mt-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/SFS">SFS Planning Category</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewBag.GroupProductName</li>
+    </ol>
+</nav>
+<div class="row justify-content-between">
+    <div class="col-auto">
+        <h1 class="page-title mt-0">@ViewBag.GroupProductName</h1>
+    </div>
+    <div class="col-auto">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-dark btn-sm" id="fullScreenMode">
+                <span class="zoom-in-icon"><i data-feather="zoom-in"></i></span>
+                <span class="zoom-out-icon hide"><i data-feather="zoom-out"></i></span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="table-sfs-wrapper">
+    <div class="table-scroller">
+        <table id="sfsTable" class="table table-bordered table-sm white-space-nowrap sfs-table mb-0">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="first-column"></th>
+                    <th class="second-column">No</th>
+                    <th class="third-column">C/N</th>
+                    <th class="fourth-column">S/N</th>
+                    <th class="fifth-column"></th>
+                    <th class="sixth-column"></th>
+                    @{
+                        int colspan = 0;
+                    }
+
+                    @foreach (var item2 in Model.FirstOrDefault().DueDateHeader)
+                    {
+                        colspan = colspan + DateTime.DaysInMonth(item2.Year, item2.Month);
+                        <th class="text-center" colspan="@DateTime.DaysInMonth(item2.Year, item2.Month)">@string.Format("{0: MMMM yyyy}", item2)</th>
+                    }
+                    <th></th>
+                </tr>
+                <tr class="text-center">
+                    <th class="indent-column first-column"></th>
+                    <th class="second-column"></th>
+                    <th class="third-column"></th>
+                    <th class="fourth-column"></th>
+                    <th class="fifth-column"></th>
+                    <th class="sixth-column"></th>
+                    @foreach (var item2 in Model.FirstOrDefault().DueDateHeader)
+                    {
+                        for (int x = 1; x <= DateTime.DaysInMonth(item2.Year, item2.Month); x++)
+                        {
+                            DateTime curr = new DateTime(item2.Year, item2.Month, x);
+                            if (curr.DayOfWeek == DayOfWeek.Saturday || curr.DayOfWeek == DayOfWeek.Sunday)
+                            {
+                                <th data-month="@string.Format("{0: MMMM yyyy}", item2)" class="holiday-column">@x</th>
+                            }
+                            else
+                            {
+                                <th data-month="@string.Format("{0: MMMM yyyy}", item2)">@x</th>
+                            }
+
+                            @*if (item2.DayOfWeek != DayOfWeek.Saturday && item2.DayOfWeek != DayOfWeek.Sunday)
+                            {
+                                <th data-month="@string.Format("{0: MMMM yyyy}", item2)">@x</th>
+                            }
+                            else
+                            {
+                                <th data-month="@string.Format("{0: MMMM yyyy}", item2)" class="holiday-column">@x</th>
+                            }*@
+                        }
+                    }
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int indexModel = 1;
+                    int indexPRO = 1;
+                }
+                @foreach (var item in Model)
+                {
+                    if (item.ProList != null)
+                    {
+                        foreach (var item1 in item.ProList.OrderBy(a => a.Product.Name))
+                        {
+                            <tr data-toggle="collapse" data-target=".child@{@indexModel}" class="has-child row-header" aria-expanded="true">
+                                <td colspan="6" class="model-column">
+                                    <span class="icon-dropdown inline-block-middle"><i data-feather="chevron-up"></i></span>
+                                    <span class="inline-block-middle">
+                                        <strong>Model: </strong>@item1.Product.Name ( @item1.Product.PN )
+                                    </span>
+                                </td>
+                                <td colspan="@colspan"></td>
+                                <td></td>
+                            </tr>
+                            <tr data-toggle="collapse" data-target=".child@{@indexModel}-@indexPRO" class="child@{@indexModel} collapse show row-header" aria-expanded="true" style="">
+                                @*<td colspan="5" class="production-order-column"><strong>Production Order </strong>@item1.PRO.Number</td>*@
+                                <td colspan="6" class="production-order-column">
+                                    <span class="icon-dropdown inline-block-middle"><i data-feather="chevron-up"></i></span>
+                                    <span class="inline-block-middle">
+                                        <strong>Production Order: </strong>@item1.Number <strong>(Sales Order: </strong>
+                                        @{
+                                            if (item.ProSalesOrderList != null)
+                                            {
+                                                item.ProSalesOrderList.Where(a => a.PROID == item1.ID).SingleOrDefault();
+                                            }
+                                        })
+                                    </span>
+                                </td>
+                                <td colspan="@colspan"></td>
+                                <td></td>
+                            </tr>
+
+                            if (item1.Units != null)
+                            {
+                                int i = 1;
+                                foreach (var item2 in item1.Units.OrderBy(a => a.MPSDueDate))
+                                {
+                                    var processList = item.DailySchedule.Where(a => a.ProductID == item2.ProductID);
+                                    string process = string.Empty;
+                                    if (processList != null)
+                                    {
+                                        foreach (var pro in processList)
+                                        {
+                                            if (!process.Contains(pro.MasterProcessID.ToString()))
+                                            {
+                                                process = string.IsNullOrEmpty(process) ? pro.MasterProcessID.ToString() : process + ',' + pro.MasterProcessID;
+                                            }
+                                        }
+
+                                    }
+
+                                    <tr class="collapse child@{@indexModel}-@indexPRO show @item2.SFSCategoryCSSClass" data-process="@process" data-mpsduedate="@item2.MPSDueDate">
+                                        <td class="first-column sfs-data"> </td>
+                                        <td class="second-column sfs-data"> @i </td>
+                                        <td class="third-column sfs-data"> @item2.ChasisNumber </td>
+                                        <td class="fourth-column sfs-data"> @item2.SerialNumber </td>
+                                        <td class="text-center fifth-column sfs-data">
+                                             
+                                                <span data-toggle="tooltip" data-placement="top" title="MPS Due date smaller than SFS due date, please check and modify your SFS data" @((item2.MPSDueDate < item2.SFSDueDate && item2.SFSDueDate != null) == true ? "" : "hidden")>
+                                                    <span class="f-modal-icon f-modal-warning scaleWarning inline-block-vertical">
+                                                        <span class="f-modal-body pulseWarningIns"></span>
+                                                        <span class="f-modal-dot pulseWarningIns"></span>
+                                                    </span>
+                                                </span>
+                                                <span class="inline-block-vertical">P</span>
+                                             
+                                        </td>
+                                        <td class="sixth-column sfs-data">
+                                             
+                                                <button class="btn btn-sm btn-primary edit-pro"><i data-feather="edit"></i></button>
+                                                <button id="btnConfirmSFS" class="btn btn-sm btn-success mps-action-button  @(item2.SFSDueDate == null == true ? "" : "hide") save-pro"><i data-feather="save"></i></button>
+                                            
+                                        </td>
+                                        @foreach (var item4 in Model.FirstOrDefault().DueDateHeader)
+                                        {
+
+                                            int day = 0;
+                                            for (int x = 1; x <= @DateTime.DaysInMonth(item4.Year, item4.Month); x++)
+                                            {
+                                                DateTime currentDateLoop = new DateTime(item4.Year, item4.Month, x);
+
+
+                                                bool isHoliday = false;
+                                                foreach (var holDate in item.HolidayList)
+                                                {
+                                                    //if (currentDateLoop == holDate.StartDate || currentDateLoop == holDate.EndDate)
+                                                    if (holDate.StartDate <= currentDateLoop && currentDateLoop <= holDate.EndDate)
+                                                    {
+                                                        isHoliday = true;
+                                                    }
+                                                }
+
+                                                var sfsDaily = item.SFSDailyActivity.Where(a => a.UnitID == item2.ID && a.DateActivity.Contains(currentDateLoop)).SingleOrDefault();
+
+                                                if (sfsDaily != null)
+                                                {
+                                                    var isExist = sfsDaily.DateActivity.Where(a => a.Date == currentDateLoop).SingleOrDefault();
+                                                    int index = 0;
+                                                    if (isExist != null)
+                                                    {
+                                                        index = sfsDaily.DateActivity.OrderBy(a => a.Date).ToList().IndexOf(currentDateLoop);
+                                                    }
+
+                                                    day = item1.Product.ProductCompositions.Count() > 0 ? (index + 1) - 10 : index + 1;
+                                                    var activityList = item.DailySchedule.Where(a => a.ProductID == item2.ProductID && a.Day == day);
+
+                                                    //string activity = string.Empty;
+                                                    string tooltip = string.Empty;
+
+                                                    if (activityList != null)
+                                                    {
+                                                        foreach (var act in activityList)
+                                                        {
+                                                            //activity = string.IsNullOrEmpty(activity) ? act.ProcessOrder.ToString() : activity + ',' + act.ProcessOrder;
+                                                            tooltip = string.IsNullOrEmpty(tooltip) ? act.ProcessOrder.ToString() + ". " + act.MasterProcessName : tooltip + "\n" + act.ProcessOrder + ". " + act.MasterProcessName;
+                                                        }
+                                                    }
+
+                                                    if (day < 1)
+                                                    {
+                                                        tooltip = "PB";
+                                                    }
+
+                                                    //if (item2.MPSDueDate == currentDateLoop)
+                                                    if (DateTime.Now.AddDays(-1) <= currentDateLoop && currentDateLoop <= item2.MPSDueDate)
+                                                    {
+                                                        if (item2.SFSDueDate != null)
+                                                        {
+                                                            <td class="available-day sfs-row" onclick="changeDueDate($(this))"><input type="text" class="form-control sfs-row-input" readonly="readonly" data-toggle="tooltip" title="@tooltip" data-date="@x" data-month="@item4.Month" data-year="@item4.Year" data-idunit="@item2.ID" data-mp="@item4" /></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="mps-row available-day" onclick="changeDueDate($(this))"><input type="text" class="form-control mps-row-input" readonly="readonly" data-toggle="tooltip" title="@tooltip" data-date="@x" data-month="@item4.Month" data-year="@item4.Year" data-idunit="@item2.ID" data-mp="@item4" /></td>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item2.SFSDueDate != null)
+                                                        {
+                                                            <td class="sfs-row" onclick="changeDueDate($(this))"><input type="text" class="form-control sfs-row-input" readonly="readonly" data-toggle="tooltip" title="@tooltip" data-date="@x" data-month="@item4.Month" data-year="@item4.Year" data-idunit="@item2.ID" data-mp="@item4" /></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="mps-row" onclick="changeDueDate($(this))"><input type="text" class="form-control mps-row-input" readonly="readonly" data-toggle="tooltip" title="@tooltip" data-date="@x" data-month="@item4.Month" data-year="@item4.Year" data-idunit="@item2.ID" data-mp="@item4" /></td>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (currentDateLoop.DayOfWeek == DayOfWeek.Saturday)
+                                                    {
+                                                        <td class="saturday-column" onclick="changeDueDate($(this))"></td>
+                                                    }
+                                                    else if (currentDateLoop.DayOfWeek == DayOfWeek.Sunday)
+                                                    {
+                                                        <td class="sunday-column" onclick="changeDueDate($(this))"></td>
+                                                    }
+                                                    else if (isHoliday)
+                                                    {
+                                                        <td class="holiday-column" onclick="changeDueDate($(this))"></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (DateTime.Now.AddDays(-1) <= currentDateLoop && currentDateLoop <= item2.MPSDueDate)
+                                                        {
+                                                            <td class="available-day" onclick="changeDueDate($(this))"><input type="text" class="form-control" readonly="readonly" data-date="@x" data-month="@item4.Month" data-year="@item4.Year" data-idunit="@item2.ID" /></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="" onclick="changeDueDate($(this))"><input type="text" class="form-control" readonly="readonly" data-date="@x" data-month="@item4.Month" data-year="@item4.Year" data-idunit="@item2.ID" /></td>
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                        }
+
+                                        <td></td>
+                                    </tr>
+                                    <tr class="collapse child@{@indexModel}-@indexPRO show">
+                                        <td class="first-column"></td>
+                                        <td class="second-column"></td>
+                                        <td class="third-column"></td>
+                                        <td class="fourth-column"></td>
+                                        <td class="fifth-column text-center">A</td>
+                                        <td class="sixth-column"></td>
+                                        @foreach (var item4 in Model.FirstOrDefault().DueDateHeader)
+                                        {
+                                            for (int x = 1; x <= @DateTime.DaysInMonth(item4.Year, item4.Month); x++)
+                                            {
+                                                DateTime curr = new DateTime(item4.Year, item4.Month, x);
+                                                if (curr.DayOfWeek == DayOfWeek.Saturday)
+                                                {
+                                                    <td class="saturday-column"></td>
+
+                                                }
+                                                else if (curr.DayOfWeek == DayOfWeek.Sunday)
+                                                {
+                                                    <td class="sunday-column"></td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                            }
+                                        }
+                                        <td></td>
+                                    </tr>
+                                    i = i + 1;
+                                }
+                            }
+                            indexModel = indexModel + 1;
+                        }
+
+
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div class="vertical-dummy-scroller-container" style="overflow:auto;">
+    <div class="vertical-dummy-scroller"></div>
+</div>
+
+<div class="modal fade" id="changePRODueDate" tabindex="-1" role="dialog" aria-labelledby="changePRODueDateLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePRODueDateLabel">Change PRO Due Date</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="idUnit" hidden="hidden"></span>
+                <span id="dataProcess" hidden="hidden"></span>
+                Are you sure to edit C/N <strong class="modal-serial-number"></strong> due date from <strong class="modal-pro-original-date"></strong> to <strong class="modal-pro-new-date"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="btnSaveSFS" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="text-right">
+        <button type="button" class="btn btn-danger">Reload Data</button>
+        <button type="button" class="btn btn-primary">Save SFS Big Vessel</button>
+    </div>*@
+
+<style type="text/css">
+    /*.schedule-block {
+        background-color: #FECB01;
+    }*/
+
+    /*.mps-row
+    {
+        background-color: #c7081b;
+    }
+
+    .mps-row-input
+    {
+        background-color: #c7081b !important;
+        border: none;
+    }
+
+    .sfs-row
+    {
+        background-color: #FECB01;
+    }
+
+    .sfs-row-input
+    {
+        background-color: #FECB01 !important;
+        border: none;
+    }*/
+
+    /*.grabbed {
+        box-shadow: 0 0 13px #000;
+    }
+
+    .grabCursor, .grabCursor * {
+        cursor: grabbing !important;
+    }*/
+</style>
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $(".has-child").click(function () {
+                if ($(this).attr("aria-expanded") == "true") {
+                    console.log($(this).attr("data-target"));
+                    $($(this).attr("data-target")).each(function () {
+                        if ($(this).attr("aria-expanded") == "true") {
+                            $(this).trigger("click");
+                        }
+                    })
+                }
+            });
+
+            $("#fullScreenMode").click(function (e) {
+                e.preventDefault();
+
+                $(".zoom-in-icon").toggleClass("hide");
+                $(".zoom-out-icon").toggleClass("hide");
+                $("header").toggleClass("hide");
+                $(".nav-scroller").toggleClass("hide");
+                $(".breadcrumb").toggleClass("hide");
+                $("footer").toggleClass("hide");
+                $(".main-cointainer").toggleClass("maximized");
+                calculateLayout();
+            });
+
+            $('html').click(function (e) {
+                if (!$(e.target).hasClass('hint-box')) {
+                    if ($(e.target).parent().hasClass('edit-pro') || $(e.target).hasClass('edit-pro')) {
+
+                    } else {
+                        $('.hint-box').removeClass('hint-box');
+                    }
+                }
+            });
+
+            $(".edit-pro").click(function () {
+                $('.hint-box').each(function () {
+                    $(this).removeClass('hint-box');
+                });
+
+                $(this).closest("td").siblings(".available-day").addClass("hint-box");
+            });
+
+            $(".save-pro").click(function () {
+                var currentIndex = $(this).closest("td").siblings(".mps-row").last().index();
+                var sfsTableHeaderRow = $(this).closest("table").find("thead tr");
+                var currentDate = $.trim(sfsTableHeaderRow.last().children().eq(currentIndex).text());
+                var currentMonth = $.trim(sfsTableHeaderRow.last().children().eq(currentIndex).attr("data-month")).split(' ')[0];
+                var currentYear = $.trim(sfsTableHeaderRow.last().children().eq(currentIndex).attr("data-month")).split(' ')[1];
+                var newDate = new Date(currentMonth + " " + currentDate + " " + currentYear);
+                alert(newDate);
+            });
+
+            $(".save-pro").click(function () {
+
+            @*var dueDate = $(".modal-pro-new-date").text();
+            var idUnit = $("#idUnit").text();
+            var dataProcess = $("#dataProcess").text();
+            //alert('dueDate: ' + dueDate + ' idUnit: ' + idUnit);
+            $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("UpdateDueDate", "SFS")",
+                        data: JSON.stringify({ 'dueDate': dueDate, 'idUnit': idUnit, 'dataProcess': dataProcess }),
+                        contentType: "application/json; charset=utf-8",
+                        //dataType: "json",
+                        success: function (response) {
+
+                            $("body").html(response);
+                            $('#changePRODueDate').modal('hide');
+                        }
+            });*@
+            });
+
+        })
+
+        $(window).on("load", function () {
+            calculateLayout();
+        });
+
+        function changeDueDate(obj) {
+            if (obj.hasClass("hint-box")) {
+                //Index cell current clicked
+                var currentIndex = obj.index();
+                //Index cell tgl terakhir
+                var oldDateIndex = obj.closest('td').hasClass("mps-row") ? obj.siblings(".mps-row").last().index() : obj.siblings(".sfs-row").last().index();
+                var sfsTableHeaderRow = obj.closest("table").find("thead tr");
+                var newEndDate = $.trim(sfsTableHeaderRow.last().children().eq(currentIndex).text()) + sfsTableHeaderRow.last().children().eq(currentIndex).attr("data-month");
+                var oldEndDate = $.trim(sfsTableHeaderRow.last().children().eq(oldDateIndex).text()) + sfsTableHeaderRow.last().children().eq(oldDateIndex).attr("data-month");
+                var idUnit = obj.closest('td').find("input").attr("data-idunit");
+                var dataProcess = obj.closest('tr').attr("data-process");
+                var mpsDueDate = obj.closest('tr').attr("data-mpsduedate");
+                //Index tgl pertama
+                var firstIndex = obj.closest('td').hasClass("mps-row") ? obj.siblings(".mps-row").first().index() : obj.siblings(".sfs-row").first().index();
+
+                var difIndex = parseInt((parseInt(oldDateIndex) - parseInt(firstIndex)) + parseInt(1));
+                var newIndex = parseInt(currentIndex) - parseInt(difIndex);;//parseInt(firstIndex) - parseInt(difIndex);
+                var newFirstDate = $.trim(sfsTableHeaderRow.last().children().eq(newIndex).text()) + sfsTableHeaderRow.last().children().eq(newIndex).attr("data-month");
+
+                var dateNow = new Date();
+
+                console.log('Index awal mps: ' + firstIndex + ' Index akhir mps: ' + oldDateIndex + ' Selisih index: ' + difIndex + ' Klik index: ' + currentIndex + ' New First Date: ' + newFirstDate + ' New End Date: ' + newEndDate + ' Now: ' + dateNow + ' MPS Due Date: ' + mpsDueDate);
+
+                if (Date.parse(newFirstDate) < dateNow) {
+                    alert('Could not change Due Date if Start Date less than Today.');
+                    return;
+                }
+
+                if (Date.parse(newEndDate) >= Date.parse(mpsDueDate)) {
+                    alert('Could not change due date more than or equals MPS Due Date (' + mpsDueDate + ')!');
+                    return;
+                }
+
+                //console.log('Selisih index: ' + difIndex + ' Index baru: ' + newIndex + ' New First Date: ' + newFirstDate + ' New End Date: ' + newEndDate + ' MPS Due Date: ' + mpsDueDate);
+
+
+                $(".modal-pro-new-date").text(newEndDate);
+                $(".modal-pro-original-date").text(oldEndDate);
+                $(".modal-serial-number").text($.trim(obj.siblings(".third-column").text()));
+                $("#idUnit").text(idUnit);
+                $("#dataProcess").text(dataProcess);
+                $('#changePRODueDate').modal();
+            }
+            else {
+                var isHaveHint = obj.closest("td").siblings(".available-day").hasClass("hint-box");
+
+                if (isHaveHint) {
+                    if (obj.hasClass("saturday-column") || obj.hasClass("sunday-column") || obj.hasClass("holiday-column")) {
+                        alert('This is not a work day.');
+                        return;
+                    }
+                    else {
+                        alert('Please select a day in blocked area!');
+                        return;
+                    }
+                }
+            }
+        }
+
+        function calculateLayout() {
+            $(".sfs-table thead th").each(function () {
+                $(this).width($(this).width());
+            });
+
+            $("#tableScrollerClone").remove();
+            $(".table-scroller").attr("id", "tableScrollerOriginal");
+
+            var scrollbarWidth = getScrollbarWidth();
+            var tableScrollerHeader = '<div class="table-scroller" id="tableScrollerClone"><table class="table table-bordered table-sm white-space-nowrap sfs-table mb-0"><thead class="thead-dark">';
+            tableScrollerHeader = tableScrollerHeader + $("#tableScrollerOriginal thead").html() + '</thead></table>';
+            $(tableScrollerHeader).appendTo(".table-sfs-wrapper");
+            $(".sfs-table").css("table-layout", "fixed");
+
+            $(".table-sfs-wrapper").scroll(function () {
+                $("#tableScrollerClone").css("top", $(this).scrollTop() + "px");
+            });
+
+            setTimeout(function () {
+                $(".vertical-dummy-scroller").css("width", "100%");
+                $(".vertical-dummy-scroller").width($(".sfs-table").width() + parseInt($("#tableScrollerOriginal").css("padding-left").split("px")[0]));
+                $(".vertical-dummy-scroller").height("1px");
+
+                $(".vertical-dummy-scroller-container").css("width", "100%");
+                $(".vertical-dummy-scroller-container").width($(".vertical-dummy-scroller-container").width() - scrollbarWidth);
+
+                $(".vertical-dummy-scroller-container").scroll(function () {
+                    $("#tableScrollerOriginal").scrollLeft($(this).scrollLeft());
+                    $("#tableScrollerClone").scrollLeft($(this).scrollLeft());
+                    $("#tableScrollerClone th.sixth-column").css("right", "-" + $(this).scrollLeft() + "px");
+                    $("#tableScrollerClone th.first-column").css("left", $(this).scrollLeft() + "px");
+                    $("#tableScrollerClone th.second-column").css("left", $(this).scrollLeft() + 29 + "px");
+                    $("#tableScrollerClone th.third-column").css("left", $(this).scrollLeft() + 63 + "px");
+                    $("#tableScrollerClone th.fourth-column").css("left", $(this).scrollLeft() + 232 + "px");
+                    $("#tableScrollerClone th.fifth-column").css("left", $(this).scrollLeft() + 355 + "px");
+                });
+            }, 200);
+        }
+
+        function getScrollbarWidth() {
+            var outer = document.createElement("div");
+            outer.style.visibility = "hidden";
+            outer.style.width = "100px";
+            outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+
+            document.body.appendChild(outer);
+
+            var widthNoScroll = outer.offsetWidth;
+            // force scrollbars
+            outer.style.overflow = "scroll";
+
+            // add innerdiv
+            var inner = document.createElement("div");
+            inner.style.width = "100%";
+            outer.appendChild(inner);
+
+            var widthWithScroll = inner.offsetWidth;
+
+            // remove divs
+            outer.parentNode.removeChild(outer);
+
+            return widthNoScroll - widthWithScroll;
+        }
+
+        $('#btnSaveSFS').click(function () {
+            var dueDate = $(".modal-pro-new-date").text();
+            var idUnit = $("#idUnit").text();
+            var dataProcess = $("#dataProcess").text();
+            //alert('dueDate: ' + dueDate + ' idUnit: ' + idUnit);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateDueDate", "SFS")",
+                data: JSON.stringify({ 'dueDate': dueDate, 'idUnit': idUnit, 'dataProcess': dataProcess }),
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (response) {
+
+                    $("body").html(response);
+                    $('#changePRODueDate').modal('hide');
+                    //if (response.success) {
+
+                    //    alert(response.responseText);
+                    //}
+                    //else
+                    //{
+                    //    alert('Error');
+                    //}
+                }
+            });
+            //$('#changePRODueDate').modal('hide');
+            //window.location.reload();
+        });
+
+
+
+    </script>
+}

@@ -1,0 +1,226 @@
+﻿@using MvcBreadCrumbs
+@using PowerAppsCMS.Models
+@using PowerAppsCMS.Constants
+@using PowerAppsCMS.CustomAuthentication
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title - CMS</title>
+
+    @Styles.Render("~/Content/css")
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/cms/chosen/chosen.min.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+    <nav class="navbar fixed-top flex-md-nowrap p-0">
+        <a href="@Url.Action("Index", "Home")" class="navbar-brand col sidebar-column"><img src="~/Content/images/patria.png" class="site-logo" /></a>
+        <div class="menu-trigger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        @Html.Partial("_LoginPartial")
+    </nav>
+
+    <nav class="sidebar sidebar-column">
+        <div class="sidebar-sticky">
+            @{
+                //PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+                //var name = User.Identity.Name;
+                //var name = username.Split('\\')[1];
+                //var userData = db.Users.Where(x => x.Username == name).First();
+
+                var userData = ((CustomPrincipal)HttpContext.Current.User);
+
+            }
+            <ul class="nav flex-column main-navigation">
+                @*@if (userData.Role.Name == RoleNames.Administrator)*@
+
+                @if (Request.IsAuthenticated && userData.IsInRole(RoleNames.Administrator))
+                {
+                    <li class="menu-divider"><span>User Management</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "User")"><i class="icon icon-user"></i> <span>User</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Role")"><i class="icon icon-role"></i> <span>Role</span></a>
+                    </li>
+
+                    <li class="menu-divider"><span>Other</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Holiday")"><i class="icon icon-holiday"></i> <span>Holiday</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ReasonIssue")"><i class="icon icon-holiday"></i> <span>Reason Issue</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ReasonPause")"><i class="icon icon-holiday"></i> <span>Reason Pause</span></a>
+                    </li>
+                }
+                //else if (userData.Role.Name == RoleNames.PE)
+                else if (Request.IsAuthenticated && userData.IsInRole(RoleNames.PE))
+                {
+                    <li class="menu-divider"><span>User Management</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ProcessGroup")"><i class="icon icon-process"></i> <span>Process Group</span></a>
+                    </li>
+                    <li class="menu-divider"><span>Product Management</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Product")"><i class="icon icon-product"></i> <span>Product </span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ProductReference")"><i class="icon icon-group-reference"></i> <span>Product Reference</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ProductSubGroup")"><i class="icon icon-sub-group-product"></i> <span>Product Sub Group</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "GroupProduct")"><i class="icon icon-group-product"></i> <span>Product Group</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link has-children" data-toggle="collapse" href="#toggleComponent" role="button" aria-expanded="false" aria-controls="toggleComponent"><i class="icon icon-setting"></i> <span>Manage Component</span><i data-feather="chevron-down" class="icon-expand"></i></a>
+                        <ul class="nav-item-sub-menu collapse" id="toggleComponent">
+                            <li class="nav-item-sub">
+                                <a class="nav-link children" href="@Url.Action("Index", "Component")"><i class="icon icon-component"></i> <span>Component</span></a>
+                            </li>
+                            <li class="nav-item-sub">
+                                <a class="nav-link children hide" href="@Url.Action("Index", "Part")"><i class="icon icon-part"></i> <span>Part</span></a>
+                            </li>
+                            <li class="nav-item-sub">
+                                <a class="nav-link children" href="@Url.Action("Index", "Material")"><i class="icon icon-material"></i> <span>Material</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                //else if (userData.Role.Name == RoleNames.SuperAdmin)
+                else if (Request.IsAuthenticated && userData.IsInRole(RoleNames.SuperAdmin))
+                {
+                    <li class="menu-divider"><span>User Management</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "User")"><i class="icon icon-user"></i> <span>User</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "RetrainUser")"><i class="icon icon-user"></i> <span>Retrain All User</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Role")"><i class="icon icon-role"></i> <span>Role</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ProcessGroup")"><i class="icon icon-process"></i> <span>Process Group</span></a>
+                    </li>
+                    <li class="menu-divider"><span>Product Management</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Product")"><i class="icon icon-product"></i> <span>Product </span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ProductReference")"><i class="icon icon-group-reference"></i> <span>Product Reference</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ProductSubGroup")"><i class="icon icon-sub-group-product"></i> <span>Product Sub Group</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "GroupProduct")"><i class="icon icon-group-product"></i> <span>Product Group</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link has-children" data-toggle="collapse" href="#toggleComponent" role="button" aria-expanded="false" aria-controls="toggleComponent"><i class="icon icon-setting"></i> <span>Manage Component</span><i data-feather="chevron-down" class="icon-expand"></i></a>
+                        <ul class="nav-item-sub-menu collapse" id="toggleComponent">
+                            <li class="nav-item-sub">
+                                <a class="nav-link children" href="@Url.Action("Index", "Component")"><i class="icon icon-component"></i> <span>Component</span></a>
+                            </li>
+                            <li class="nav-item-sub">
+                                <a class="nav-link children hide" href="@Url.Action("Index", "Part")"><i class="icon icon-part"></i> <span>Part</span></a>
+                            </li>
+                            <li class="nav-item-sub">
+                                <a class="nav-link children" href="@Url.Action("Index", "Material")"><i class="icon icon-material"></i> <span>Material</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-divider"><span>Other</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ChangeQCStatus", "Process")"><i class="icon icon-reason"></i> <span>Change QC Status</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Holiday")"><i class="icon icon-holiday"></i> <span>Holiday</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ReasonIssue")"><i class="icon icon-reason"></i> <span>Reason Issue</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "ReasonPause")"><i class="icon icon-reason-pause"></i> <span>Reason Pause</span></a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+    <main role="main" class="px-4 main-container">
+        @*@Html.Raw(BreadCrumb.Display())*@
+        @RenderBody()
+    </main>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/core")
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script>
+        feather.replace()
+        $(function () {
+            var currentLocation = window.location.pathname;
+            $(".nav-link").each(function () {
+                if (currentLocation == $(this).attr("href")) {
+                    $(this).addClass("active");
+                    if ($(this).hasClass("children")) {
+                        $(this).closest(".collapse").prev().attr("aria-expanded", "true");
+                        $(this).closest(".collapse").removeClass("collapse");
+                    }
+                }
+            });
+
+            if (typeof (Storage) !== "undefined") {
+                if (localStorage.getItem("menu-mode") == "minimize") {
+                    $("body").addClass("minimize");
+                } else {
+                    $("body").removeClass("minimize");
+                }
+                $("body").addClass("visible");
+            } else {
+                console.log("Browser doesn't support local storage");
+            }
+
+            $(".menu-trigger").click(function () {
+                $("body").toggleClass("minimize");
+
+                if (typeof (Storage) !== "undefined") {
+                    if (localStorage.getItem("menu-mode") == "minimize") {
+                        localStorage.setItem("menu-mode", "maximize");
+                    } else {
+                        localStorage.setItem("menu-mode", "minimize");
+                    }
+                } else {
+                    console.log("Browser doesn't support local storage");
+                }
+            });
+
+            var ps = new PerfectScrollbar('.sidebar-sticky');
+
+            $(".custom-pagination .pagination").addClass("pagination-sm");
+            $(".custom-pagination .pagination li").addClass("page-item");
+            $(".custom-pagination .pagination li a").addClass("page-link");
+        });
+    </script>
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

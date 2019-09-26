@@ -1,0 +1,122 @@
+﻿@using PowerAppsCMS.Models
+@using PowerAppsCMS.Constants
+
+@{
+    PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+    var username = User.Identity.Name;
+    var name = username;
+    var userData = db.Users.Where(x => x.Username == name).First();
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title - MPS</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/cms/chosen/chosen.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    @Styles.Render("~/Content/MPScss")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("additionalcss", required: false)
+</head>
+
+<body>
+    <header class="d-flex flex-column flex-md-row align-items-center main-cointainer border-bottom box-shadow">
+        <div class="my-0 mr-md-auto font-weight-normal">
+            <a href="@Url.Action("Index", "Home")"><img src="~/Content/images/patria-logo-white.png" alt="logo-patria" class="page-logo-link" /></a>
+            <a href="@Url.Action("Index", "MPS")" class="text-decoration-none">
+                <span class="web-title"><span>Master</span> Production Schedule</span>
+            </a>
+        </div>
+        @Html.Partial("_LoginPartial")
+    </header>
+
+    <div class="nav-scroller bg-white box-shadow">
+        <ul class="list-unstyled main-menu">
+            <li class="main-menu-item">
+                <a href="@Url.Action("Index", "MPS")" class="main-menu__link">MPS Planning</a>
+            </li>
+            @if (userData.Role.Name == RoleNames.SuperAdmin || userData.Role.Name == RoleNames.PE)
+            {
+                <li class="main-menu-item">
+                    <a href="@Url.Action("Index", "CapacitySetting")" class="main-menu__link">Capacity Design</a>
+                </li>
+            }
+
+            @if (userData.Role.Name == RoleNames.SuperAdmin || userData.Role.Name == RoleNames.PPC || userData.Role.Name == RoleNames.Supervisor || userData.Role.Name == RoleNames.GroupLeaderPB)
+            {
+                <li class="main-menu-item">
+                    <a href="@Url.Action("Index", "Memo")" class="main-menu__link">Memo</a>
+                </li>
+            }
+            @if (userData.Role.Name == RoleNames.SuperAdmin || userData.Role.Name == RoleNames.PPC)
+            {
+                <li class="main-menu-item">
+                    <a href="@Url.Action("Index", "PROSynchronize")" class="main-menu__link">Synchronize PRO</a>
+                </li>
+            }
+            @if (userData.Role.Name == RoleNames.SuperAdmin || userData.Role.Name == RoleNames.PPC)
+            {                
+                <li class="main-menu-item">
+                    <a href="@Url.Action("Index", "MappingSalesOrder")" class="main-menu__link">Mapping Sales Order</a>
+                </li>
+            }
+            @if (userData.Role.Name == RoleNames.SuperAdmin)
+            {
+                <li class="main-menu-item">
+                    <a href="@Url.Action("Index", "ComponentSynchronizer")" class="main-menu__link">Synchronize Component</a>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="main-cointainer">
+        @RenderBody()
+    </div>
+
+    <footer class="border-top text-center">
+        <img src="~/Content/images/patria.png" alt="logo" class="footer-logo" />
+        <p>PATRIA © 2018 . All rights reserved</p>
+    </footer>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/core")
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+        feather.replace()
+        $(document).ready(function () {
+            var currentLocation = window.location.pathname;
+            $(".main-menu__link").each(function () {
+                if (currentLocation.indexOf("MPSMapping") > 0) {
+                    if ($(this).attr("href").indexOf("MPSMapping") > 0) {
+                        $(this).addClass("active");
+                    }
+                } else {
+                    if (currentLocation.match($(this).attr("href"))) {
+                        $(this).addClass("active");
+                    }
+                }
+            });
+
+            $(".custom-pagination .pagination").addClass("pagination-sm");
+            $(".custom-pagination .pagination li").addClass("page-item");
+            $(".custom-pagination .pagination li a").addClass("page-link");
+        });
+    </script>
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

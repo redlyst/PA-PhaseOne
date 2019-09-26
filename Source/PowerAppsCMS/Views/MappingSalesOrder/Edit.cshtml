@@ -1,0 +1,185 @@
+﻿@model PowerAppsCMS.ViewModel.MappingSalesOrderViewModel
+@using PowerAppsCMS.ViewModel
+@using PowerAppsCMS.Models
+
+
+@{
+    ViewBag.Title = "Edit Mapping Sales Order";
+    Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<nav aria-label="breadcrumb mt-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "MappingSalesOrder")">Mapping Sales Order</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Details", "MappingSalesOrder")">Mapping Sales Order Details</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Mapping Sales Order</li>
+    </ol>
+</nav>
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <h1 class="page-title mt-0 sales-order-number" data-salesOrderNumber="@Model.SalesOrder.Number">
+            Edit Mapping Sales Order  @Model.SalesOrder.Number
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-9 col-12">
+        <div class="card shadow">
+            <div class="custom-form-container pt-0">
+                <br />
+                <h2 class="stage-title">Select Serial Number</h2>
+                @using (Html.BeginForm("AddSerialNumber", "MappingSalesOrder", FormMethod.Post, new { salesOrderID = Model.SalesOrder.ID }))
+                {
+                    if (Model.Products != null)
+                    {
+                        <div class="row">
+                            <div class="form-inline">
+                                <input type="text" class="currentPage hide" id="currentPage" name="currentPage" value="@ViewBag.Page" />
+                                <input type="hidden" class="sales-order-id" name="salesOrderID" value="@Model.SalesOrder.ID" />
+                                <div class="form-group mx-sm-3 mb-2">
+                                    @Html.ListBoxFor(model => model.selectedUnitID, new MultiSelectList(Model.Units, "ID", "SerialNumber"), new { @class = "serial-number", id = "serialNumber", multiple = "multiple" })
+                                </div>
+                                <button type="submit" class="btn btn-success add-serial-number mr-0 mb-2"><i data-feather="plus-circle"></i> &nbsp; Add Serial Number</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-auto">
+                                <p class="serial-number-validation text-danger"></p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-danger">There is no serial number within this @Model.SalesOrder.Number on master data </p>
+                    }
+
+                }
+
+                @{
+                    CurrentMappingSalesOrder currentMappingSalesOrders = (CurrentMappingSalesOrder)Session["TempUnits"];
+                }
+
+                <div class="serial-number-list">
+                    <p class="mt-3 mb-2"><strong>List of Serial Number</strong></p>
+                    <input type="hidden" class="sales-order-quantity" value="@Model.SalesOrder.Quantity" />
+                    <table class="table table-bordered table-sm">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">No</th>
+                                @*<th scope="col">Sales Order</th>*@
+                                <th scope="col">Serial Number</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+                                var index = 0;
+                            }
+                            @foreach (var item in currentMappingSalesOrders.ActualTempUnits)
+                            {
+                                index++;
+                                <tr class="list-of-serial-number">
+                                    <td scope="row">@index</td>
+                                    @*<td>@item.SalesOrder.Number</td>*@
+                                    <td class="serial-number-name" data-serialNumberName="@item.SerialNumber">@item.SerialNumber</td>
+                                    <td>@item.Product.Name</td>
+                                    <td>
+                                        <input type="hidden" class="unit-id" value="@item.ID" />
+                                        <button class="btn btn-danger btn-sm delete-serial-number" role="button" data-toggle="tooltip" data-placement="top" title="Delete"><i data-feather="trash-2"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row justify-content-between mt-5 add-component-action">
+                    <div class="col-auto">
+                        <a href="@Url.Action("Details", "MappingSalesOrder", new { id = Model.SalesOrder.ID, page = ViewBag.Page})" class="btn btn-primary mb-3"><i data-feather="arrow-left"></i> &nbsp; Back to Sales Order Detail</a>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success save-serial-number mr-0 mb-2"><i data-feather="save"></i> &nbsp; Save</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script>
+        $(document).ready(function () {
+            $('.serial-number').chosen({
+                width: "300px",
+                search_contains: true
+            });
+
+            $('.add-serial-number').click(function (e) {
+                var serialNumber = $('.serial-number').val();
+                $('.serial-number-validation').text("");
+
+                if (serialNumber == null || serialNumber == '') {
+                    e.preventDefault();
+                    $('.serial-number-validation').text("Serial number can't be empty");
+                }
+                else {
+                    $('.serial-number-validation').text("");
+                    $('.loading').removeClass('hide');
+                    $(this).prop("disabled", true);
+                    $(this).closest('form').submit();
+                }
+            });
+
+            $('.save-serial-number').click(function (e) {
+
+                var serialNumberCount = $('.list-of-serial-number').length;
+                var salesOrderQuantity = $('.sales-order-quantity').val();
+                console.log("Current Serial Number : " + serialNumberCount);
+                console.log("Sales Order Quantity : " + salesOrderQuantity);
+
+                if (serialNumberCount == salesOrderQuantity) {
+                    $('.serial-number-validation').text("");
+                    $('.loading').removeClass('hide');
+                    $(this).prop("disabled", true);
+                    window.location.href = '@Url.Action("SaveSerialNumber", "MappingSalesOrder", new { salesOrderID = Model.SalesOrder.ID, page = ViewBag.Page })';
+                }
+                else {
+                    alert("Sales order can't be saved because the quantity of sales order and serial number you mapped is not same");
+                }
+
+            });
+
+            $('.delete-serial-number').click(function () {
+                var salesOrderID = $('.sales-order-id').val();
+                var unitID = $(this).closest('.list-of-serial-number').find('.unit-id').val();
+                var currentPage = $('.currentPage').val();
+                var serialNumberName = $(this).closest('.list-of-serial-number').find('.serial-number-name').attr('data-serialNumberName');
+                var salesOrderNumber = $('.sales-order-number').attr('data-salesOrderNumber');
+                console.log("sales order id:" + salesOrderID);
+                console.log("unit id : " + unitID);
+                console.log("Page : " + currentPage);
+
+                if (confirm("Are you sure want to delete " + serialNumberName + " from " + salesOrderNumber + "  ?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("DeleteSerialNumber", "MappingSalesOrder")?salesOrderID=" + salesOrderID + "&unitID=" + unitID + "&page=" + currentPage;
+                };
+                return false;
+            });
+
+        });
+
+
+    </script>
+}
+

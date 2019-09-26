@@ -1,0 +1,139 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.ProductReferences>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Product References";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Product Management</li>
+        <li class="breadcrumb-item active" aria-current="page">Product References</li>
+    </ol>
+</nav>
+<h1 class="page-title">Product References</h1>
+<div class="card shadow">
+    <div class="card-header">
+        List of Product References
+    </div>
+    <div class="form-row align-items-center justify-content-between filter-table-row">
+        <div class="col-auto">
+            @using (Html.BeginForm("Index", "ProductReference", FormMethod.Get))
+            {
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Find by name</label>
+                        @Html.TextBox("searchName", ViewBag.CurrentFilter as string, new { @class = "form-control mx-sm-3", placeholder = "Enter Name" })
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+        <div class="col-auto">
+            <a href="@Url.Action("Create", "ProductReference")" class="btn btn-primary"><i data-feather="plus-circle"></i> &nbsp; Add Product Reference</a>
+        </div>
+    </div>
+    <table class="table card-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Product Reference</th>
+                <th>Product Group</th>
+                <th>MH PB IH</th>
+                <th>MH PB OH</th>
+                <th>MH Fab IH</th>
+                <th>MH Fab OH</th>
+                <th>MH Painting IH</th>
+                <th>MH Painting OH</th>
+                <th>Factor</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+                var itemperPage = Convert.ToInt32(ViewBag.ItemperPage);
+                var currentNumber = ((pageNumber - 1) * itemperPage) + 1;
+            }
+            @foreach (var item in Model)
+            {
+                <tr class="product-rerefences">
+                    <td>
+                        @currentNumber
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductGroups.Name)
+                    </td>
+                    <td align="right">
+                        @Html.DisplayFor(modelItem => item.MHPBIH)
+                    </td>
+                    <td align="right">
+                        @Html.DisplayFor(modelItem => item.MHPBOH)
+                    </td>
+                    <td align="right">
+                        @Html.DisplayFor(modelItem => item.MHFabIH)
+                    </td>
+                    <td align="right">
+                        @Html.DisplayFor(modelItem => item.MHFabOH)
+                    </td>
+                    <td align="right">
+                        @Html.DisplayFor(modelItem => item.MHPaintingIH)
+                    </td>
+                    <td align="right">
+                        @Html.DisplayFor(modelItem => item.MHPaintingOH)
+                    </td>
+                    <td align="right">
+                        @Html.DisplayFor(modelItem => item.Factor)
+                    </td>
+                    <td>
+                        <input type="text" value="@item.ID" data-name="@item.Name" class="product-reference-ID hide" name="productReferenceID" />
+                        <a href="@Url.Action("Details", "ProductReference", new { id = item.ID, page = ViewBag.Page})" class="btn btn-primary btn-sm" data-toggle="tooltop" data-placement="top" title="Details"><i data-feather="zoom-in"></i></a>
+                        <a href="@Url.Action("Edit", "ProductReference", new { id = item.ID,  page = ViewBag.Page})" class="btn btn-dark btn-sm" data-toggle="tooltop" data-placement="top" title="Edit"><i data-feather="edit-2"></i></a>
+                        @if (item.Products.Count == 0)
+                        {
+                            <a class="btn btn-danger btn-sm delete-product-reference" role="button" data-toggle="tooltop" data-placement="top" title="Delete"><i data-feather="trash-2"></i></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="p-3">
+        <div class="row justify-content-md-center custom-pagination align-items-center">
+            <div class="col-auto">
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+                    new { page, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var productReferenceID = 0;
+
+            $(".delete-product-reference").click(function () {
+                productReferenceID = $(this).closest(".product-rerefences").find("input[name='productReferenceID']").val();
+                var referenceName = $(".product-reference-ID").attr('data-name');
+                console.log(referenceName)
+                if (confirm("Are you sure want to delete " + referenceName + "?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("Delete", "ProductReference")?id=" + productReferenceID;
+                };
+                return false;
+            });
+        });
+    </script>
+}

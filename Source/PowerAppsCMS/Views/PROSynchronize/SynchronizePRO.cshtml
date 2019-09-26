@@ -1,0 +1,106 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.Unit>
+
+@using PagedList.Mvc
+@using PowerAppsCMS.Models
+
+@{
+                /**/
+
+                /**/
+
+                ViewBag.Title = "Data PRO Fails ";
+                Layout = "~/Views/Shared/_LayoutMPS.cshtml";
+}
+
+<div class="row justify-content-between align-items-center">
+    <div class="col-auto">
+        <h1 class="page-title mt-0">
+            Data PRO Fails
+        </h1>
+    </div>
+    <div class="col-auto">
+        <div class="btn-group" role="group" aria-label="Basic example">
+
+
+            <button type="button" class="btn btn-primary btn-sm" id="Back" onclick="location.href='@Url.Action("Index", "PROSynchronize")'">
+                <span class="rewind"><i data-feather="arrow-left"></i>  Back</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+@if (Model.Count > 0)
+{
+
+    <table class="table table-bordered custom-table">
+        <thead class="thead-dark">
+            <tr>
+                <th class="number-column">
+                    No
+                </th>
+                <th>
+                    Serial Number
+                </th>
+                <th>
+                    PROID
+                </th>
+                <th>
+                    PRO Number
+                </th>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Part Number
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Due Date
+                </th>
+            </tr>
+        <tbody>
+            @{
+                var currentNumber = 1;
+            }
+
+            @foreach (var item in Model)
+            {
+                <tr class="sales-order">
+                    <td>
+                        @currentNumber
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SerialNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PROID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PRO.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.PN)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PRO.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DueDate)
+                    </td>
+                </tr>
+                currentNumber++;
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div style="color:red">
+        No Data Inserted
+    </div>
+}

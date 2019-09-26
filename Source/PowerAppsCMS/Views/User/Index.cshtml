@@ -1,0 +1,168 @@
+﻿@model PagedList.IPagedList<PowerAppsCMS.Models.User>
+@using PagedList.Mvc
+@using PowerAppsCMS.Models
+
+@{
+    ViewBag.Title = "User";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">User Management</li>
+        <li class="breadcrumb-item active" aria-current="page">Users</li>
+    </ol>
+</nav>
+<h1 class="page-title">Users</h1>
+<div class="card shadow">
+    <div class="card-header">
+        List of Users
+    </div>
+
+    @{
+        PowerAppsCMSEntities db = new PowerAppsCMSEntities();
+        var name = User.Identity.Name;
+        //var name = username.Split('\\')[1];
+        var userData = db.Users.Where(x => x.Username == name).First();
+    }
+    <div class="form-row align-items-lg-center justify-content-between filter-table-row">
+        <div class="col-auto">
+            <a href="@Url.Action("Create", "User")" class="btn btn-primary"><i data-feather="plus-circle"></i> &nbsp; Add User</a>
+            @if (userData.RoleID == 0)
+            {
+                <a href="@Url.Action("RetrailAllUserAsync", "FaceAPI")" class="btn btn-primary retrain-all-user"><i data-feather="refresh-ccw"></i> &nbsp; Retrain All User</a>
+                @*<a href="@Url.Action("CreateUser", "User")" class="btn btn-primary"><i data-feather="plus-circle"></i> &nbsp; Add User New Vesion</a>*@
+            }
+        </div>
+    </div>
+    <div class="form-row align-items-center justify-content-between filter-table-row">
+        <div class="col-auto">
+            @using (Html.BeginForm("Index", "User", FormMethod.Get))
+            {
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>Find by name</label>
+                        @Html.TextBox("searchName", ViewBag.CurrentFilterSearchName as string, new { @class = "form-control mx-sm-3", placeholder = "Enter Name" })
+                    </div>
+                    <div class="form-group">
+                        <label>Find by NRP</label>
+                        @Html.TextBox("searchEmployeeNumber", ViewBag.CurrentFilterSearchEmployeeNumber as string, new { @class = "form-control mx-sm-3", placeholder = "Enter NRP" })
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<table class="table card-table">
+    <thead>
+        <tr>
+            <th>
+                No
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Employee Number
+            </th>
+            <th>
+                Role
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Power Apps Access
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var pageNumber = Convert.ToInt32(ViewBag.PageNumber);
+            var itemperPage = Convert.ToInt32(ViewBag.Itemperpage);
+            var currentPage = ((pageNumber - 1) * itemperPage) + 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr class="employee">
+                <td>
+                    @currentPage
+                </td>
+                <td class="employeeName" data-employeeName="@item.Name">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @{
+                        if (item.Role.HaveAccessPowerApps == true)
+                        {
+                            <p class="text-success">Yes</p>
+                        }
+                        else
+                        {
+                            <p class="text-danger">No</p>
+                        }
+                    }
+                </td>
+                <td>
+                    <input type="text" value="@item.ID" class="employeeId hide form-control" name="employeeId" />
+                    <a href="@Url.Action("Details", "User", new { id = item.ID, page = ViewBag.Page})" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Details"><i data-feather="zoom-in"></i></a>
+                    <a href="@Url.Action("Edit", "User", new { id = item.ID, page = ViewBag.Page})" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"><i data-feather="edit-2"></i></a>
+                    <a href="#" class="btn btn-danger btn-sm deleteUser" data-toggle="tooltip" data-placement="top" title="Delete"><i data-feather="trash-2"></i></a>
+                </td>
+            </tr>
+
+            currentPage++;
+        }
+    </tbody>
+</table>
+<div class="p-3">
+    <div class="row justify-content-md-center custom-pagination align-items-center">
+        <div class="col-auto">
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, currentFilterSearchName = ViewBag.CurrentFilterSearchName, CurrentFilterSearchEmployeeNumber = ViewBag.CurrentFilterSearchEmployeeNumber }))
+        </div>
+    </div>
+</div>
+
+<div class="loading hide">
+    <i class="fa fa-2x fa-spinner fa-spin"></i>
+    <label>Please wait while Saving Data...</label>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var employeeID = 0;
+
+            $(".deleteUser").click(function () {
+                employeeID = $(this).closest(".employee").find("input[name='employeeId']").val();
+                var employeeName = $('.employeeName').attr('data-employeeName');
+                if (confirm("Are you sure want to delete this " + employeeName + " ?")) {
+                    $('.loading').removeClass('hide');
+                    window.location.href = "@Url.Action("DeleteUser", "User")?id=" + employeeID;
+                };
+                return false;
+            });
+
+            $('.retrain-all-user').click(function (){
+                $('.loading').removeClass('hide');
+            });
+
+        });
+    </script>
+}

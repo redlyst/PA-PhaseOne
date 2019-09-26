@@ -1,0 +1,814 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0E1E2100-8C04-4CE5-A282-AA82419F3D16}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PowerAppsCMS</RootNamespace>
+    <AssemblyName>PowerAppsCMS</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>PowerAppsCMS.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.8.1\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.8.1\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.8.1\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.8.1\lib\net45\Microsoft.AI.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.8.1\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.8.1\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.4\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.3.0.1\lib\net452\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ProjectOxford.Common, Version=2.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ProjectOxford.Common.2.1.1\lib\netstandard1.1\Microsoft.ProjectOxford.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ProjectOxford.Face, Version=1.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ProjectOxford.Face.1.4.0\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Microsoft.ProjectOxford.Face.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=9.3.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.Storage.9.3.2\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcBreadCrumbs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcBreadCrumbs.0.69\lib\MvcBreadCrumbs.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.6\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AI.Agent.Intercept">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Constants\Enumeration.cs" />
+    <Compile Include="Constants\RoleNames.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CapacitySettingController.cs" />
+    <Compile Include="Controllers\ComponentController.cs" />
+    <Compile Include="Controllers\ComponentSynchronizerController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FaceAPIController.cs" />
+    <Compile Include="Controllers\GroupProductController.cs" />
+    <Compile Include="Controllers\HolidayController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MappingSalesOrderController.cs" />
+    <Compile Include="Controllers\MasterProcessController.cs" />
+    <Compile Include="Controllers\MaterialController.cs" />
+    <Compile Include="Controllers\MemoController.cs" />
+    <Compile Include="Controllers\MPSController.cs" />
+    <Compile Include="Controllers\MPSMappingController.cs" />
+    <Compile Include="Controllers\ProcessController.cs" />
+    <Compile Include="Controllers\ProcessGroupController.cs" />
+    <Compile Include="Controllers\ProductCompositionController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductGroupCapacityController.cs" />
+    <Compile Include="Controllers\ProductReferenceController.cs" />
+    <Compile Include="Controllers\ProductSubGroupController.cs" />
+    <Compile Include="Controllers\PROSynchronizeController.cs" />
+    <Compile Include="Controllers\ReasonIssueController.cs" />
+    <Compile Include="Controllers\ReasonPauseController.cs" />
+    <Compile Include="Controllers\RetrainUserController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SFSController.cs" />
+    <Compile Include="Controllers\SFSMappingController.cs" />
+    <Compile Include="Controllers\SwaggerFaceAPIController.cs" />
+    <Compile Include="Controllers\SwaggerFaceIdentifyController.cs" />
+    <Compile Include="Controllers\SwaggerGetUserController.cs" />
+    <Compile Include="Controllers\SwaggerGroupLeaderController.cs" />
+    <Compile Include="Controllers\SwaggerInspectorController.cs" />
+    <Compile Include="Controllers\SwaggerListAssignedUserController.cs" />
+    <Compile Include="Controllers\SwaggerOperatorController.cs" />
+    <Compile Include="Controllers\SwaggerPBPlanningController.cs" />
+    <Compile Include="Controllers\SwaggerUploadImageController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="CustomAuthentication\CustomAuthorizeAttribute.cs" />
+    <Compile Include="CustomAuthentication\CustomMembership.cs" />
+    <Compile Include="CustomAuthentication\CustomMembershipUser.cs" />
+    <Compile Include="CustomAuthentication\CustomPrincipal.cs" />
+    <Compile Include="CustomAuthentication\CustomRole.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\AddFileParamTypes.cs" />
+    <Compile Include="Models\ChangeQCStatusLog.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Component.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ComponentMaterialPreparationProcess.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ComponentMaterialPreparationProcessModel.cs" />
+    <Compile Include="Models\ComponentsTemp.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DataZemesFail.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Feedback.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetProByProductGroupID_Result.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Holiday.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\InMemoryMultipartFormDataStreamProvider.cs" />
+    <Compile Include="Models\HolidayDetail.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ListAddedOperator.cs" />
+    <Compile Include="Models\ListAssignedOperator.cs" />
+    <Compile Include="Models\ListProcessIssue.cs" />
+    <Compile Include="Models\LoginView.cs" />
+    <Compile Include="Models\MasterPlanSchedule.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MasterProcess.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Material.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MaterialPreparationProcess.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MaterialPreparationProcessCategory.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Memo.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MemoComponent.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MemoComponentModel.cs" />
+    <Compile Include="Models\MemoJobCard.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MemoJobCardModel.cs" />
+    <Compile Include="Models\MemoPRO.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MemoType.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MonthRange.cs" />
+    <Compile Include="Models\Part.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PartialModel\ProductReferences.cs" />
+    <Compile Include="Models\PartialModel\tempImage.cs" />
+    <Compile Include="Models\PartialModel\Component.cs" />
+    <Compile Include="Models\PartialModel\DataZemesFail.cs" />
+    <Compile Include="Models\PartialModel\Holiday.cs" />
+    <Compile Include="Models\PartialModel\MasterPlanSchedule.cs" />
+    <Compile Include="Models\PartialModel\MasterProcess.cs" />
+    <Compile Include="Models\PartialModel\Material.cs" />
+    <Compile Include="Models\PartialModel\Memo.cs" />
+    <Compile Include="Models\PartialModel\MemoPRO.cs" />
+    <Compile Include="Models\PartialModel\PRO.cs" />
+    <Compile Include="Models\PartialModel\Process.cs" />
+    <Compile Include="Models\PartialModel\ProcessGroup.cs" />
+    <Compile Include="Models\PartialModel\Products.cs" />
+    <Compile Include="Models\PartialModel\ProductComposition.cs" />
+    <Compile Include="Models\PartialModel\ProductGroup.cs" />
+    <Compile Include="Models\PartialModel\ProductGroupCapacity.cs" />
+    <Compile Include="Models\PartialModel\ProductSubGroup.cs" />
+    <Compile Include="Models\PartialModel\Role.cs" />
+    <Compile Include="Models\PartialModel\SalesOrder.cs" />
+    <Compile Include="Models\PartialModel\Unit.cs" />
+    <Compile Include="Models\PartialModel\User.cs" />
+    <Compile Include="Models\PowerAppsCMS.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PowerAppsCMS.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PowerAppsCMS.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PowerAppsCMS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PowerAppsCMS.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRO.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Process.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProcessActivity.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProcessAssign.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProcessDailySchedule.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProcessDependency.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProcessGroup.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProcessIssue.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProcessStatusLogs.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductComposition.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductGroup.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductGroupCapacity.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductionPlanning.cs" />
+    <Compile Include="Models\ProductionPlanningUnitDetail.cs" />
+    <Compile Include="Models\ProductReferences.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Products.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProductSubGroup.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PROSalesOrder.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProSP.cs" />
+    <Compile Include="Models\ReasonIssue.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReasonPause.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalesOrder.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SFSDailyActivity.cs" />
+    <Compile Include="Models\SFSProcess.cs" />
+    <Compile Include="Models\ShopFloorSchedule.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaskListOperator.cs" />
+    <Compile Include="Models\tempImage.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Unit.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UploadedFileInfo.cs" />
+    <Compile Include="Models\User.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserImage.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserProcessGroup.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ViewProductProcessDailySchedule.cs">
+      <DependentUpon>PowerAppsCMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WeekNumber.cs" />
+    <Compile Include="Models\WorkingLog.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FaceAPIService.cs" />
+    <Compile Include="Services\ImageServices.cs" />
+    <Compile Include="Services\NewMemoServices.cs" />
+    <Compile Include="ViewModel\ComponentViewModel.cs" />
+    <Compile Include="ViewModel\GroupProductViewModel.cs" />
+    <Compile Include="ViewModel\MappingSalesOrderViewModel.cs" />
+    <Compile Include="ViewModel\MasterProcessViewModel.cs" />
+    <Compile Include="ViewModel\MemoViewModel.cs" />
+    <Compile Include="ViewModel\MPSMappingViewModel.cs" />
+    <Compile Include="ViewModel\MPSViewModel.cs" />
+    <Compile Include="ViewModel\ProductReferenceViewModel.cs" />
+    <Compile Include="ViewModel\ProductSubGroupViewModel.cs" />
+    <Compile Include="ViewModel\ProductViewModel.cs" />
+    <Compile Include="ViewModel\SFSViewModel.cs" />
+    <Compile Include="ViewModel\UserViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cms\chosen\chosen-sprite%402x.png" />
+    <Content Include="Content\cms\chosen\chosen-sprite.png" />
+    <Content Include="Content\cms\chosen\chosen.min.css" />
+    <Content Include="Content\cms\css\images\icon-component.png" />
+    <Content Include="Content\cms\css\images\icon-group-product.png" />
+    <Content Include="Content\cms\css\images\icon-group-reference.png" />
+    <Content Include="Content\cms\css\images\icon-holiday.png" />
+    <Content Include="Content\cms\css\images\icon-material.png" />
+    <Content Include="Content\cms\css\images\icon-part.png" />
+    <Content Include="Content\cms\css\images\icon-process.png" />
+    <Content Include="Content\cms\css\images\icon-product.png" />
+    <Content Include="Content\cms\css\images\icon-reason-pause.png" />
+    <Content Include="Content\cms\css\images\icon-reason.png" />
+    <Content Include="Content\cms\css\images\icon-role.png" />
+    <Content Include="Content\cms\css\images\icon-setting.png" />
+    <Content Include="Content\cms\css\images\icon-sub-group-product.png" />
+    <Content Include="Content\cms\css\images\icon-user.png" />
+    <Content Include="Content\cms\css\perfect-scrollbar.css" />
+    <Content Include="Content\datepicker.min.css" />
+    <Content Include="Content\home.css" />
+    <Content Include="Content\images\login-background.jpg" />
+    <Content Include="Content\images\patria-logo-black.png" />
+    <Content Include="Content\login.css" />
+    <Content Include="Models\PowerAppsCMS.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PowerAppsCMS.edmx</DependentUpon>
+      <LastGenOutput>PowerAppsCMS.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\PowerAppsCMS.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PowerAppsCMS.edmx</DependentUpon>
+      <LastGenOutput>PowerAppsCMS.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\datepicker.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jqueryui\jquery-ui.css" />
+    <Content Include="Scripts\jqueryui\jquery-ui.js" />
+    <Content Include="Scripts\jqueryui\jquery-ui.min.css" />
+    <Content Include="Scripts\jqueryui\jquery-ui.min.js" />
+    <Content Include="Scripts\jqueryui\jquery-ui.structure.css" />
+    <Content Include="Scripts\jqueryui\jquery-ui.structure.min.css" />
+    <Content Include="Scripts\jqueryui\jquery-ui.theme.css" />
+    <Content Include="Scripts\jqueryui\jquery-ui.theme.min.css" />
+    <Content Include="Scripts\perfect-scrollbar.js" />
+    <Content Include="Content\cms\css\style.css" />
+    <Content Include="Content\images\Calendar.png" />
+    <Content Include="Content\images\clipboard-outline.png" />
+    <Content Include="Content\images\employee-management.png" />
+    <Content Include="Content\images\factory.png" />
+    <Content Include="Content\images\group-product.png" />
+    <Content Include="Content\images\icon-master-data.png" />
+    <Content Include="Content\images\icon-mps.png" />
+    <Content Include="Content\images\icon-sfs.png" />
+    <Content Include="Content\images\landing-page-background.png" />
+    <Content Include="Content\images\master-data.png" />
+    <Content Include="Content\images\master-process.png" />
+    <Content Include="Content\images\patria-logo-white.png" />
+    <Content Include="Content\images\patria-logo.png" />
+    <Content Include="Content\images\patria.png" />
+    <Content Include="Content\images\preloader.gif" />
+    <Content Include="Content\images\process-group.png" />
+    <Content Include="Content\images\process-type.png" />
+    <Content Include="Content\images\product.png" />
+    <Content Include="Content\images\role-icon.jpg" />
+    <Content Include="Content\images\user-management-icon.png" />
+    <Content Include="Content\mps\css\images\arrow-link.png" />
+    <Content Include="Content\mps\css\style.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <EntityDeploy Include="Models\PowerAppsCMS.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PowerAppsCMS.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\PowerAppsCMS.edmx.diagram">
+      <DependentUpon>PowerAppsCMS.edmx</DependentUpon>
+    </Content>
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
+    <Content Include="Scripts\feather-4.7.3.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout-backup.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\User\Details.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\UserPreview.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\Edit.cshtml" />
+    <Content Include="Views\Role\Error.cshtml" />
+    <Content Include="Views\ProcessGroup\Index.cshtml" />
+    <Content Include="Views\ProcessGroup\Create.cshtml" />
+    <Content Include="Views\ProcessGroup\Edit.cshtml" />
+    <Content Include="Views\ProcessGroup\Error.cshtml" />
+    <Content Include="Views\Holiday\Index.cshtml" />
+    <Content Include="Views\Holiday\Create.cshtml" />
+    <Content Include="Views\Holiday\Edit.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Product\Error.cshtml" />
+    <Content Include="Views\MasterProcess\Create.cshtml" />
+    <Content Include="Views\MasterProcess\Details.cshtml" />
+    <Content Include="Views\MasterProcess\Edit.cshtml" />
+    <Content Include="Views\GroupProduct\Index.cshtml" />
+    <Content Include="Views\GroupProduct\Create.cshtml" />
+    <Content Include="Views\GroupProduct\Edit.cshtml" />
+    <Content Include="Views\GroupProduct\Details.cshtml" />
+    <Content Include="Views\ProductGroupCapacity\Create.cshtml" />
+    <Content Include="Views\ProductGroupCapacity\Edit.cshtml" />
+    <Content Include="Views\ProductSubGroup\Index.cshtml" />
+    <Content Include="Views\ProductSubGroup\Create.cshtml" />
+    <Content Include="Views\ProductSubGroup\Edit.cshtml" />
+    <Content Include="Views\ProductSubGroup\Details.cshtml" />
+    <Content Include="Views\Component\Index.cshtml" />
+    <Content Include="Views\Component\Create.cshtml" />
+    <Content Include="Views\Component\Edit.cshtml" />
+    <Content Include="Views\Part\Index.cshtml" />
+    <Content Include="Views\Part\Create.cshtml" />
+    <Content Include="Views\Part\Edit.cshtml" />
+    <Content Include="Views\Material\Index.cshtml" />
+    <Content Include="Views\Material\Create.cshtml" />
+    <Content Include="Views\Material\Edit.cshtml" />
+    <Content Include="Views\CapacitySetting\Index.cshtml" />
+    <Content Include="Views\MPS\Index.cshtml" />
+    <Content Include="Views\Part\Error.cshtml" />
+    <Content Include="Views\User\_Create1.cshtml" />
+    <Content Include="Views\User\_Create2.cshtml" />
+    <Content Include="Views\User\_Create3.cshtml" />
+    <Content Include="Views\Shared\_LayoutMPS.cshtml" />
+    <Content Include="Views\ProductComposition\ErrorPage.cshtml" />
+    <Content Include="Views\MPS\Details.cshtml" />
+    <Content Include="Views\Component\Error.cshtml" />
+    <Content Include="Views\Component\Details.cshtml" />
+    <Content Include="Views\SFS\Details.cshtml" />
+    <Content Include="Views\SFS\Index.cshtml" />
+    <Content Include="Views\Memo\Index.cshtml" />
+    <Content Include="Views\Memo\Create.cshtml" />
+    <Content Include="Views\Memo\CreateMemoPRO.cshtml" />
+    <Content Include="Views\Shared\_LayoutSFS.cshtml" />
+    <Content Include="Views\Memo\CreateMemoComponent.cshtml" />
+    <Content Include="Views\Memo\Error.cshtml" />
+    <Content Include="Views\SFS\Details2.cshtml" />
+    <Content Include="Views\Memo\Details.cshtml" />
+    <Content Include="Views\Memo\Edit.cshtml" />
+    <Content Include="Views\SFS\Details3.cshtml" />
+    <Content Include="Views\MasterProcess\Error.cshtml" />
+    <Content Include="Views\MPSMapping\Error.cshtml" />
+    <Content Include="Views\MPSMapping\Index.cshtml" />
+    <Content Include="Views\SFSMapping\Index.cshtml" />
+    <Content Include="Views\MPSMapping\Details.cshtml" />
+    <Content Include="Views\GroupProduct\Error.cshtml" />
+    <Content Include="Views\ProductSubGroup\Error.cshtml" />
+    <Content Include="Views\Material\Error.cshtml" />
+    <Content Include="Views\Holiday\Error.cshtml" />
+    <Content Include="Views\User\Error.cshtml" />
+    <Content Include="Views\FaceAPI\Error.cshtml" />
+    <Content Include="Views\SFSMapping\Error.cshtml" />
+    <Content Include="Views\User\UserPreviewError.cshtml" />
+    <Content Include="Views\Error\Unauthorized.cshtml" />
+    <Content Include="Views\User\EditUserAD.cshtml" />
+    <Content Include="Views\User\EditUserPowerApps.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\ProductGroupCapacity\Error.cshtml" />
+    <Content Include="Views\PROSynchronize\Index.cshtml" />
+    <Content Include="Views\PROSynchronize\SynchronizePRO.cshtml" />
+    <Content Include="Views\ReasonIssue\Index.cshtml" />
+    <Content Include="Views\ReasonIssue\Create.cshtml" />
+    <Content Include="Views\ReasonIssue\Edit.cshtml" />
+    <Content Include="Views\ReasonPause\Index.cshtml" />
+    <Content Include="Views\ReasonPause\Create.cshtml" />
+    <Content Include="Views\ReasonPause\Edit.cshtml" />
+    <Content Include="Views\ReasonIssue\Error.cshtml" />
+    <Content Include="Views\ReasonPause\Error.cshtml" />
+    <Content Include="Views\ComponentSynchronizer\Index.cshtml" />
+    <Content Include="Views\ComponentSynchronizer\Error.cshtml" />
+    <Content Include="Views\User\Index2.cshtml" />
+    <Content Include="Views\User\Index3.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Error\AccessDenied.cshtml" />
+    <Content Include="Views\User\_CreateUserAD.cshtml" />
+    <Content Include="Views\User\_CreateUserPowerApps.cshtml" />
+    <Content Include="Views\User\CreateUser.cshtml" />
+    <Content Include="Views\User\EditUser.cshtml" />
+    <Content Include="Views\User\_EditPowerAppsUser.cshtml" />
+    <Content Include="Views\User\_EditUserAD.cshtml" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Views\Process\Create.cshtml" />
+    <Content Include="Views\Process\Delete.cshtml" />
+    <Content Include="Views\Process\UpdateStatus.cshtml" />
+    <Content Include="Views\Process\Edit.cshtml" />
+    <Content Include="Views\Process\ChangeQCStatus.cshtml" />
+    <Content Include="Views\ProductReference\Index.cshtml" />
+    <Content Include="Views\ProductReference\Create.cshtml" />
+    <Content Include="Views\ProductReference\Error.cshtml" />
+    <Content Include="Views\ProductReference\Details.cshtml" />
+    <Content Include="Views\ProductReference\Edit.cshtml" />
+    <Content Include="Views\RetrainUser\Index.cshtml" />
+    <Content Include="Views\RetrainUser\Error.cshtml" />
+    <Content Include="Views\RetrainUser\DisplayAllUser.cshtml" />
+    <Content Include="Views\MappingSalesOrder\Details.cshtml" />
+    <Content Include="Views\MappingSalesOrder\Edit.cshtml" />
+    <Content Include="Views\MappingSalesOrder\Error.cshtml" />
+    <Content Include="Views\MappingSalesOrder\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="fonts\" />
+    <Folder Include="Images\" />
+    <Folder Include="Views\ComponentMaterialPreparationProcess\" />
+    <Folder Include="Views\SwaggerInspector\" />
+    <Folder Include="Views\SwaggerOperator\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>31845</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:31845/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

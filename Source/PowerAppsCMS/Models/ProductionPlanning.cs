@@ -54,9 +54,9 @@ namespace PowerAppsCMS.Models
         public int ProductID { get; set; }
 
         ///ID Product Group
-        public int PGID { get; set; }
+        //public int PGID { get; set; }
 
         /// Product Group Name
-        public string PGName { get; set; }
+        //public string PGName { get; set; }
     }
 }

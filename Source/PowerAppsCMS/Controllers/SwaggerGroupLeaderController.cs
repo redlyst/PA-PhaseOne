@@ -51,8 +51,8 @@ namespace PowerAppsCMS.Controllers
                         productionPlanning.Product = itemUnit.Product.Name;
                         productionPlanning.Customer = itemUnit.PRO.CustomerListInSODisplayText;// Customer;
                         productionPlanning.ProductID = itemUnit.ProductID;
-                        productionPlanning.PGID = itemUnit.Product.ProductSubGroups.ProductGroup.ID;
-                        productionPlanning.PGName = itemUnit.Product.ProductSubGroups.ProductGroup.Name;
+                        //productionPlanning.PGID = itemUnit.Product.ProductSubGroups.ProductGroup.ID;
+                        //productionPlanning.PGName = itemUnit.Product.ProductSubGroups.ProductGroup.Name;
 
                         selectedProcesslist = db.Processes.Where(x => x.MasterProcess.ProductID == productionPlanning.ProductID && x.UnitID == productionPlanning.UnitID && x.MasterProcess.ProcessGroupID == processGroupID).ToList();
                         int countSelectedProcessList = selectedProcesslist.Count();

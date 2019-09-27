@@ -1502,6 +1502,18 @@
             <remarks>Menghitung quantity aktual process pada memo jobcard, apakah sudah terpenuhi atau belum</remarks>
             <returns></returns>
         </member>
+        <member name="T:PowerAppsCMS.Controllers.SwaggerProductGroupController">
+            <summary>
+            Controller yang digunakan untuk mengelola fungsi-fungsi yang ada pada halaman grup leader di aplikasi powerapps
+            </summary>
+        </member>
+        <member name="M:PowerAppsCMS.Controllers.SwaggerProductGroupController.GetGroupProduct">
+            <summary>
+            Mengambil production list yang sesuai dengan process group Group Leader yang login
+            </summary>
+            <param name="processGroupID"></param>
+            <returns>Daftar production list yang sesuai dengan process group Group Leader yang login</returns>
+        </member>
         <member name="T:PowerAppsCMS.Controllers.UploadController">
             <summary>
             Controller yang berisikan fungsi-fungsi yang digunakan untuk upload image ketika login di aplikasi powerapps
@@ -2449,12 +2461,6 @@
             ID produk
             </summary>
         </member>
-        <member name="P:PowerAppsCMS.Models.ProductionPlanning.PGID">
-            ID Product Group
-        </member>
-        <member name="P:PowerAppsCMS.Models.ProductionPlanning.PGName">
-            Product Group Name
-        </member>
         <member name="T:PowerAppsCMS.Models.ProductionPlanningUnitDetail">
             <summary>
             Model yang digunakan untuk menyimpan daftar proses dari unit yang dipilih pada halaman group leaders
@@ -2780,6 +2786,26 @@
         <member name="P:PowerAppsCMS.Models.WorkingLog.ActivityDateTime">
             <summary>
             waktu aktivitas operator
+            </summary>
+        </member>
+        <member name="T:PowerAppsCMS.Models.ProductGroupAPI">
+            <summary>
+            Model yang digunakan untuk meyimpan daftar unit pada halaman group leaders
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductGroupAPI.ID">
+            <summary>
+            ID unit
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductGroupAPI.Name">
+            <summary>
+            status unit
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ProductGroupAPI.Desc">
+            <summary>
+            Nama status unit
             </summary>
         </member>
         <member name="T:PowerAppsCMS.Services.FaceAPIService">

@@ -241,6 +241,7 @@
     <Compile Include="Controllers\SwaggerListAssignedUserController.cs" />
     <Compile Include="Controllers\SwaggerOperatorController.cs" />
     <Compile Include="Controllers\SwaggerPBPlanningController.cs" />
+    <Compile Include="Controllers\SwaggerProductGroupController.cs" />
     <Compile Include="Controllers\SwaggerUploadImageController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CustomAuthentication\CustomAuthorizeAttribute.cs" />
@@ -453,6 +454,7 @@
     <Compile Include="Services\FaceAPIService.cs" />
     <Compile Include="Services\ImageServices.cs" />
     <Compile Include="Services\NewMemoServices.cs" />
+    <Compile Include="ViewModel\ProductGroupAPI.cs" />
     <Compile Include="ViewModel\ComponentViewModel.cs" />
     <Compile Include="ViewModel\GroupProductViewModel.cs" />
     <Compile Include="ViewModel\MappingSalesOrderViewModel.cs" />
@@ -757,6 +759,7 @@
     <Folder Include="Views\ComponentMaterialPreparationProcess\" />
     <Folder Include="Views\SwaggerInspector\" />
     <Folder Include="Views\SwaggerOperator\" />
+    <Folder Include="Views\SwaggerProductGroup\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

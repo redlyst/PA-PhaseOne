@@ -206,6 +206,7 @@ namespace PowerAppsCMS.Controllers
                     };
                     return Ok(user);
                 }
+
                 return null;
             }
             catch (Exception ex)

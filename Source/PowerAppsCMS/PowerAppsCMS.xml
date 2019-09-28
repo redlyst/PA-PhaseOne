@@ -2461,6 +2461,9 @@
             ID produk
             </summary>
         </member>
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.ProcessProgres">
+            ID Product Group
+        </member>
         <member name="T:PowerAppsCMS.Models.ProductionPlanningUnitDetail">
             <summary>
             Model yang digunakan untuk menyimpan daftar proses dari unit yang dipilih pada halaman group leaders

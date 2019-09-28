@@ -53,7 +53,19 @@ namespace PowerAppsCMS.Controllers
                         productionPlanning.ProductID = itemUnit.ProductID;
                         //productionPlanning.PGID = itemUnit.Product.ProductSubGroups.ProductGroup.ID;
                         //productionPlanning.PGName = itemUnit.Product.ProductSubGroups.ProductGroup.Name;
-
+                        var prs = db.Processes.Where(y => y.MasterProcess.ProductID == itemUnit.ProductID && y.Unit.ID == itemUnit.ID);
+                        foreach (Process item in prs )
+                        {
+                            if(item.Status == 7)
+                            {
+                                productionPlanning.ProcessProgres = "Finish";
+                            }
+                            else
+                            {
+                                productionPlanning.ProcessProgres = "Not Finish";
+                            }
+                            
+                        }
                         selectedProcesslist = db.Processes.Where(x => x.MasterProcess.ProductID == productionPlanning.ProductID && x.UnitID == productionPlanning.UnitID && x.MasterProcess.ProcessGroupID == processGroupID).ToList();
                         int countSelectedProcessList = selectedProcesslist.Count();
                         if (selectedProcesslist.Where(x => x.PlanStartDate > now && x.Status == (int)ProcessStatus.NotStarted).Count() == countSelectedProcessList)

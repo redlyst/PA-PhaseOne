@@ -142,5 +142,7 @@ namespace PowerAppsCMS.Models
                 return haveProcessIssue;
             }
         }
+
+        public bool Status { get; internal set; }
     }
 }

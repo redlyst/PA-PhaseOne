@@ -19,7 +19,7 @@ namespace PowerAppsCMS.Controllers
         /// </summary>
         /// <param name="processGroupID"></param>
         /// <returns>Daftar production list yang sesuai dengan process group Group Leader yang login</returns>
-        [Route("api/GetGroupLeaderProductionPlanning")]
+        [Route("api/GetProductGroup")]
         [HttpGet]
         [SwaggerResponse(HttpStatusCode.OK,
             Description = "Get specific production planning",
@@ -27,7 +27,7 @@ namespace PowerAppsCMS.Controllers
         [SwaggerResponse(HttpStatusCode.InternalServerError,
                 Description = "Internal Server Error",
                Type = typeof(Exception))]
-        [SwaggerOperation("GetGroupLeaderProductionPlanning")]
+        [SwaggerOperation("GetProductGroup")]
 
 
 

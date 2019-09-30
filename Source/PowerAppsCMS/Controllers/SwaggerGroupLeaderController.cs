@@ -58,11 +58,11 @@ namespace PowerAppsCMS.Controllers
                         {
                             if(item.Status == 7)
                             {
-                                productionPlanning.ProcessProgres = "Finish";
+                                productionPlanning.StatusProcess = 1;
                             }
                             else
                             {
-                                productionPlanning.ProcessProgres = "Not Finish";
+                                productionPlanning.StatusProcess = 0;
                             }
                             
                         }

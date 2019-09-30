@@ -55,7 +55,7 @@ namespace PowerAppsCMS.Models
 
         ///ID Product Group
         //public int PGID { get; set; }
-        public string ProcessProgres { get; set; }
+        public int StatusProcess { get; set; }
         /// Product Group Name
         //public string PGName { get; set; }
     }

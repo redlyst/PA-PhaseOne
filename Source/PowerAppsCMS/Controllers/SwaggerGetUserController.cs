@@ -206,6 +206,14 @@ namespace PowerAppsCMS.Controllers
                     };
                     return Ok(user);
                 }
+                else
+                {
+                    var error = new ErrorMassageLogin
+                    {
+                        ErrorMassage = "Please check your password or nrp"
+                    };
+                    return Ok(error);
+                }
 
                 return null;
             }

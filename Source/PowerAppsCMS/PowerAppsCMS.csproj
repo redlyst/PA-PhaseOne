@@ -269,6 +269,7 @@
     <Compile Include="Models\DataZemesFail.cs">
       <DependentUpon>PowerAppsCMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ErrorMassageLogin.cs" />
     <Compile Include="Models\Feedback.cs">
       <DependentUpon>PowerAppsCMS.tt</DependentUpon>
     </Compile>

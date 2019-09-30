@@ -1906,6 +1906,16 @@
             merupakan class yang berfungsi untuk menambahkan kolom baru yang mana merepresentasikan kesuatu tabels 
             </summary>
         </member>
+        <member name="T:PowerAppsCMS.Models.ErrorMassageLogin">
+            <summary>
+            Model yang digunakan untuk meyimpan daftar unit pada halaman group leaders
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.ErrorMassageLogin.ErrorMassage">
+            <summary>
+            ID unit
+            </summary>
+        </member>
         <member name="T:PowerAppsCMS.Models.Holiday">
             <summary>
             Partial class model holiday

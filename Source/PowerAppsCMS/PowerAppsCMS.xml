@@ -2461,7 +2461,7 @@
             ID produk
             </summary>
         </member>
-        <member name="P:PowerAppsCMS.Models.ProductionPlanning.ProcessProgres">
+        <member name="P:PowerAppsCMS.Models.ProductionPlanning.StatusProcess">
             ID Product Group
         </member>
         <member name="T:PowerAppsCMS.Models.ProductionPlanningUnitDetail">

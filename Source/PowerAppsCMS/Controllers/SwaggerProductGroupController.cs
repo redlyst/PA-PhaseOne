@@ -22,8 +22,8 @@ namespace PowerAppsCMS.Controllers
         [Route("api/GetProductGroup")]
         [HttpGet]
         [SwaggerResponse(HttpStatusCode.OK,
-            Description = "Get specific production planning",
-            Type = typeof(ProductionPlanning))]
+            Description = "Get all product group",
+            Type = typeof(ProductGroupAPI))]
         [SwaggerResponse(HttpStatusCode.InternalServerError,
                 Description = "Internal Server Error",
                Type = typeof(Exception))]
@@ -36,18 +36,18 @@ namespace PowerAppsCMS.Controllers
         {
             using (PowerAppsCMSEntities db = new PowerAppsCMSEntities())
             {
-                List<ProductGroup> listProductGroup = new List<ProductGroup>();
-                DateTime now = DateTime.Now;
+                List<ProductGroupAPI> listProductGroup = new List<ProductGroupAPI>();
+                //DateTime now = DateTime.Now;
                 try
                 {
                     var itemProcess = db.ProductGroups;
 
                     foreach (ProductGroup itemUnit in itemProcess)
                     {
-                        ProductGroup PG = new ProductGroup();
+                        ProductGroupAPI PG = new ProductGroupAPI();
                         PG.ID = itemUnit.ID;
                         PG.Name = itemUnit.Name;
-                        PG.Description = itemUnit.Description;
+                        PG.Desc = itemUnit.Description;
 
                         listProductGroup.Add(PG);
                     }
@@ -59,7 +59,7 @@ namespace PowerAppsCMS.Controllers
                 }
             }
         }
-        [Route("api/GetProductGroup")]
+/*        [Route("api/GetProductGroup")]
         [HttpGet]
 
         public IHttpActionResult DeleteAssignOperator(int processAssignID, string userID)
@@ -86,7 +86,7 @@ namespace PowerAppsCMS.Controllers
                 return InternalServerError(ex);
             }
          
-        }
+        }*/
 
     }
 }

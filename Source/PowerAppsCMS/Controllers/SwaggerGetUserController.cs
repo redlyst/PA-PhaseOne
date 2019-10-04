@@ -210,12 +210,12 @@ namespace PowerAppsCMS.Controllers
                 {
                     var error = new ErrorMassageLogin
                     {
-                        ErrorMassage = "Please check your password or nrp"
+                        ErrorMassage = "Silahkan cek kembali kata sandi dan NRP anda !!"
                     };
                     return Ok(error);
                 }
 
-                return null;
+                //return null;
             }
             catch (Exception ex)
             {

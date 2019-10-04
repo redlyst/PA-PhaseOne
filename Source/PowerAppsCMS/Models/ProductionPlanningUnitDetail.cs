@@ -60,5 +60,7 @@ namespace PowerAppsCMS.Models
         /// </summary>
         public Nullable<decimal> ManHourActual { get; set; }
         //public Boolean IsStopByOperator { get; set; }
+
+        public string LastModifiedby { get; set; }
     }
 }

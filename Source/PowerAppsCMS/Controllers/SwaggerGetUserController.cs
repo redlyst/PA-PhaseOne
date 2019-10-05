@@ -190,6 +190,7 @@ namespace PowerAppsCMS.Controllers
                 {
                     var user = new UserModel
                     {
+                        LoginStatus = 1,
                         ID = findUser.ID,
                         Name = findUser.Name,
                         EmployeeNumber = findUser.EmployeeNumber,
@@ -206,16 +207,17 @@ namespace PowerAppsCMS.Controllers
                     };
                     return Ok(user);
                 }
+
                 else
                 {
-                    var error = new ErrorMassageLogin
+                    var user = new UserModel
                     {
-                        ErrorMassage = "Please check your password or nrp"
+                        LoginStatus = 0
                     };
-                    return Ok(error);
+                    return Ok(user);
                 }
 
-                return null;
+                //return null;
             }
             catch (Exception ex)
             {

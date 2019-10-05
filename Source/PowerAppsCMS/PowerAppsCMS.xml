@@ -1906,15 +1906,11 @@
             merupakan class yang berfungsi untuk menambahkan kolom baru yang mana merepresentasikan kesuatu tabels 
             </summary>
         </member>
-        <member name="T:PowerAppsCMS.Models.ErrorMassageLogin">
-            <summary>
-            Model yang digunakan untuk meyimpan daftar unit pada halaman group leaders
-            </summary>
+        <member name="T:PowerAppsCMS.Models.ErrorHandleLogin">
+            Error handle status for login API
         </member>
-        <member name="P:PowerAppsCMS.Models.ErrorMassageLogin.ErrorMassage">
-            <summary>
-            ID unit
-            </summary>
+        <member name="P:PowerAppsCMS.Models.ErrorHandleLogin.LoginStatus">
+            Error Status
         </member>
         <member name="T:PowerAppsCMS.Models.Holiday">
             <summary>
@@ -2644,6 +2640,11 @@
         <member name="T:PowerAppsCMS.Models.UserModel">
             <summary>
             Class model yang menyimpan informasi user powerapps
+            </summary>
+        </member>
+        <member name="P:PowerAppsCMS.Models.UserModel.LoginStatus">
+            <summary>
+             Login Status, 0 is Failed, 1 is Success
             </summary>
         </member>
         <member name="P:PowerAppsCMS.Models.UserModel.ID">

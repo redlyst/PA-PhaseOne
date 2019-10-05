@@ -11,6 +11,11 @@ namespace PowerAppsCMS.Models
     public class UserModel
     {
         /// <summary>
+        ///  Login Status, 0 is Failed, 1 is Success
+        /// </summary>
+        public int LoginStatus { get; set; }
+
+        /// <summary>
         /// ID user
         /// </summary>
         public Guid ID { get; set; }        

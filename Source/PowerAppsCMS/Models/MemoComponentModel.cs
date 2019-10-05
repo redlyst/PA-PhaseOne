@@ -59,5 +59,9 @@ namespace PowerAppsCMS.Models
         /// Tanggal memo dibuat
         /// </summary>
         public string MemoDateCreated { get; set; }
+ 
+        public string namaproduct { get; set; }
+
+        public string pn { get; set; }
     }
 }

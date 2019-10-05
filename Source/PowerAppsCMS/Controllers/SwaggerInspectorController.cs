@@ -118,6 +118,7 @@ namespace PowerAppsCMS.Controllers
                         inspectorPlanningUnitDetail.ManHour = itemProcess.MasterProcess.ManHour;
                         inspectorPlanningUnitDetail.ManPower = itemProcess.MasterProcess.ManPower;
                         inspectorPlanningUnitDetail.MasterProcessID = itemProcess.MasterProcessID;
+                        inspectorPlanningUnitDetail.LastModifiedby = itemProcess.LastModifiedBy;
                         listInspectorUnitDetail.Add(inspectorPlanningUnitDetail);
                     }
                     return Ok(listInspectorUnitDetail);

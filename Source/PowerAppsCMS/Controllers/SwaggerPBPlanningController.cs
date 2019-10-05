@@ -34,6 +34,7 @@ namespace PowerAppsCMS.Controllers
                 List<MemoComponentModel> listMemoComponents = new List<MemoComponentModel>();
                 try
                 {
+                   // var itemProcess = db.MemoComponents.Where(x => x.Memo.Products).Select(x => x.MemoComponents).Distinct();
                     foreach (MemoComponent itemMemoComponent in db.MemoComponents)
                     {
                         MemoComponentModel memoComponents = new MemoComponentModel();
@@ -56,7 +57,8 @@ namespace PowerAppsCMS.Controllers
                         memoComponents.PartName = itemMemoComponent.Component.PartName;
                         memoComponents.PartNumber = itemMemoComponent.Component.PartNumber;
                         memoComponents.MemoDateCreated = itemMemoComponent.Memo.Created.ToString("dd/MM/yyyy");
-
+                        memoComponents.pn = itemMemoComponent.Memo.Products.PN;
+                        memoComponents.namaproduct = itemMemoComponent.Memo.Products.Name;
                         int productCount = itemMemoComponent.Memo.MemoPROes.Sum(x => x.Quantity);
                         int componentNeed = itemMemoComponent.Memo.Products.ProductComposition.Where(x => x.ComponentID == itemMemoComponent.ComponentID).Select(x => x.Quantity).SingleOrDefault();
                         int totalQuantity = productCount * componentNeed;

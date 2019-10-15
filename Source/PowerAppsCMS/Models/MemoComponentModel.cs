@@ -60,8 +60,8 @@ namespace PowerAppsCMS.Models
         /// </summary>
         public string MemoDateCreated { get; set; }
  
-        public string namaproduct { get; set; }
+        public string ProductName { get; set; }
 
-        public string pn { get; set; }
+        public string PN { get; set; }
     }
 }

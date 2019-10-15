@@ -57,8 +57,8 @@ namespace PowerAppsCMS.Controllers
                         memoComponents.PartName = itemMemoComponent.Component.PartName;
                         memoComponents.PartNumber = itemMemoComponent.Component.PartNumber;
                         memoComponents.MemoDateCreated = itemMemoComponent.Memo.Created.ToString("dd/MM/yyyy");
-                        memoComponents.pn = itemMemoComponent.Memo.Products.PN;
-                        memoComponents.namaproduct = itemMemoComponent.Memo.Products.Name;
+                        memoComponents.PN = itemMemoComponent.Memo.Products.PN;
+                        memoComponents.ProductName = itemMemoComponent.Memo.Products.Name;
                         int productCount = itemMemoComponent.Memo.MemoPROes.Sum(x => x.Quantity);
                         int componentNeed = itemMemoComponent.Memo.Products.ProductComposition.Where(x => x.ComponentID == itemMemoComponent.ComponentID).Select(x => x.Quantity).SingleOrDefault();
                         int totalQuantity = productCount * componentNeed;

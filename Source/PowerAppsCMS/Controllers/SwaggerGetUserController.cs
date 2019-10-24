@@ -190,7 +190,7 @@ namespace PowerAppsCMS.Controllers
                 {
                     var user = new UserModel
                     {
-                        LoginStatus = 1,
+                        //LoginStatus = 1,
                         ID = findUser.ID,
                         Name = findUser.Name,
                         EmployeeNumber = findUser.EmployeeNumber,
@@ -210,11 +210,11 @@ namespace PowerAppsCMS.Controllers
 
                 else
                 {
-                    var user = new UserModel
+                    var login = new LoginModel
                     {
                         LoginStatus = 0
                     };
-                    return Ok(user);
+                    return Ok(login);
                 }
 
                 //return null;

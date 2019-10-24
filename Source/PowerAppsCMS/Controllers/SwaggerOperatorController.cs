@@ -41,8 +41,9 @@ namespace PowerAppsCMS.Controllers
                 {
                     if (prevStatus == 0)
                     {
-                        foreach (ProcessAssign itemProcessAssign in db.ProcessAssigns.Where(x => x.UserID == guidUserID))
-                        {
+                        //foreach (ProcessAssign itemProcessAssign in db.ProcessAssigns.Where(x => x.UserID == guidUserID))
+                          foreach (ProcessAssign itemProcessAssign in db.ProcessAssigns.Where(x => x.UserID == guidUserID && x.Status < 4))
+                            {
                             TaskListOperator taskListOperator = new TaskListOperator();
                             taskListOperator.ProcessID = itemProcessAssign.ProcessID;
                             taskListOperator.ProcessAssignID = itemProcessAssign.ID;
@@ -66,7 +67,8 @@ namespace PowerAppsCMS.Controllers
                     }
                     else
                     {
-                        List<ProcessAssign> listProcessAssign = db.ProcessAssigns.Where(x => x.UserID == guidUserID).ToList();
+                        //List<ProcessAssign> listProcessAssign = db.ProcessAssigns.Where(x => x.UserID == guidUserID).ToList();
+                        List<ProcessAssign> listProcessAssign = db.ProcessAssigns.Where(x => x.UserID == guidUserID && x.Status >= 4).ToList();
                         foreach (var item in listProcessAssign.Where(x => x.LastModified.Date >= now.AddDays(-7)))
                         {
                             TaskListOperator taskListOperator = new TaskListOperator();
